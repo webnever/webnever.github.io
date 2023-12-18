@@ -104,6 +104,13 @@
             color: #000000;
         }
 
+        .content-subscript-title {
+            font-family: 'OPNarchNB-Light';
+            font-size: 12px;
+            line-height: 14px;
+            font-weight: 300;
+        }
+
         .content-subscript {
             font-family: 'OPNarchNB-Light';
             font-size: 12px;
@@ -158,15 +165,31 @@
                 padding: 0% 0% 0% 0%;
             }
 
+            #container {
+                padding-top: 2.5%;
+            }
+
             #tabs-container {
-                padding: 0;
+                padding: 0% 0% 0% 2.5%;
                 width: 25%;
             }
 
             .tab {
                 padding: 10% 10% 10% 0%;
                 margin-bottom: 5px;
-                font-size: 1.5em;
+                font-size: 1em;
+            }
+
+            .content-subscript {
+                display: none;
+            }
+
+            #content {
+                font-size: 0.75em;
+            }
+
+            #courses {
+                font-size: 1.50em;
             }
 
             img {
@@ -177,7 +200,7 @@
 </head>
 <body>
     <header>
-        <div class="name"><p>Liam Zbaeren <sub class="content-subscript">PORTFOLIO</sub></p></div>
+        <div class="name"><p>Liam Zbaeren <sub class="content-subscript-title">PORTFOLIO</sub></p></div>
     </header>
 
     <div id="night-mode-toggle" onclick="toggleNightMode()">🌛︎︎</div>
@@ -207,10 +230,12 @@
                 <h2>Dual Major in AI / Data Science & Software Application Development</h2>
                 <br>
                 <h1>Proficient in Python, HTML, CSS, JavaScript, C#, C++</h1>
+                <br><br>
+                <h1 id="courses">C++ Course Beginner to Advanced (36 hr) <a href="https://youtu.be/8jLOx1hD3_o" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1>
                 <br>
-                <h1>C++ Course Beginner to Advanced (36 hr) <a href="https://youtu.be/8jLOx1hD3_o" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1>
-                <h1>Blockchain, Solidity, and Full Stack Web3 Development Course (32 hr) <a href="https://youtu.be/gyMwXuJrbJQ" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1></h1>
-                <h1>Full Stack Web Development Course (8 hr) <a href="https://youtu.be/nu_pCVPKzTk" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1></h1>
+                <h1 id="courses">Blockchain, Solidity, and Full Stack Web3 Development Course (32 hr) <a href="https://youtu.be/gyMwXuJrbJQ" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1>
+                <br>
+                <h1 id="courses">Full Stack Web Development Course (8 hr) <a href="https://youtu.be/nu_pCVPKzTk" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1>
             </div>
             <div id="tab3" class="tab-content">
                 <h1>Aether Webnever Chronicles: DNSCRYPT <sub class="content-subscript">Started SEP, 2023</sub></h1>

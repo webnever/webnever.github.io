@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- MADE IN A VACUUM! -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liam Zbaeren | Portfolio</title>
+    <style>
+        @font-face {
+            font-family: 'OPNarchNB-Light';
+            src: url('OPNarchNB-Light.ttf') format('truetype');
+            font-weight: 300;
+        }
+
+        @font-face {
+            font-family: 'Session-Condensed';
+            src: url('Session-Condensed.ttf') format('truetype');
+        }
+                
+        body {
+            font-family: 'Session-Condensed';
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
+            min-height: 100vh; /* Ensure the content takes at least the full height of the viewport */
+        }
+
+        header {
+            font-family: 'Session-Condensed';
+            color: #000000;
+            padding: 50px 0px 50px 75px;
+            box-sizing: border-box;
+            font-size: 3em;
+            width: 100%;
+        }
+
+        #container {
+            display: flex;
+            flex: 1;
+        }
+
+        #tabs-container {
+            width: 20%;
+            padding: 0px 0px 0px 75px;
+            box-sizing: border-box;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 5px;
+            transition: margin-left 0.3s;
+            font-size: 1em;
+        }
+
+        .tab:hover {
+            margin-left: 5px;
+        }
+
+        #content {
+            flex: 1;
+            box-sizing: border-box;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 5px;
+            transition:  margin-left 0.3s;
+            font-family: 'Session-Condensed';
+        }
+
+        .tab:hover {
+            margin-left: 5px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .active-tab {
+            display: block;
+        }
+
+        .tab-title {
+            display: inline-block;
+            position: relative;
+        }
+
+        .subscript {
+            position: absolute;
+            bottom: -0.5em;
+            font-family: 'OPNarchNB-Light'; /* Specify the subscript font */
+            font-size: 0.7em; /* Adjust the subscript font size */
+            color: #000000; /* Adjust the subscript color */
+        }
+
+        /* New class for smaller subscripts in content */
+        .content-subscript {
+            font-family: 'OPNarchNB-Light';
+            font-size: 12px;
+            line-height: 14px;
+            font-weight: 300;
+        }
+
+        h1, h2, h3, h4, h5, h6, p {
+            margin: 0px 0px 0px 0px;
+        }
+
+        footer {
+            background-color: #800080; /* Purple background */
+            height: 20px;
+            color: #fff;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden; /* Hide the overflow to create a seamless scroll effect */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="name"><p>Liam Zbaeren <sub class="content-subscript">PORTFOLIO</sub></p></div>
+    </header>
+
+    <div id="container">
+        <div id="tabs-container">
+            <div class="tab" onclick="openTab('tab1')">
+                <span class="tab-title">Home<span class="subscript"></span></span>
+            </div>
+            <div class="tab" onclick="openTab('tab2')">
+                <span class="tab-title">Education<span class="subscript"></span></span>
+            </div>
+            <div class="tab" onclick="openTab('tab3')">
+                <span class="tab-title">Game Demos<span class="subscript"></span></span>
+            </div>
+            <div class="tab" onclick="openTab('tab4')">
+                <span class="tab-title">Software Demos<span class="subscript"></span></span>
+            </div>
+        </div>
+
+        <div id="content">
+            <div id="tab1" class="tab-content active-tab">
+                
+            </div>
+            <div id="tab2" class="tab-content">
+                <h1>Bachelor of Information Technology <sub class="content-subscript">In progress, Started 2023</sub></h1>
+                <br>
+                <h1>C++ Course Beginner to Advanced (36 hr) <a href="https://youtu.be/8jLOx1hD3_o" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1>
+                <h1>Blockchain, Solidity, and Full Stack Web3 Development Course (32 hr) <a href="https://youtu.be/gyMwXuJrbJQ" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1></h1>
+                <h1>Full Stack Web Development Course (8 hr) <a href="https://youtu.be/nu_pCVPKzTk" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1></h1>
+            </div>
+            <div id="tab3" class="tab-content">
+                <h1>Aether Webnever Chronicles: DNSCRYPT<sub class="content-subscript">Started OCT, 2023</sub></h1>
+                <img src="https://xoskeleton.github.io/dnscrypt_dev/25.gif" width=700>
+                <h4>3D Adventure RPG inspired by Runescape</h4>
+            </div>
+            <div id="tab4" class="tab-content">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div id="ticker"><p>
+            WEATHER REPORT: CLOUDS ARE STORING NEAR INFINITE AMOUNTS OF DATA •
+            HOSTED IN TINY WATER DROPLETS, OUR DIGITAL LIVES MAY BE DOOMED FOR THE RAINFALL •
+            FORTUNE GLOBAL 500 COMPANIES ARE BUILDING RAINFOREST ECOSYSTEMS INSIDE GEODESIC DOMES. WHAT ARE THEY PREPARING FOR? •
+            BRAND NEW SPIRIT IN OCCULT SCIENCES! THAT IS, COMPUTERS! •
+            YOUR FORTUNE TOLD! � •
+            WHAT TO DO BUT TO DEVELOP ULTRA HIGH BANDWIDTH BRAIN-COMPUTER INTERFACES? •
+            9 ROCKS HAVE BEEN PLACED IN A GRID-MATRIX •
+            THE CAPTCHA RESULTS HAVE BEEN RELEASED, ARE YOU HUMAN? •
+            QUANTUM FLAW IN SIMULATION TO DUPLICATE MONEY REVEALED! •
+            UPDATING THE STATE SPACE GEOMETRY OF CHAOTIC FLAME FLOW... •
+            NO BACK UPS. NO NETS. •
+            OH O O O OOH OH O O O O OH O H OH H OH OH OO O O O O OH OH  OO O  OH (CHEMISTRY) •
+            HOLLYWOOD CORRUPTION: THEORIES OF MULTIDIMENSIONAL MEDIA TRADE EMERGE •
+            AFGHAN OPIUM GROWERS HAVE SWITCHED TO SOLAR POWER •
+            STRANGE CHEMICALS GROWING IN YOUR HOME? TRY BLEACH! •
+            5TH DIMENSION NOW OPEN TO SHOPPERS! •
+            RADICAL 3D-VECTOR-SPACE-WINGERS USING CIRCUIT BOARDS AS ARROW TIPS. APOCALYPSE TIPS AT 9 •
+            USERS REPORT HAUNTING SCREAMS HEARD FROM HARDWARE GHOSTS •
+            HOTTEST NEW INVESTMENT, STREET TRASH! MCDONALDS PAPER BAGS ON THE RISE •
+            SOULSEEKING LOVE? MIND UPLOADS NOW AVAILABLE •
+            TO BE HONEST, YOU PROBABLY HAVE A VIRUS. •
+            LOCUSTS SWARMING NATION •
+            WEB √(-1).0 WHITE PAPER RELEASED •
+            IPHONE 12 PRO USES 100% RECYCLED RARE EARTH ELEMENTS IN ALL MAGNETS •
+            "CACHE RULES EVERYTHING AROUND ME" • 
+            BRUTALIST ARCHITECTURE & THE PINEAL GLAND, HERBERT BOFFMANS NEW BOOK AVAILABLE NOW •
+            NEW DATA SUGGESTS OCCLUSION CULLING EXISTS WITHIN THE SIMULATION •
+            17 YEAR OLD ACID HEAD HAS BECOME ONE WITH GOD. REVERED AS PROPHET IN A NEWLY FORMED DEATH CULT •
+            "GRAVITY, MOLECULES, AND OTHER MYSTERIOUS SHIT" AFTER THE BREAK •
+            LAST WORDS OF GENESIS-SOFTWARE CEO: "FLASH DRIVE 4" •
+            LIFE SUCK? GET A NEW ONE! •
+            DPS DRAGON FLIES OUT OF RUNESCAPE HQ, DISAPPEARS MYSTERIOUSLY •
+            CLEAN BLOOD OFF YOUR ELECTRONIC EQUIPMENT, WITH BLEACH! •
+            TEENS LOITERING IN THE RECYCLE BIN, SOCIETAL COLLAPSE IMMENANT? •
+            3D MATRIX CONFIRMED TO BE THE SHADOW OF A 4TH DIMENSIONAL MATRIX •
+            MEET LIKEMINDED QUANTUM FIELDS IN YOUR AREA •
+            8 TRILLION DOLLARS OF BITCOIN FACTORY RESET •
+            HOW TO BECOME OFF GRID ON IOS, LATER •
+            SERVER MONITORS TRAFFIC FROM THE DISTANT FUTURE •
+            BREAKING NEWS: SUN RISES EAST AND SETS DUE WEST •
+        </p></div>
+    </footer>
+    <script>
+        function openTab(tabId) {
+            var tabContents = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active-tab');
+            }
+            var selectedTab = document.getElementById(tabId);
+            selectedTab.classList.add('active-tab');
+        }
+    </script>
+    <script type="module">
+        import marquee from './vanilla-marquee.min.js';
+
+        const myScroller = new marquee(document.getElementById("ticker"), {
+        css3easing: 'linear',
+        delayBeforeStart: 0,
+        duplicated: true,
+        duration: 0,
+        gap: 5,
+        pauseOnHover: false,
+        recalcResize: false,
+        speed: 60,
+        startVisible: true,
+    })
+    </script>
+</body>
+</html>

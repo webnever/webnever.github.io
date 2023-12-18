@@ -18,6 +18,8 @@
         }
                 
         body {
+            background-color: #fff;
+            color: #111;
             font-family: 'Session-Condensed';
             margin: 0;
             padding: 0;
@@ -29,7 +31,7 @@
 
         header {
             font-family: 'Session-Condensed';
-            color: #000000;
+            color: #111;
             padding: 50px 0px 50px 75px;
             box-sizing: border-box;
             font-size: 3em;
@@ -92,12 +94,11 @@
         .subscript {
             position: absolute;
             bottom: -0.5em;
-            font-family: 'OPNarchNB-Light'; /* Specify the subscript font */
-            font-size: 0.7em; /* Adjust the subscript font size */
-            color: #000000; /* Adjust the subscript color */
+            font-family: 'OPNarchNB-Light';
+            font-size: 0.7em;
+            color: #000000;
         }
 
-        /* New class for smaller subscripts in content */
         .content-subscript {
             font-family: 'OPNarchNB-Light';
             font-size: 12px;
@@ -110,7 +111,7 @@
         }
 
         footer {
-            background-color: #800080; /* Purple background */
+            background-color: #800080;
             height: 20px;
             color: #fff;
             text-align: center;
@@ -118,7 +119,33 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            overflow: hidden; /* Hide the overflow to create a seamless scroll effect */
+            overflow: hidden;
+        }
+
+        img {
+            border-radius: 2.5%;
+        }
+
+        body.night-mode {
+            background-color: #111;
+            color: #fff;
+        }
+
+        .night-mode header {
+            color: #fff;
+        }
+
+        #night-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;    
+            font-size: 20px;
+            color: #111;
+        }
+
+        body.night-mode #night-mode-toggle {
+            color: #fff;
         }
     </style>
 </head>
@@ -126,6 +153,8 @@
     <header>
         <div class="name"><p>Liam Zbaeren <sub class="content-subscript">PORTFOLIO</sub></p></div>
     </header>
+
+    <div id="night-mode-toggle" onclick="toggleNightMode()">🌛︎︎</div>
 
     <div id="container">
         <div id="tabs-container">
@@ -148,24 +177,39 @@
                 
             </div>
             <div id="tab2" class="tab-content">
-                <h1>Bachelor of Information Technology <sub class="content-subscript">In progress, Started 2023</sub></h1>
+                <h1>Bachelor of Information Technology<sub class="content-subscript">In progress, Started 2023</sub></h1>
+                <h2>Dual Major in AI / Data Science & Software Application Development</h2>
+                <br>
+                <h1>Proficient in Python, HTML, CSS, JavaScript, C#, C++</h1>
                 <br>
                 <h1>C++ Course Beginner to Advanced (36 hr) <a href="https://youtu.be/8jLOx1hD3_o" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1>
                 <h1>Blockchain, Solidity, and Full Stack Web3 Development Course (32 hr) <a href="https://youtu.be/gyMwXuJrbJQ" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1></h1>
                 <h1>Full Stack Web Development Course (8 hr) <a href="https://youtu.be/nu_pCVPKzTk" style="text-decoration: none;" target="_blank">🔗</a><sub class="content-subscript">IN PROGRESS</sub></h1></h1>
             </div>
             <div id="tab3" class="tab-content">
-                <h1>Aether Webnever Chronicles: DNSCRYPT<sub class="content-subscript">Started OCT, 2023</sub></h1>
-                <img src="https://xoskeleton.github.io/dnscrypt_dev/25.gif" width=700>
-                <h4>3D Adventure RPG inspired by Runescape</h4>
+                <h1>Aether Webnever Chronicles: DNSCRYPT<sub class="content-subscript">Started SEP, 2023</sub></h1>
+                <p>3D Adventure RPG inspired by Runescape. Hobby project during university. Created with Godot 4.</p>
+                <br>
+                <img src="https://xoskeleton.github.io/dnscrypt_dev/25.gif">
+                <br><br><hr width="800" align="left"><br>
+                <h1>Chess Minigame in DNSCRYPT <sub class="content-subscript">OCT, 2023</sub></h1>
+                <p>Written in GDscript for Godot 4. Features alpha beta pruning in a minimax algorithm. Project guided by ChatGPT. Art by Midjourney.</p>
+                <br>
+                <img src="https://xoskeleton.github.io/dnscrypt_dev/9.png">
+                <br><br><br>
             </div>
             <div id="tab4" class="tab-content">
+                <h1>Trignometry to solve instantiating a castle of cards <sub class="content-subscript">OCT, 2023</sub></h1>
+                <p>Written in GDscript for Godot 4. Functions as a loading screen in DNSCRYPT.</p>
+                <br>
+                <img src="https://xoskeleton.github.io/dnscrypt_dev/17.gif"> 
             </div>
         </div>
     </div>
 
     <footer>
         <div id="ticker"><p>
+            MADE IN A VACCUUM! • 
             WEATHER REPORT: CLOUDS ARE STORING NEAR INFINITE AMOUNTS OF DATA •
             HOSTED IN TINY WATER DROPLETS, OUR DIGITAL LIVES MAY BE DOOMED FOR THE RAINFALL •
             FORTUNE GLOBAL 500 COMPANIES ARE BUILDING RAINFOREST ECOSYSTEMS INSIDE GEODESIC DOMES. WHAT ARE THEY PREPARING FOR? •
@@ -216,6 +260,10 @@
             }
             var selectedTab = document.getElementById(tabId);
             selectedTab.classList.add('active-tab');
+        }
+        
+        function toggleNightMode() {
+            document.body.classList.toggle('night-mode');
         }
     </script>
     <script type="module">

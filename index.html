@@ -152,6 +152,27 @@
         body.night-mode #night-mode-toggle {
             color: #fff;
         }
+
+        @media all and (max-width: 1284px) {
+            header {
+                padding: 0% 0% 0% 0%;
+            }
+
+            #tabs-container {
+                padding: 0;
+                width: 25%;
+            }
+
+            .tab {
+                padding: 10% 10% 10% 0%;
+                margin-bottom: 5px;
+                font-size: 1.5em;
+            }
+
+            img {
+                width: 95%
+            }
+        }
     </style>
 </head>
 <body>
@@ -196,7 +217,7 @@
                 <p>3D Adventure RPG inspired by Runescape. Hobby project during university. Created with Godot 4.</p>
                 <br>
                 <img src="https://xoskeleton.github.io/dnscrypt_dev/25.gif">
-                <br><br><hr width="800" align="left"><br>
+                <br><br><hr width=90% align="left"><br>
                 <h1>Chess Minigame in DNSCRYPT <sub class="content-subscript">OCT, 2023</sub></h1>
                 <p>Written in GDscript for Godot 4. Features alpha beta pruning in a minimax algorithm. Project guided by ChatGPT. Art by Midjourney.</p>
                 <br>
@@ -204,7 +225,7 @@
                 <br><br><br>
             </div>
             <div id="tab4" class="tab-content">
-                <h1>Trignometry to solve instantiating a castle of cards <sub class="content-subscript">OCT, 2023</sub></h1>
+                <h1>Trigonometry to solve instantiating a castle of cards <sub class="content-subscript">OCT, 2023</sub></h1>
                 <p>Written in GDscript for Godot 4. Functions as a loading screen in DNSCRYPT.</p>
                 <br>
                 <img src="https://xoskeleton.github.io/dnscrypt_dev/17.gif"> 
@@ -303,13 +324,13 @@
             selectedTab.style.transform = 'translateX(0)';
         }
 
-function closeTabs() {
-    var tabContents = document.getElementsByClassName('tab-content');
-    for (var i = 0; i < tabContents.length; i++) {
-        tabContents[i].style.opacity = 0;
-        tabContents[i].style.transform = 'translateX(-10px)';
-    }
-}
+        function closeTabs() {
+            var tabContents = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabContents.length; i++) {
+                tabContents[i].style.opacity = 0;
+                tabContents[i].style.transform = 'translateX(-10px)';
+            }
+        }
         
         function toggleNightMode() {
             document.body.classList.toggle('night-mode');

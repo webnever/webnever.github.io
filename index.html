@@ -80,10 +80,15 @@
 
         .tab-content {
             display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateX(-10px);
         }
 
         .active-tab {
             display: block;
+            opacity: 1;
+            transform: translateX(0); 
         }
 
         .tab-title {
@@ -158,16 +163,16 @@
 
     <div id="container">
         <div id="tabs-container">
-            <div class="tab" onclick="openTab('tab1')">
+            <div class="tab" onclick="closeTabs(); openTab('tab1')">
                 <span class="tab-title">Home<span class="subscript"></span></span>
             </div>
-            <div class="tab" onclick="openTab('tab2')">
+            <div class="tab" onclick="closeTabs(); openTab('tab2')">
                 <span class="tab-title">Education<span class="subscript"></span></span>
             </div>
-            <div class="tab" onclick="openTab('tab3')">
+            <div class="tab" onclick="closeTabs(); openTab('tab3')">
                 <span class="tab-title">Game Demos<span class="subscript"></span></span>
             </div>
-            <div class="tab" onclick="openTab('tab4')">
+            <div class="tab" onclick="closeTabs(); openTab('tab4')">
                 <span class="tab-title">Software Demos<span class="subscript"></span></span>
             </div>
         </div>
@@ -203,6 +208,7 @@
                 <p>Written in GDscript for Godot 4. Functions as a loading screen in DNSCRYPT.</p>
                 <br>
                 <img src="https://xoskeleton.github.io/dnscrypt_dev/17.gif"> 
+                <br><br><br>
             </div>
         </div>
     </div>
@@ -292,7 +298,19 @@
             }
             var selectedTab = document.getElementById(tabId);
             selectedTab.classList.add('active-tab');
+
+            void selectedTab.offsetWidth;
+            selectedTab.style.opacity = 1;
+            selectedTab.style.transform = 'translateX(0)';
         }
+
+function closeTabs() {
+    var tabContents = document.getElementsByClassName('tab-content');
+    for (var i = 0; i < tabContents.length; i++) {
+        tabContents[i].style.opacity = 0;
+        tabContents[i].style.transform = 'translateX(-10px)';
+    }
+}
         
         function toggleNightMode() {
             document.body.classList.toggle('night-mode');

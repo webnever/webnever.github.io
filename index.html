@@ -94,6 +94,7 @@
         .tab-title {
             display: inline-block;
             position: relative;
+            white-space: pre;
         }
 
         .subscript {
@@ -172,7 +173,29 @@
             width: 800px;
         }
 
-        @media all and (max-width: 1284px) {
+        .tarot-container {
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .tarot-card {
+            width: 300px;
+            height: 527px;
+            background-size: cover;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+        }
+
+        .tarot-card:hover {
+            transform: scale(1.05);
+        }
+
+        .tarot-mobile {
+            display: none !important;
+        }
+
+        @media only screen and (max-width: 767px) {
             header {
                 padding: 0% 0% 0% 0%;
             }
@@ -219,6 +242,10 @@
             .art-images{
                 width: 95%;
             }
+
+            .tarot-container {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -232,19 +259,22 @@
     <div id="container">
         <div id="tabs-container">
             <div class="tab" onclick="closeTabs(); openTab('tab1')">
-                <span class="tab-title">Home<span class="subscript"></span></span>
+                <span class="tab-title">Home</span>
             </div>
             <div class="tab" onclick="closeTabs(); openTab('tab2')">
-                <span class="tab-title">Education<span class="subscript"></span></span>
+                <span class="tab-title">Education</span>
             </div>
             <div class="tab" onclick="closeTabs(); openTab('tab3')">
-                <span class="tab-title">Game Demos<span class="subscript"></span></span>
+                <span class="tab-title">Game Demos</span>
             </div>
             <div class="tab" onclick="closeTabs(); openTab('tab4')">
-                <span class="tab-title">Software Demos<span class="subscript"></span></span>
+                <span class="tab-title">Software Demos</span>
             </div>
             <div class="tab" onclick="closeTabs(); openTab('tab5')">
-                <span class="tab-title">Selected Artworks<span class="subscript"></span></span>
+                <span class="tab-title">Selected Artworks</span>
+            </div>
+            <div class="tab" onclick="closeTabs(); drawTarotCards(); openTab('tab6')">
+                <span class="tab-title">Your Fortune <span class="subscript">PC</span></span>
             </div>
         </div>
 
@@ -317,6 +347,9 @@
                     <img class="art-images" src="img/art/nikeangel.png">
                     <br><br><br> 
                 </div>
+            </div>
+            <div id="tab6" class="tab-content">
+                <div id="tarot-container" class="tarot-container"></div>
             </div>
         </div>
     </div>
@@ -391,7 +424,7 @@
             DUST 2 DUST COSMETICS, TEMPORAL AESTHETICS ON SALE • 
             BEES OFFICIALLY EXTINCT. ARTIFICAL POLLINATORS™ SHARE PRICE SKYROCKETS • 
             REMINDER: A RADIAN IS THE RADIUS ALONG THE CIRCUMFERENCE OF A CIRCLE • 
-            QR CODES MYSTERIOUSLY APPEARING IN FOLIAGE, <a href="https://www.o-bible.com/download/kjv.txt" target="_blank">CLICK HERE</a> TO SEE WHERE THEY LEAD •
+            QR CODES MYSTERIOUSLY APPEARING IN FOLIAGE, CLICK HERE TO SEE WHERE THEY LEAD... •
             SAGE AGAINST THE MACHINE • 
             PRIMARY COLOURED 3D SHAPES ON DISPLAY • 
             STOCKS: BITCOIN MAY OR MAY NOT GO UP • 
@@ -422,6 +455,47 @@
         
         function toggleNightMode() {
             document.body.classList.toggle('night-mode');
+        }
+
+        var revealedCards = [];
+
+        function drawTarotCards() {
+            var tarotContainer = document.getElementById('tarot-container');
+            tarotContainer.innerHTML = ''; // Clear previous cards
+            revealedCards = [];
+
+            for (let i = 0; i < 3; i++) {
+                var tarotCard = document.createElement('div');
+                tarotCard.className = 'tarot-card';
+                tarotCard.id = 'tarot-card' + i;
+                tarotCard.style.backgroundImage = `url('img/rw/BackFace.jpg')`;
+
+                tarotCard.onclick = function () {
+                    flipTarotCard(document.getElementById('tarot-card' + i));
+                };
+
+                tarotContainer.appendChild(tarotCard);
+            }
+        }
+
+
+
+        // Function to flip a Tarot card
+        function flipTarotCard(card) {
+            // Prevent flipping the same card multiple times
+            if (card.style.backgroundImage.includes('BackFace')) {
+                // Randomly choose a Tarot card that hasn't been revealed yet
+                var randomCardIndex;
+                do {
+                    randomCardIndex = Math.floor(Math.random() * 79);
+                } while (revealedCards.includes(randomCardIndex));
+
+                // Update the card's background image with the chosen Tarot card
+                card.style.backgroundImage = `url('img/rw/${randomCardIndex}.jpg')`;
+
+                // Track revealed cards to prevent duplicates
+                revealedCards[index] = randomCardIndex;
+            }
         }
     </script>
     <script type="module">

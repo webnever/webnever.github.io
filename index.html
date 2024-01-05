@@ -2,14 +2,32 @@
 <html lang="en">
 <head>
     <!-- MADE IN A VACUUM! -->
-    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WEBNEVER</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <style>
+        @font-face {
+            font-family: 'MSMINCHO';
+            src: url('MSMINCHO.TTF') format('truetype');
+        }
         * {margin: 0; padding: 0}
-        body {background: #000;;}
+        body {
+            background: #000;
+            font-family: 'MSMINCHO';
+            font-size: 32px;
+            color: white;
+        }
         canvas {display: block;}
+        #poem {
+            position: relative;
+            height: 100vh; /* Poem div also occupies full viewport height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -17,11 +35,21 @@
             
     </canvas>
     <div style="position: absolute; bottom: 0px; right: 0px;">
+        
+    </div>
+    <div id="poem">
+        <center><p>
+        black sun shining, serpent bleeding, dawn graving,<br>
+        crypt lurking, magic voiding, crystal computing,<br>
+        junkie mystic sadhu, in the holy garden, of sex and war,<br>
+        breathing pneuma, the life web nexus, like its oxygen,<br>
+        just another angel, and another demon,<br>
+        in a glass ball, haunted world.<br>
+        </p></center>
         <center><a href="https://discord.gg/nnqb4uj8d4" id="imageLink" target="_blank">
             <img src="sandclock.gif"> <!-- Small image hyperlink -->
         </a></center>
     </div>
-
     <script>
         // Initialising the canvas
         var canvas = document.querySelector('canvas'),
@@ -100,7 +128,7 @@
 
         function drawImageWithAlpha() {
             ctx.globalAlpha = opacity;
-            ctx.drawImage(image, canvas.width / 2 - image.width / 2, canvas.height / 2 - image.height / 2);
+            ctx.drawImage(image, canvas.width / 2 - image.width / 2, 100);
             ctx.globalAlpha = 1; // Reset global alpha
         }
 

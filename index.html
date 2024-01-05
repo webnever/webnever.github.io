@@ -2,547 +2,110 @@
 <html lang="en">
 <head>
     <!-- MADE IN A VACUUM! -->
-    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webnever | Portfolio</title>
+    <title>WEBNEVER</title>
     <style>
-        @font-face {
-            font-family: 'OPNarchNB-Light';
-            src: url('OPNarchNB-Light.ttf') format('truetype');
-            font-weight: 300;
-        }
-
-        @font-face {
-            font-family: 'Session-Condensed';
-            src: url('Session-Condensed.ttf') format('truetype');
-        }
-                
-        body {
-            background-color: #fff;
-            color: #111;
-            font-family: 'Session-Condensed';
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            font-size: 24px;
-            min-height: 100vh;
-        }
-
-        header {
-            font-family: 'Session-Condensed';
-            color: #111;
-            padding: 50px 0px 50px 75px;
-            box-sizing: border-box;
-            font-size: 3em;
-            width: 100%;
-        }
-
-        #container {
-            display: flex;
-            flex: 1;
-        }
-
-        #tabs-container {
-            width: 20%;
-            padding: 0px 0px 0px 75px;
-            box-sizing: border-box;
-        }
-
-        .tab {
-            cursor: pointer;
-            padding: 10px;
-            margin-bottom: 5px;
-            transition: margin-left 0.3s;
-            font-size: 1em;
-        }
-
-        .tab:hover {
-            margin-left: 5px;
-        }
-
-        #content {
-            flex: 1;
-            box-sizing: border-box;
-        }
-
-        .tab {
-            cursor: pointer;
-            padding: 10px;
-            margin-bottom: 5px;
-            transition:  margin-left 0.3s;
-            font-family: 'Session-Condensed';
-        }
-
-        .tab:hover {
-            margin-left: 5px;
-        }
-
-        .tab-content {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transform: translateX(-10px);
-        }
-
-        .active-tab {
-            display: block;
-            opacity: 1;
-            transform: translateX(0); 
-        }
-
-        .tab-title {
-            display: inline-block;
-            position: relative;
-            white-space: pre;
-        }
-
-        .subscript {
-            position: absolute;
-            bottom: -0.5em;
-            font-family: 'OPNarchNB-Light';
-            font-size: 0.7em;
-        }
-
-        .content-subscript-title {
-            font-family: 'OPNarchNB-Light';
-            font-size: 20px;
-            line-height: 8px;
-            font-weight: 300;
-        }
-
-        .content-subscript {
-            font-family: 'OPNarchNB-Light';
-            font-size: 16px;
-            line-height: 16px;
-            font-weight: 300;
-        }
-
-        h1, h2, h3, h4, h5, h6, p {
-            margin: 0px 0px 0px 0px;
-        }
-
-        #courses {
-            font-size: 24px;
-        }
-
-        footer {
-            background-color: #800080;
-            height: 28px;
-            color: #fff;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%; 
-            overflow: hidden;
-            font-size: 20px
-        }
-
-        img {
-            border-radius: 2.5%;
-        }
-
-        body.night-mode {
-            background-color: #111;
-            color: #fff;
-        }
-
-        .night-mode header {
-            color: #fff;
-        }
-
-
-        #night-mode-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;    
-            font-size: 20px;
-            color: #111;
-        }
-
-        body.night-mode #night-mode-toggle {
-            color: #fff;
-        }
-
-        #art-content{
-            width: 800px;
-        }
-
-        .art-images{
-            width: 800px;
-        }
-
-        .tarot-container {
-            width: 90%;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .tarot-card {
-            width: 300px;
-            height: 527px;
-            background-size: cover;
-            cursor: pointer;
-            transition: transform 0.5s ease;
-        }
-
-        .tarot-card:hover {
-            transform: scale(1.05);
-        }
-
-        .tarot-mobile {
-            display: none !important;
-        }
-
-        @media only screen and (max-width: 767px) {
-            header {
-                padding: 0% 0% 0% 0%;
-            }
-
-            #container {
-                padding-top: 2.5%;
-            }
-
-            #tabs-container {
-                padding: 0% 0% 0% 2.5%;
-                width: 25%;
-            }
-
-            .tab {
-                padding: 10% 10% 10% 0%;
-                margin-bottom: 5px;
-                font-size: 1em;
-            }
-
-            .content-subscript {
-                display: none;
-            }
-
-            #content {
-                font-size: 0.75em;
-            }
-
-            #courses {
-                font-size: 1.50em;
-            }
-
-            img {
-                width: 95%
-            }
-
-            .subtitle {
-                font-size: 1.5em;
-            }
-
-            #art-content {
-                width: 100%
-            }
-
-            .art-images{
-                width: 95%;
-            }
-
-            .tarot-container {
-                display: none;
-            }
-        }
+        * {margin: 0; padding: 0}
+        body {background: #000;;}
+        canvas {display: block;}
     </style>
 </head>
 <body>
-    <header>
-        <div class="name"><p>WEBNEVER  <sub class="content-subscript-title">Sam Weaver's Portfolio</sub></p></div>
-    </header>
-
-    <div id="night-mode-toggle" onclick="toggleNightMode()">🌛︎︎</div>
-
-    <div id="container">
-        <div id="tabs-container">
-            <div class="tab" onclick="closeTabs(); openTab('tab1')">
-                <span class="tab-title">Home</span>
-            </div>
-            <div class="tab" onclick="closeTabs(); openTab('tab3')">
-                <span class="tab-title">DNSCRYPT</span>
-            </div>
-            <div class="tab" onclick="closeTabs(); openTab('tab4')">
-                <span class="tab-title">ETA-C</span>
-            </div>
-            <div class="tab" onclick="closeTabs(); openTab('tab5')">
-                <span class="tab-title">Selected Artworks</span>
-            </div>
-            <div class="tab" onclick="closeTabs(); openTab('tab7')">
-                <span class="tab-title">Mixtapes</span>
-            </div>
-            <div class="tab" onclick="closeTabs(); drawTarotCards(); openTab('tab6')">
-                <span class="tab-title">Your Fortune</span>
-            </div>
-        </div>
-
-        <div id="content">
-            <div id="tab1" class="tab-content active-tab">
-                
-            </div>
-            <div id="tab3" class="tab-content">
-                <h1>Aether Webnever Chronicles: DNSCRYPT [v2] <sub class="content-subscript">JAN, 2024</sub></h1>
-                <p class="subtitle">Story-based 3D ARPG.</p>
-                <br>
-                <img class="art-images" src="img/dns/dnscryptlogo.png">
-                <div style="width: 55%; font-size: 24px;"><center><p class="subtitle">
-                black sun shining, serpent bleeding, dawn graving,<br>
-                crypt lurking, magic voiding, crystal computing,<br>
-                junkie mystic sadhu, in the holy garden, of sex and war,<br>
-                breathing pneuma, the life web nexus, like its oxygen,<br>
-                just another angel, and another demon,<br>
-                in a glass ball, haunted world</p></center></div>
-                <br><br><hr width=90% align="left"><br>
-                <h1>DNSCRYPT v1 <sub class="content-subscript">SEP, 2023</sub></h1>
-                <p class="subtitle">3D Adventure RPG.</p>
-                <br>
-                <img class="art-images" src="img/dns/25.gif">
-                <br><br><hr width=90% align="left"><br>
-                <h1>Cards <sub class="content-subscript">OCT, 2023</sub></h1>
-                <p class="subtitle">Loading screen in DNSCRYPT.</p>
-                <br>
-                <img class="art-images" src="img/dns/17.gif"> 
-                <br><br><hr width=90% align="left"><br>
-                <h1>Chess Minigame <sub class="content-subscript">OCT, 2023</sub></h1>
-                <p class="subtitle">Features alpha beta pruning in a minimax algorithm.</p>
-                <br>
-                <img class="art-images" src="img/dns/9.png">
-                <br><br><br>
-            </div>
-            <div id="tab4" class="tab-content">
-                <h1>Aether Webnever Chronicles: ETA-C<sub class="content-subscript"></sub></h1>
-                <p class="subtitle">Sequel to DNSCRYPT.</p>
-                <br>
-                <img class="art-images" src="img/eta/eta-c.png">
-                <br><br><br>
-            </div>
-            <div id="tab5" class="tab-content">
-                <div id="art-content">
-                    <center><h1 class="art-title">MESH <sub class="content-subscript">2021</sub></h1></center>
-                    <img class="art-images" src="img/art/meshhhh.png">
-                    <br><br><br>
-                    <center><h1 class="art-title">CHARGE <sub class="content-subscript">2020</sub></h1></center>
-                    <img class="art-images" src="img/art/charge.JPG">
-                    <br><br><br>
-                    <center><h1 class="art-title">GOT BLOOD? <sub class="content-subscript">2021</sub></h1></center>
-                    <img class="art-images" src="img/art/gotblood.png">
-                    <br><br><br> 
-                    <center><h1 class="art-title">DNA <sub class="content-subscript">2020</sub></h1></center>
-                    <img class="art-images" src="img/art/dna.png"> 
-                    <br><br><br> 
-                    <center><h1 class="art-title">TRASHMECH <sub class="content-subscript">2022</sub></h1></center>
-                    <img class="art-images" src="img/art/trashmech.png">
-                    <br><br><br> 
-                    <center><h1 class="art-title">LOTUS <sub class="content-subscript">2022</sub></h1></center>
-                    <img class="art-images" src="img/art/lotus.gif">
-                    <br><br><br>
-                    <center><h1 class="art-title">IPHONE PRAIRIE <sub class="content-subscript">2020</sub></h1></center>
-                    <img class="art-images" src="img/art/iphoneprairie.png">
-                    <br><br><br>
-                    <center><h1 class="art-title">SHIPS WITHOUT MEANING <sub class="content-subscript">2021</sub></h1></center>
-                    <img class="art-images" src="img/art/shipswithoutmeaning.png">
-                    <br><br><br> 
-                    <center><h1 class="art-title">LIFE WEB NEXUS <sub class="content-subscript">2022</sub></h1></center>
-                    <img class="art-images" src="img/art/nexus.png"> 
-                    <br><br><br> 
-                    <center><h1 class="art-title">NIKE ANGEL <sub class="content-subscript">2022</sub></h1></center>
-                    <img class="art-images" src="img/art/nikeangel.png">
-                    <br><br><br> 
-                </div>
-            </div>
-            <div id="tab7" class="tab-content">
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/443355246&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/djpensionplans" title="DJ PENSION PLANS" target="_blank" style="color: #cccccc; text-decoration: none;">DJ PENSION PLANS</a> · <a href="https://soundcloud.com/djpensionplans/mixzerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozeroone" title="MIX00000000000000000000000001" target="_blank" style="color: #cccccc; text-decoration: none;">MIX00000000000000000000000001</a></div>
-                <br>      
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/466362264&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/djpensionplans" title="DJ PENSION PLANS" target="_blank" style="color: #cccccc; text-decoration: none;">DJ PENSION PLANS</a> · <a href="https://soundcloud.com/djpensionplans/mixzerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerotwo" title="MIX00000000000000000000000002" target="_blank" style="color: #cccccc; text-decoration: none;">MIX00000000000000000000000002</a></div>
-                <br>       
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/794335684&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/djpensionplans" title="DJ PENSION PLANS" target="_blank" style="color: #cccccc; text-decoration: none;">DJ PENSION PLANS</a> · <a href="https://soundcloud.com/djpensionplans/mixmixzerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerofreedragon" title="MIX「ZER0」(Free Dragon)❤️♻️ DJ Free Dragon Club Rave and Sleep Mix" target="_blank" style="color: #cccccc; text-decoration: none;">MIX「ZER0」(Free Dragon)❤️♻️ DJ Free Dragon Club Rave and Sleep Mix</a></div>
-                <br>       
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/871049293&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/djplannedparenthood" title="DJ PLANNED PARENTHOOD" target="_blank" style="color: #cccccc; text-decoration: none;">DJ PLANNED PARENTHOOD</a> · <a href="https://soundcloud.com/djplannedparenthood/mixzerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerothree" title="MIX00000000000000000000000003" target="_blank" style="color: #cccccc; text-decoration: none;">MIX00000000000000000000000003</a></div>
-                <br> 
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/876257749&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/djplannedparenthood" title="DJ PLANNED PARENTHOOD" target="_blank" style="color: #cccccc; text-decoration: none;">DJ PLANNED PARENTHOOD</a> · <a href="https://soundcloud.com/djplannedparenthood/mixzerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerozerofour" title="MIX00000000000000000000000004" target="_blank" style="color: #cccccc; text-decoration: none;">MIX00000000000000000000000004</a></div>      
-                <br>
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1665214374&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/866142" title="🕸🕊2" target="_blank" style="color: #cccccc; text-decoration: none;">🕸🕊2</a> · <a href="https://soundcloud.com/866142/1st-moon" title="1st Moon ++ [2020]" target="_blank" style="color: #cccccc; text-decoration: none;">1st Moon ++ [2020]</a></div>
-                <br>
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1119791296&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/88614" title="🕸🕊" target="_blank" style="color: #cccccc; text-decoration: none;">🕸🕊</a> · <a href="https://soundcloud.com/88614/mix1" title="♳e −" target="_blank" style="color: #cccccc; text-decoration: none;">♳e −</a></div>
-                <br>
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1174751032&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/88614" title="🕸🕊" target="_blank" style="color: #cccccc; text-decoration: none;">🕸🕊</a> · <a href="https://soundcloud.com/88614/earth-is-burning" title="earth is burning mix [2021]" target="_blank" style="color: #cccccc; text-decoration: none;">earth is burning mix [2021]</a></div>
-                <br>
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1237223773&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/88614" title="🕸🕊" target="_blank" style="color: #cccccc; text-decoration: none;">🕸🕊</a> · <a href="https://soundcloud.com/88614/mixgod" title="MixGOD [2022]" target="_blank" style="color: #cccccc; text-decoration: none;">MixGOD [2022]</a></div>
-                <br>
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1607576979&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/djpensionplans" title="DJ PENSION PLANS" target="_blank" style="color: #cccccc; text-decoration: none;">DJ PENSION PLANS</a> · <a href="https://soundcloud.com/djpensionplans/witchmix" title="ＷＩＴＣＨ_ＭＩＸ" target="_blank" style="color: #cccccc; text-decoration: none;">ＷＩＴＣＨ_ＭＩＸ</a></div>
-                <br>
-                <iframe width="75%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1698198543&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/88614" title="🕸🕊" target="_blank" style="color: #cccccc; text-decoration: none;">🕸🕊</a> · <a href="https://soundcloud.com/88614/blue-light-in-the-maze-function-666hz-v2" title="blue light in the maze function 666Hz [V2]" target="_blank" style="color: #cccccc; text-decoration: none;">blue light in the maze function 666Hz [V2]</a></div>  
-                <br><br><br>
-            </div>
-            <div id="tab6" class="tab-content">
-                <div id="tarot-container" class="tarot-container"></div>
-            </div>
-        </div>
+    <canvas>
+            
+    </canvas>
+    <div style="position: absolute; top: 82%; left: 85%; transform: translate(-50%, -50%); text-align: center;">
+        <center><a href="https://discord.gg/nnqb4uj8d4" id="imageLink" target="_blank">
+            <img src="sandclock.gif"> <!-- Small image hyperlink -->
+        </a></center>
     </div>
+    <audio autoplay loop>
+        <source src="CRASH.mp3" type="audio/mpeg">
+    </audio>
 
-    <footer>
-        <div id="ticker"><p>
-            MADE IN A VACCUUM! • 
-            WEATHER REPORT: CLOUDS ARE STORING NEAR INFINITE AMOUNTS OF DATA • 
-            HOSTED IN TINY WATER DROPLETS, OUR DIGITAL LIVES MAY BE DOOMED FOR THE RAINFALL • 
-            FORTUNE GLOBAL 500 COMPANIES ARE BUILDING RAINFOREST ECOSYSTEMS INSIDE GEODESIC DOMES. WHAT ARE THEY PREPARING FOR? • 
-            BRAND NEW SPIRIT IN OCCULT SCIENCES! THAT IS, COMPUTERS! YOUR FORTUNE TOLD! � • 
-            WHAT TO DO UPON THE FACE OF THIS PLANET LESS WE CREATE? • 
-            9 ROCKS HAVE BEEN PLACED IN A GRID-MATRIX • 
-            THE CAPTCHA RESULTS HAVE BEEN RELEASED, ARE YOU HUMAN? • 
-            QUANTUM FLAW IN SIMULATION TO DUPLICATE MONEY REVEALED! • 
-            UPDATING THE STATE SPACE GEOMETRY OF CHAOTIC FLAME FLOW... • 
-            NO BACK UPS. NO NETS. • 
-            OH O O O OOH OH O O O O OH O H OH H OH OH OO O O O O OH OH  OO O  OH (CHEMISTRY) • 
-            HOLLYWOOD CORRUPTION: THEORIES OF MULTIDIMENSIONAL MEDIA TRADE EMERGE • 
-            AFGHAN OPIUM GROWERS HAVE SWITCHED TO SOLAR POWER • 
-            5TH DIMENSION NOW OPEN TO SHOPPERS! • 
-            RADICAL 3D-VECTOR-SPACE-WINGERS USING CIRCUIT BOARDS AS ARROW TIPS. APOCALYPSE TIPS AT 9 • 
-            USERS REPORT HAUNTING SCREAMS HEARD FROM HARDWARE GHOSTS • 
-            HOTTEST NEW INVESTMENT, STREET TRASH! MCDONALDS PAPER BAGS ON THE RISE • 
-            SOULSEEKING LOVE? MIND UPLOADS NOW AVAILABLE • 
-            TO BE HONEST, YOU PROBABLY HAVE A VIRUS. • 
-            WEB √(-1).0 WHITE PAPER RELEASED • 
-            IPHONE 12 PRO USES 100% RECYCLED RARE EARTH ELEMENTS IN ALL MAGNETS • 
-            CACHE RULES EVERYTHING AROUND ME • 
-            BRUTALIST ARCHITECTURE & THE PINEAL GLAND, HERBERT BOFFMANS NEW BOOK AVAILABLE NOW • 
-            NEW DATA SUGGESTS OCCLUSION CULLING EXISTS WITHIN THE SIMULATION • 
-            17 YEAR OLD ACID HEAD HAS BECOME ONE WITH GOD. REVERED AS PROPHET IN A NEWLY FORMED DEATH CULT • 
-            "GRAVITY, MOLECULES, AND OTHER MYSTERIOUS SHIT" AFTER THE BREAK • 
-            LAST WORDS OF GENESIS-SOFTWARE CEO: "FLASH DRIVE 4" • 
-            LIFE SUCK? GET A NEW ONE! • 
-            TEENS LOITERING IN THE RECYCLE BIN, SOCIETAL COLLAPSE IMMINANT? • 
-            3D MATRIX CONFIRMED TO BE THE SHADOW OF A 4TH DIMENSIONAL MATRIX • 
-            MEET LIKEMINDED QUANTUM FIELDS IN YOUR AREA • 
-            8 TRILLION DOLLARS OF BITCOIN FACTORY RESET • 
-            HOW TO BECOME OFF GRID ON IOS, LATER • 
-            SERVER MONITORS TRAFFIC FROM THE DISTANT FUTURE • 
-            BREAKING NEWS: SUN RISES EAST AND SETS DUE WEST • 
-            GIVE ME YOUR MONEY: 0X477b65CC7482D4213cd06574717126DB63B1724F • 
-            STATUS UPDATE: I AM LOCKED WITHIN THE MAZE OF ACADEMIA (REPLENISHING HP & MP) • 
-            IF ITS GOOD THEN ITS BETTER THEN IT MUST BE! • 
-            SCRIPTURES UPON THE CALAMITY OF EARTH: ENCRYPTED IN SHA-2048 • 
-            SCIENTISTS INVENT BIOCELLULAR MIDI KEYBOARD • 
-            THE TRANSMISSION IS BRIEF, I'LL TELL YOU EVERYTHING I CAN... • 
-            YOU SHOULD SUDO RM -RF ~ YOUR MACHINE • 
-            TO MAKE THAT SOUL A STAR THAT BURNS FOREVER. ABOVE THE FORUM AND THE GATES OF ROME. • 
-            PRIMORDIAL ACID RAIN HAS BEEN BUFFERING FOR CENTURIES, WILL IT EVER FALL? • 
-            BIOMIMICRY OF CHRIST: IS GOD HIDDEN WITHIN OUR CELLS? • 
-            CASH FROM THE CRYPT • 
-            ANCIENT TECHNOLOGY UNEARTHED: BLUETOOTH? • 
-            PLATINUM STONES SOLD ON DEEP WEB AUCTION • 
-            BLOOD INCORPORATED: ETHICAL ADENOCHROME NOW ON SALE TO THE PUBLIC • 
-            ECO-FRIENDLY CULTS GAINING POPULARITY IN THE WINDMILL FIELDS, DANGER TO INVESTORS? •
-            VIRAL: CHILD RECREATES HADRON COLLIDER WITH TOY SNAKES AND TRAINS • 
-            BINARY OPERATIONS UPON THE MATRIX: A NEO-WICCAN GUIDE • 
-            ENTRANCED BY SCROLLING TEXT? TRY THIS QUICK FIX: LOG OFF! • 
-            INFINITE COMBINATIONS, ONE ESCAPE. • 
-            SPINNING METAL PYRAMIDS CREATE ELECTROMAGNETIC TORUS FIELD UPON THE EARTH • 
-            2 + 2 = GOLDFISH, MATHEMATICAL PROOF • 
-            ACCESS THE ASTRAL PLANE WITH A BRAND NEW MERKABA VEHICLE OF LIGHT. GOING TO THOSE CHOSEN FEW! • 
-            ELITE SECRET HAND SHAKES CAUGHT ON CAMERA! • 
-            CRYPTOCURRENY MARKET UP +%dXK • 
-            YHWH LOOKS MERCIFULLY UPON THE SCORCHED EARTH! • 
-            GIVE ME YOUR USERNAME AND PASSWORD, AND FAVOURABLY, YOUR BLOOD TYPE • 
-            TALES FROM THE TRASH STRATUM, WHAT WILL OUR DESCENDANTS UNCOVER? • 
-            CALL 1800-SAMSARA FOR A GOOD TIME! • 
-            #!%*!#%!#%&![TRASH STRING] • 
-            DUST 2 DUST COSMETICS, TEMPORAL AESTHETICS ON SALE • 
-            BEES OFFICIALLY EXTINCT. ARTIFICAL POLLINATORS™ SHARE PRICE SKYROCKETS • 
-            REMINDER: A RADIAN IS THE RADIUS ALONG THE CIRCUMFERENCE OF A CIRCLE • 
-            QR CODES MYSTERIOUSLY APPEARING IN FOLIAGE, CLICK HERE TO SEE WHERE THEY LEAD... •
-            SAGE AGAINST THE MACHINE • 
-            PRIMARY COLOURED 3D SHAPES ON DISPLAY • 
-            STOCKS: BITCOIN MAY OR MAY NOT GO UP • 
-            THANK YOU FOR THIS BEAUTIFULL MESSAGE  ♥  IT IS SO FILLED WITH LIGHT ஜ I LᲦ√Ƹ IT ♥ & WILL SHARE ✽ⓁⓄⓋⒺ ஜ I AM MOST GRATEFULL FOR MEETING  ALL OF YOU ♥ ◈۞ ۩ BLESSINGS OF PEACE & LᲦ√Ƹ ஜ۩۞ IN LAK`ECH ALA K`ÌN ♥ AUM NAMAH SIVAYA ♥ WE ARE ONE ۞ NAMASTE • 
-        </p></div>
-    </footer>
     <script>
-        toggleNightMode()
+        // Initialising the canvas
+        var canvas = document.querySelector('canvas'),
+            ctx = canvas.getContext('2d');
 
-        function openTab(tabId) {
-            var tabContents = document.getElementsByClassName('tab-content');
-            for (var i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove('active-tab');
+        // Setting the width and height of the canvas
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Setting up the letters
+        var letters = 'אבגדהוזחטיךכלםמןנסעףפץצקרשת';
+        letters = letters.split('');
+
+        // Setting up the columns
+        var fontSize = 25; // Increased font size
+        var columns = canvas.width / fontSize; // Adjust number of columns based on new font size
+
+        // Setting up the drops
+        var drops = [];
+        for (var i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        // Setting up the draw function
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, .1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalAlpha = 1;
+            for (var i = 0; i < drops.length; i++) {
+                var text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillStyle = '#0f0';
+                ctx.font = fontSize + 'px Arial';
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                drops[i] += 0.5;
+                if (drops[i] * fontSize > canvas.height && Math.random() > .95) {
+                    drops[i] = 0;
+                }
             }
-            var selectedTab = document.getElementById(tabId);
-            selectedTab.classList.add('active-tab');
-
-            void selectedTab.offsetWidth;
-            selectedTab.style.opacity = 1;
-            selectedTab.style.transform = 'translateX(0)';
-        }
-
-        function closeTabs() {
-            var tabContents = document.getElementsByClassName('tab-content');
-            for (var i = 0; i < tabContents.length; i++) {
-                tabContents[i].style.opacity = 0;
-                tabContents[i].style.transform = 'translateX(-10px)';
+            // Draw the image with its own alpha handling
+            if (fadeIn && opacity < 0.75) {
+                opacity += 0.005; // Adjust fade-in speed here
+                drawImageWithAlpha();
+            } else if (fadeIn) {
+                drawImageWithAlpha();
             }
-        }
-        
-        function toggleNightMode() {
-            document.body.classList.toggle('night-mode');
+
+            requestAnimationFrame(draw);
         }
 
-        var revealedCards = [];
+        // Loop the animation
+        requestAnimationFrame(draw);
 
-        function drawTarotCards() {
-            var tarotContainer = document.getElementById('tarot-container');
-            tarotContainer.innerHTML = ''; // Clear previous cards
-            revealedCards = [];
+        var image = new Image();
+        image.src = 'dnscrypt2.png'; // Replace with the path to your image
+        var opacity = 0;
+        var fadeIn = false;
 
-            for (let i = 0; i < 3; i++) {
-                var tarotCard = document.createElement('div');
-                tarotCard.className = 'tarot-card';
-                tarotCard.id = 'tarot-card' + i;
-                tarotCard.style.backgroundImage = `url('img/rw/BackFace.jpg')`;
+        image.onload = function() {
+            // Start the fade-in process after the image is loaded
+            fadeIn = true;
+        };
 
-                tarotCard.onclick = function () {
-                    flipTarotCard(document.getElementById('tarot-card' + i));
-                };
-
-                tarotContainer.appendChild(tarotCard);
+        function drawImage() {
+            if (!fadeIn) return;
+            opacity += 0.005; // Decrease this value to slow down the fade-in
+            if (opacity > 1) opacity = 1;
+            var x = canvas.width / 2 - image.width / 2;
+            var y = canvas.height / 2 - image.height / 2;
+            ctx.globalAlpha = opacity;
+            ctx.drawImage(image, x, y);
+            ctx.globalAlpha = 1;
+            if (opacity < 1) {
+                requestAnimationFrame(drawImage);
             }
         }
 
-
-
-        // Function to flip a Tarot card
-        function flipTarotCard(card) {
-            // Prevent flipping the same card multiple times
-            if (card.style.backgroundImage.includes('BackFace')) {
-                // Randomly choose a Tarot card that hasn't been revealed yet
-                var randomCardIndex;
-                do {
-                    randomCardIndex = Math.floor(Math.random() * 79);
-                } while (revealedCards.includes(randomCardIndex));
-
-                // Update the card's background image with the chosen Tarot card
-                card.style.backgroundImage = `url('img/rw/${randomCardIndex}.jpg')`;
-
-                // Track revealed cards to prevent duplicates
-                revealedCards[index] = randomCardIndex;
-            }
+        function drawImageWithAlpha() {
+            ctx.globalAlpha = opacity;
+            ctx.drawImage(image, canvas.width / 2 - image.width / 2, canvas.height / 2 - image.height / 2);
+            ctx.globalAlpha = 1; // Reset global alpha
         }
-    </script>
-    <script type="module">
-        import marquee from './vanilla-marquee.min.js';
 
-        const myScroller = new marquee(document.getElementById("ticker"), {
-        css3easing: 'linear',
-        delayBeforeStart: 0,
-        duplicated: true,
-        duration: 0,
-        gap: 5,
-        pauseOnHover: false,
-        recalcResize: false,
-        speed: 60,
-        startVisible: true,
-    })
     </script>
 </body>
 </html>

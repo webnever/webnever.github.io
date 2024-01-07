@@ -27,18 +27,23 @@
             align-items: center;
             text-align: center; 
             width: 100%;
-            background-image: url('black3.png'); /* Replace with your image path */
-            background-position: calc(50% - 100px) calc(50% + 30px); /* Adjust as needed */
+            background-image: url('black.png'); /* Replace with your image path */
+            background-position: calc(50% + 0px) calc(50% + 0px); /* Adjust as needed */
             background-size: unset;
             background-repeat: no-repeat;
         }
         #poem p {
             color: white; /* Text color */
             text-shadow:
-                -2px -2px 0 #000,  
-                2px -2px 0 #000,
-                -2px  2px 0 #000,
-                2px  2px 0 #000; /* Outline effect */
+                -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px  1px 0 #000,
+                1px  1px 0 #000; /* Outline effect */
+        }
+        #imageLink {
+            position: absolute;
+            left: 67.5%; /* X offset */
+            top: 63%; /* Y offset */
         }
     </style>
 </head>
@@ -50,16 +55,8 @@
         
     </div>
     <div id="poem">
-        <center><p>
-        black sun shining, serpent bleeding, dawn graving,<br>
-        crypt lurking, magic voiding, crystal computing,<br>
-        junkie mystic sadhu, in the holy garden, of sex and war,<br>
-        breathing pneuma, the life web nexus, like its oxygen,<br>
-        just another angel, and another demon,<br>
-        in a glass ball, haunted world.<br>
-        </p></center>
         <center><a href="https://discord.gg/nnqb4uj8d4" id="imageLink" target="_blank">
-            <img src="sandclock.gif"> <!-- Small image hyperlink -->
+            <img src="sandclock.gif">
         </a></center>
     </div>
     <script>

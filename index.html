@@ -72,11 +72,11 @@
         canvas.height = window.innerHeight;
 
         // Setting up the letters
-        var letters = 'אבגדהוזחטיךכלםמןנסעףפץצקרשת';
+        var letters = 'ℭℌℑℜℨ';
         letters = letters.split('');
 
         // Setting up the columns
-        var fontSize = 25; // Increased font size
+        var fontSize = 50; // Increased font size
         var columns = canvas.width / fontSize; // Adjust number of columns based on new font size
 
         // Setting up the drops
@@ -89,13 +89,13 @@
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, .1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.globalAlpha = 1;
+
             for (var i = 0; i < drops.length; i++) {
                 var text = letters[Math.floor(Math.random() * letters.length)];
-                ctx.fillStyle = '#0f0';
-                ctx.font = fontSize + 'px Arial';
+                ctx.fillStyle = '#f00';
+                ctx.font = fontSize/2 + 'px Arial Unicode MS';
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                drops[i] += 0.5;
+                drops[i] += 0.5; // Keep the same speed
                 if (drops[i] * fontSize > canvas.height && Math.random() > .95) {
                     drops[i] = 0;
                 }
@@ -115,7 +115,7 @@
         requestAnimationFrame(draw);
 
         var image = new Image();
-        image.src = 'dnscrypt2.png'; // Replace with the path to your image
+        image.src = 'awcarmour.png'; // Replace with the path to your image
         var opacity = 0;
         var fadeIn = false;
 
@@ -139,9 +139,15 @@
         }
 
         function drawImageWithAlpha() {
+            var scaledWidth = canvas.width * 0.5; // 50% of the screen width
+            var scale = scaledWidth / image.width; // Calculate scale factor
+            var scaledHeight = image.height * scale;
+            var x = canvas.width / 2 - scaledWidth / 2;
+            var y = canvas.height / 2 - scaledHeight / 2;
+
             ctx.globalAlpha = opacity;
-            ctx.drawImage(image, canvas.width / 2 - image.width / 2, canvas.height / 2 - image.height / 2);
-            ctx.globalAlpha = 1; // Reset global alpha
+            ctx.drawImage(image, x, y, scaledWidth, scaledHeight); // Drawing the scaled image
+            ctx.globalAlpha = 1;
         }
 
     </script>

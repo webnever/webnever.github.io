@@ -42,8 +42,9 @@
         }
         #imageLink {
             position: absolute;
-            left: 67.5%; /* X offset */
-            top: 63%; /* Y offset */
+            top: calc(50% + 250px); /* Replace X with the vertical offset */
+            left: calc(50% + 450px); /* Replace Y with the horizontal offset */
+            transform: translate(-50%, -50%); /* Adjust to center the element based on its own size */
         }
     </style>
 </head>
@@ -55,9 +56,9 @@
         
     </div>
     <div id="poem">
-        <center><a href="https://discord.gg/nnqb4uj8d4" id="imageLink" target="_blank">
+        <a href="https://discord.gg/nnqb4uj8d4" id="imageLink" target="_blank">
             <img src="sandclock.gif">
-        </a></center>
+        </a>
     </div>
     <script>
         // Initialising the canvas

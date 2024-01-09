@@ -137,14 +137,26 @@
         }
 
         function drawImageWithAlpha() {
-            var scaledWidth = canvas.width * 0.5; // 50% of the screen width
-            var scale = scaledWidth / image.width; // Calculate scale factor
-            var scaledHeight = image.height * scale;
+            // Calculate 50% of the canvas height
+            var scaledHeight = canvas.height * 0.9;
+
+            // Calculate scale factor based on original image height
+            var scale = scaledHeight / image.height;
+
+            // Calculate the scaled width to maintain aspect ratio
+            var scaledWidth = image.width * scale;
+
+            // Calculate x and y to center the image in the canvas
             var x = canvas.width / 2 - scaledWidth / 2;
             var y = canvas.height / 2 - scaledHeight / 2;
 
+            // Set the global alpha (opacity) for drawing
             ctx.globalAlpha = opacity;
-            ctx.drawImage(image, x, y, scaledWidth, scaledHeight); // Drawing the scaled image
+
+            // Draw the image with the calculated dimensions
+            ctx.drawImage(image, x, y, scaledWidth, scaledHeight);
+
+            // Reset global alpha to 1 (fully opaque)
             ctx.globalAlpha = 1;
         }
 

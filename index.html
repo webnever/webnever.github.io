@@ -1,165 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- MADE IN A VACUUM! -->
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEBNEVER</title>
+    <title>AETHER WEBNEVER</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <style>
         @font-face {
             font-family: 'MSMINCHO';
             src: url('MSMINCHO.TTF') format('truetype');
         }
-        * {margin: 0; padding: 0}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             background: #000;
             font-family: 'MSMINCHO';
             font-size: 32px;
             color: white;
         }
-        canvas {display: block;}
-        #poem {
-            position: relative;
-            height: 100vh; /* Poem div also occupies full viewport height */
+
+        /* General styles for centering content */
+        .viewport {
+            height: 100vh; /* Fixed height for the gallery viewport */
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center; 
-            width: 100%;
-            background-image: url('black.png'); /* Replace with your image path */
-            background-position: calc(50% + 0px) calc(50% + 0px); /* Adjust as needed */
-            background-size: unset;
-            background-repeat: no-repeat;
+            overflow-y: hidden; /* Hide vertical overflow */
         }
-        #poem p {
-            color: white; /* Text color */
-            text-shadow:
-                -1px -1px 0 #000,  
-                1px -1px 0 #000,
-                -1px  1px 0 #000,
-                1px  1px 0 #000; /* Outline effect */
+
+        /* First viewport with logo and sandclock */
+        #title {
+            position: relative;
+            text-align: center;
         }
+
+        #awlogo {
+            margin-bottom: auto; /* Pushes the sandclock down */
+            padding-top: 250px; /* Add padding to push the logo down from the top */
+        }
+
         #imageLink {
             position: absolute;
-            top: calc(50% + 250px); /* Replace X with the vertical offset */
-            left: calc(50% + 450px); /* Replace Y with the horizontal offset */
-            transform: translate(-50%, -50%); /* Adjust to center the element based on its own size */
+            bottom: 15%; /* Positioned 25% from the bottom */
         }
+
+        /* Gallery Styles */
+        .gallery {
+            display: flex;
+            overflow-x: auto; /* Allow horizontal scrolling */
+            scroll-behavior: smooth;
+            white-space: nowrap;
+            padding: 20px;
+            height: 800px; /* Ensure the gallery takes the full height of its parent */
+        }
+
+        .gallery img {
+            max-width: 800px; /* Maintain image width, but allow scaling */
+            height: auto; /* Keep the aspect ratio */
+            margin-right: 10px;
+            border-radius: 10px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        /* Second viewport with CD and audio controls */
+        #mixtape {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #audioControls {
+            position: absolute;
+            bottom: 15%; /* Positioned 25% from the bottom */
+            width: 40%;
+        }
+
+        /* Third viewport */
+        #black {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            background-image: url('black.png');
+            background-position: center;
+            background-size: 70%;
+            background-repeat: no-repeat;
+        }
+
     </style>
 </head>
 <body>
-    <canvas>
-            
-    </canvas>
-    <div style="position: absolute; bottom: 0px; right: 0px;">
-        
-    </div>
-    <div id="poem">
+    <!-- First viewport with logo and sandclock -->
+    <div class="viewport" id="title">
+        <img id="awlogo" src="awlogo.png" width="50%">
         <a href="https://discord.gg/nnqb4uj8d4" id="imageLink" target="_blank">
             <img src="sandclock.gif">
         </a>
     </div>
-    <script>
-        // Initialising the canvas
-        var canvas = document.querySelector('canvas'),
-            ctx = canvas.getContext('2d');
 
-        // Setting the width and height of the canvas
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    <div class="viewport" id="gamePreview">
+        <img src="game.png" width="80%">
+    </div>
 
-        // Setting up the letters
-        var letters = 'ℭℌℑℜℨ';
-        letters = letters.split('');
-
-        // Setting up the columns
-        var fontSize = 50; // Increased font size
-        var columns = canvas.width / fontSize; // Adjust number of columns based on new font size
-
-        // Setting up the drops
-        var drops = [];
-        for (var i = 0; i < columns; i++) {
-            drops[i] = 1;
-        }
-
-        // Setting up the draw function
-        function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, .1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            for (var i = 0; i < drops.length; i++) {
-                var text = letters[Math.floor(Math.random() * letters.length)];
-                ctx.fillStyle = '#f00';
-                ctx.font = fontSize/2 + 'px Arial Unicode MS';
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                drops[i] += 0.5; // Keep the same speed
-                if (drops[i] * fontSize > canvas.height && Math.random() > .95) {
-                    drops[i] = 0;
-                }
-            }
-            // Draw the image with its own alpha handling
-            if (fadeIn && opacity < 0.75) {
-                opacity += 0.005; // Adjust fade-in speed here
-                drawImageWithAlpha();
-            } else if (fadeIn) {
-                drawImageWithAlpha();
-            }
-
-            requestAnimationFrame(draw);
-        }
-
-        // Loop the animation
-        requestAnimationFrame(draw);
-
-        var image = new Image();
-        image.src = 'awcarmour.png'; // Replace with the path to your image
-        var opacity = 0;
-        var fadeIn = false;
-
-        image.onload = function() {
-            // Start the fade-in process after the image is loaded
-            fadeIn = true;
-        };
-
-        function drawImage() {
-            if (!fadeIn) return;
-            opacity += 0.005; // Decrease this value to slow down the fade-in
-            if (opacity > 1) opacity = 1;
-            var x = canvas.width / 2 - image.width / 2;
-            var y = canvas.height / 2 - image.height / 2;
-            ctx.globalAlpha = opacity;
-            ctx.drawImage(image, x, y);
-            ctx.globalAlpha = 1;
-            if (opacity < 1) {
-                requestAnimationFrame(drawImage);
-            }
-        }
-
-        function drawImageWithAlpha() {
-            // Calculate 50% of the canvas height
-            var scaledHeight = canvas.height * 0.9;
-
-            // Calculate scale factor based on original image height
-            var scale = scaledHeight / image.height;
-
-            // Calculate the scaled width to maintain aspect ratio
-            var scaledWidth = image.width * scale;
-
-            // Calculate x and y to center the image in the canvas
-            var x = canvas.width / 2 - scaledWidth / 2;
-            var y = canvas.height / 2 - scaledHeight / 2;
-
-            // Set the global alpha (opacity) for drawing
-            ctx.globalAlpha = opacity;
-
-            // Draw the image with the calculated dimensions
-            ctx.drawImage(image, x, y, scaledWidth, scaledHeight);
-
-            // Reset global alpha to 1 (fully opaque)
-            ctx.globalAlpha = 1;
-        }
-
-    </script>
+    <!-- Gallery Section -->
+    <div class="viewport">
+        <div class="gallery">
+            <img src="gallery/0.png">
+            <img src="gallery/1.png">
+            <img src="gallery/2.png">
+            <img src="gallery/3.png">
+            <img src="gallery/4.png">
+            <img src="gallery/5.png">
+            <img src="gallery/6.png">
+            <img src="gallery/7.png">
+            <!-- Add more images as needed -->
+        </div>
+    </div>
+    
+    <!-- Second viewport with CD and audio controls -->
+    <div class="viewport" id="mixtape">
+        <img src="cd.png" width="40%">
+        <!--<audio controls id="audioControls">
+            <source src="awnmix.ogg" type="audio/ogg">
+        </audio>-->
+        <iframe width="800px" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1929670970&color=%23a86fd8&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/aetherwebnever" title="AETHER WEBNEVER" target="_blank" style="color: #cccccc; text-decoration: none;">AETHER WEBNEVER</a> · <a href="https://soundcloud.com/aetherwebnever/awnmix" title="AETHER WEBNEVER SOUNDTRACK MIXTAPE" target="_blank" style="color: #cccccc; text-decoration: none;">AETHER WEBNEVER SOUNDTRACK MIXTAPE</a></div>
+        <a href="tracklist" target="_blank"><p>TRACKLIST</p></a>
+    </div>
+    
+    
+    
+    <!-- Third viewport -->
+    <div id="black"></div>
 </body>
 </html>

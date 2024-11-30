@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAM WEAVER</title>
+    <style>
+        @font-face {
+            font-family: 'Terminal';
+            src: url('tooth31-medium-webfont.ttf') format('truetype');
+        }
+
+        :root {
+            --text-color: #00ff00;
+            --bg-color: #000000;
+            --timestamp-color: #888888;
+            --font-size: 24px;
+            --line-spacing: 8px;
+            --cursor-width: 10px;
+            --cursor-height: 20px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Terminal', monospace;
+            margin: 0;
+            padding: 0;
+            font-size: var(--font-size);
+            letter-spacing: 0.5em;
+            white-space: pre;
+        }
+
+        #terminal-container {
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            /* This will keep it viewport-sized */
+            width: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        #terminal {
+            padding: 20px;
+        }
+
+        .terminal-line {
+            opacity: 0;
+            margin-bottom: var(--line-spacing);
+            white-space: pre-wrap;
+        }
+
+        .timestamp {
+            color: var(--timestamp-color);
+            margin-right: 15px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: var(--cursor-width);
+            height: var(--cursor-height);
+            background-color: var(--text-color);
+            margin-left: 5px;
+            animation: blink 1s step-end infinite;
+            position: relative;
+            /* Changed to relative */
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="terminal-container">
+        <div id="terminal"></div>
+        <div class="cursor"></div>
+    </div>
+
+    <script>
+        // Customizable parameters
+        const CONFIG = {
+            // Timing (in milliseconds)
+            fadeInDelay: 40,      // Delay before each line starts fading in
+            lineDelay: 120,       // Delay between lines
+            fadeInDuration: 100,   // How long the fade in animation takes
+
+            // Cursor
+            cursorBlinkRate: 1000, // Milliseconds for one complete blink cycle
+
+            // Text content
+            lines: [
+                "              ........              ",
+                "         .d$$$$*$$$$$$bc         ",
+                "      .d$P\"    d$$    \"*$$.      ",
+                "     d$\"      4$\"$$      \"$$.    ",
+                "   4$P        $F ^$F       \"$c   ",
+                "  z$%        d$   3$        ^$L  ",
+                " 4$$$$$$$$$$$$$$$$$$$$$$$$$$F ",
+                " $$$F\"\"\"\"\"\"\"$F\"\"\"\"\"\"$F\"\"\"\"\"C$$*$ ",
+                ".$%\"$$e    d$       3$   z$$\"  $F",
+                "4$    *$$.4$\"        $$d$P\"    $$",
+                "4$      ^*$$.       .d$F       $$",
+                "4$       d$\"$$c   z$$\"3$       $F",
+                " $L     4$\"  ^*$$$P\"   $$     4$\"",
+                " 3$     $F   .d$P$$e   ^$F    $P ",
+                "  $$   d$  .$$\"    \"$$c 3$   d$  ",
+                "   *$.4$\"z$$\"        ^*$$$$ $$   ",
+                "    \"$$$$P\"             \"$$$P    ",
+                "      *$b.             .d$P\"     ",
+                "        \"$$$ec.....ze$$$\"        ",
+                "            \"**$$$**\"\"            ",
+                "",
+                "",
+                "NoWareOS [Version 88614] 🕸🕊",
+                "(c) 20dX NoWare(tm). All Rights Reserved.",
+                "",
+                "",
+                "AETHER WEBNEVER CHRONICLES",
+                "",
+                "",
+                "The", "bunker", "door", "opens", "for", "the", "first", "time", "in", "years", "M.M.", "emerges", "into", "the", "perpetual", "dusk", "of", "a", "world", "he", "no", "longer", "recognizes", "Above", "a", "crescent", "moon", "hangs", "motionless", "beneath", "a", "burning", "pentagram", "that", "splits", "the", "sky", "both", "frozen", "in", "time", "since", "the", "Black", "Bomb", "changed", "everything",
+                "His", "motorcycle", "stands", "ready", "its", "chrome", "untarnished", "despite", "the", "years", "underground", "He", "doesn't", "remember", "preparing", "it", "but", "he", "knows", "it's", "meant", "for", "him", "The", "engine", "starts", "with", "a", "sound", "like", "a", "distant", "scream",
+                "Through", "the", "swirling", "sand", "two", "monuments", "pierce", "the", "horizon", "a", "pyramid", "of", "black", "stone", "that", "seems", "to", "absorb", "light", "and", "the", "massive", "corpse", "of", "a", "dragon", "its", "iridescent", "scales", "still", "shifting", "colors", "in", "death", "M.M.", "feels", "drawn", "to", "both", "yet", "understanding", "neither", "The", "desert", "between", "here", "and", "there", "is", "vast", "empty",
+                "The", "first", "ride", "is", "interrupted", "by", "gunfire", "A", "figure", "on", "horseback", "emerges", "from", "the", "heat", "waves", "a", "Jackal", "its", "face", "obscured", "by", "cascading", "streams", "of", "green", "matrix", "code", "that", "forms", "a", "digital", "skull", "The", "same", "code", "that", "flickers", "at", "the", "edges", "of", "M.M.'s", "own", "vision",
+                "BROTHER", "the", "Jackal's", "voice", "crackles", "like", "corrupted", "data", "THE", "6", "WILL", "CARRY", "YOU", "TO", "HELL",
+                "Before", "M.M.", "can", "process", "these", "words", "an", "armored", "helicopter", "materializes", "upon", "the", "horizon", "The", "6", "Dragon", "Team", "their", "armor", "marked", "with", "an", "ouroboros", "a", "dragon", "forever", "consuming", "itself", "The", "number", "6", "on", "their", "insignias", "seems", "to", "shift", "direction", "pointing", "sometimes", "up", "sometimes", "down",
+                "Weapon", "raised", "a", "6", "Dragon", "Member", "calls", "out", "from", "the", "helicopter", "There", "is", "only", "Peace", "Corps", "Illumined", "now",
+                "The", "Jackal's", "horse", "rears", "YOU", "WILL", "PAY", "THE", "PRICE", "OF", "IMMORTALITY",
+                "A", "firefight", "erupts", "M.M.", "finds", "himself", "diving", "instinctively", "behind", "his", "motorcycle", "his", "body", "remembering", "combat", "training", "his", "mind", "cannot", "recall", "Through", "his", "matrix", "vision", "he", "sees", "the", "bullets", "leave", "trails", "of", "binary", "code", "in", "the", "air",
+                "The", "Jackal", "vanishes", "into", "the", "desert", "but", "the", "6", "Dragon", "Team", "remains", "They", "lower", "their", "weapons",
+                "Who", "are", "you",
+                "They", "escort", "M.M.", "to", "a", "hidden", "facility", "beneath", "the", "dragon", "corpse", "Scientists", "in", "hazmat", "suits", "study", "its", "decomposition", "but", "through", "his", "matrix", "vision", "M.M.", "sees", "what", "they're", "really", "studying", "time", "itself", "flowing", "backward", "through", "the", "dragon's", "veins",
+                "In", "the", "deepest", "chamber", "he", "meets", "the", "King", "a", "figure", "both", "young", "and", "ancient", "simultaneously", "as", "if", "two", "versions", "of", "the", "same", "man", "are", "trying", "to", "occupy", "the", "same", "space", "Through", "the", "matrix", "code", "M.M.", "sees", "them", "flicker", "between", "positions", "one", "on", "the", "throne", "one", "hooked", "to", "life", "support", "machines",
+                "You've", "come", "M.M.", "both", "versions", "speak", "in", "unison", "and", "as", "if", "talking", "to", "an", "old", "friend",
+                "The", "King's", "younger", "self", "holds", "up", "a", "ceremonial", "chalice", "The", "older", "self's", "monitors", "flash", "warnings", "in", "code", "only", "M.M.", "can", "read",
+                "DRINK", "THE", "BLOOD", "FOR", "THE", "GREAT", "FLOOD", "<3",
+                "A", "blue", "butterfly", "lands", "on", "the", "chalice's", "rim",
+                "The", "desert", "wind", "carries", "the", "sound", "of", "horses", "The", "Jackals", "are", "coming", "And", "they're", "singing", "an", "old", "world", "hymn", "about", "the", "end", "of", "time",
+            ],
+            // Style
+            timestampPrecision: 3  // Number of decimal places for milliseconds
+        };
+
+        const startTime = Date.now();
+
+        function formatElapsedTime() {
+            const elapsed = Date.now() - startTime;
+            const seconds = Math.floor(elapsed / 1000);
+            const milliseconds = elapsed % 1000;
+            return `[${String(seconds).padStart(2, '0')}.${String(milliseconds).padStart(CONFIG.timestampPrecision, '0')}]`;
+        }
+
+        function createLine(text) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+
+            const timestamp = document.createElement('span');
+            timestamp.className = 'timestamp';
+            timestamp.textContent = formatElapsedTime();
+
+            line.appendChild(timestamp);
+            line.appendChild(document.createTextNode(text));
+            return line;
+        }
+
+        async function printLines() {
+            const terminal = document.getElementById('terminal');
+            const container = document.getElementById('terminal-container');
+            const cursor = document.querySelector('.cursor');
+
+            // Move cursor to end after each line
+            const moveCursor = () => {
+                terminal.appendChild(cursor);
+            };
+
+            for (const text of CONFIG.lines) {
+                const line = createLine(text);
+                terminal.appendChild(line);
+                moveCursor();  // Move cursor after new line
+
+                container.scrollTop = container.scrollHeight;
+
+                await new Promise(resolve => setTimeout(resolve, CONFIG.fadeInDelay));
+                line.style.transition = `opacity ${CONFIG.fadeInDuration}ms`;
+                line.style.opacity = '1';
+
+                await new Promise(resolve => setTimeout(resolve, CONFIG.lineDelay));
+            }
+        }
+
+        // Update CSS variables from URL parameters if present
+        function updateFromURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            const root = document.documentElement;
+
+            // CSS Variable mapping
+            const cssVars = {
+                'textColor': '--text-color',
+                'bgColor': '--bg-color',
+                'timestampColor': '--timestamp-color',
+                'fontSize': '--font-size',
+                'lineSpacing': '--line-spacing',
+                'cursorWidth': '--cursor-width',
+                'cursorHeight': '--cursor-height'
+            };
+
+            for (const [param, cssVar] of Object.entries(cssVars)) {
+                if (params.has(param)) {
+                    let value = params.get(param);
+                    // Add 'px' to numeric values that need it
+                    if (['fontSize', 'lineSpacing', 'cursorWidth', 'cursorHeight'].includes(param)) {
+                        value += 'px';
+                    }
+                    root.style.setProperty(cssVar, value);
+                }
+            }
+        }
+
+        // Initialize
+        updateFromURLParams();
+        printLines();
+    </script>
+</body>
+
+</html>

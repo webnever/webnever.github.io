@@ -84,18 +84,32 @@
 </head>
 
 <body>
+    <audio id="music" preload="auto">
+        <source src="hills.mp3" type="audio/mpeg">
+    </audio>
     <div id="terminal-container">
         <div id="terminal"></div>
         <div class="cursor"></div>
     </div>
 
     <script>
+        // Wait for the page to load
+        window.addEventListener('load', function() {
+            const audio = document.getElementById('music');
+            
+            // Try to play the audio
+            const playPromise = audio.play();
+
+            // Optional: Loop the audio
+            audio.loop = true;
+        });
+
         // Customizable parameters
         const CONFIG = {
             // Timing (in milliseconds)
-            fadeInDelay: 40,      // Delay before each line starts fading in
-            lineDelay: 120,       // Delay between lines
-            fadeInDuration: 100,   // How long the fade in animation takes
+            fadeInDelay: 80,      // Delay before each line starts fading in
+            lineDelay: 240,       // Delay between lines
+            fadeInDuration: 200,   // How long the fade in animation takes
 
             // Cursor
             cursorBlinkRate: 1000, // Milliseconds for one complete blink cycle

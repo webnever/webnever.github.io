@@ -306,17 +306,6 @@
             if (playPromise !== undefined) {
                 playPromise.catch(function (error) {
                     console.log("Autoplay was prevented by the browser");
-                    const playButton = document.createElement('button');
-                    playButton.textContent = 'Play Audio';
-                    playButton.style.position = 'fixed';
-                    playButton.style.top = '20px';
-                    playButton.style.left = '20px';
-                    playButton.style.zIndex = '3';
-                    playButton.onclick = function () {
-                        audio.play();
-                        this.remove();
-                    };
-                    document.body.appendChild(playButton);
                 });
             }
         });

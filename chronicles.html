@@ -19,8 +19,20 @@
             --line-spacing: 8px;
             --cursor-width: 10px;
             --cursor-height: 20px;
+            --image-width: 500px;
+            --image-height: 500px;
+            /* New position range variables */
+            --image-top-min: 0;
+            /* Minimum top position percentage */
+            --image-top-max: 40;
+            /* Maximum top position percentage */
+            --image-left-min: 60;
+            /* Minimum left position percentage */
+            --image-left-max: 70;
+            /* Maximum left position percentage */
         }
 
+        /* Previous styles remain the same until image-wrapper */
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
@@ -36,10 +48,10 @@
             height: 100vh;
             overflow-y: auto;
             position: fixed;
-            /* This will keep it viewport-sized */
             width: 100%;
             top: 0;
             left: 0;
+            z-index: 1;
         }
 
         #terminal {
@@ -65,7 +77,6 @@
             margin-left: 5px;
             animation: blink 1s step-end infinite;
             position: relative;
-            /* Changed to relative */
         }
 
         @keyframes blink {
@@ -80,11 +91,38 @@
                 opacity: 0;
             }
         }
+
+        .image-wrapper {
+            position: fixed;
+            width: var(--image-width);
+            height: var(--image-height);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .image-wrapper img.visible {
+            opacity: 1;
+        }
     </style>
 </head>
 
 <body>
-    <audio id="music" preload="auto">
+    <div id="imageWrapper1" class="image-wrapper">
+        <img id="displayImage1">
+    </div>
+    <div id="imageWrapper2" class="image-wrapper">
+        <img id="displayImage2">
+    </div>
+
+    <audio id="backgroundMusic" preload="auto">
         <source src="hills.mp3" type="audio/mpeg">
     </audio>
     <div id="terminal-container">
@@ -93,17 +131,6 @@
     </div>
 
     <script>
-        // Wait for the page to load
-        window.addEventListener('load', function() {
-            const audio = document.getElementById('music');
-            
-            // Try to play the audio
-            const playPromise = audio.play();
-
-            // Optional: Loop the audio
-            audio.loop = true;
-        });
-
         // Customizable parameters
         const CONFIG = {
             // Timing (in milliseconds)
@@ -168,6 +195,161 @@
             timestampPrecision: 3  // Number of decimal places for milliseconds
         };
 
+        const images = [
+            "tarot/1.png",
+            "tarot/2.png",
+            "tarot/3.png",
+            "tarot/4.png",
+            "tarot/5.png",
+            "tarot/6.png",
+            "tarot/7.png",
+            "tarot/8.png",
+            "tarot/9.png",
+            "tarot/10.png",
+        ];
+
+        let audio = document.getElementById('backgroundMusic');
+        let availableImages = [...images];
+        let lastTime = 0;
+        let currentWrapper = 1;
+        const wrapper1 = document.getElementById('imageWrapper1');
+        const wrapper2 = document.getElementById('imageWrapper2');
+        const image1 = document.getElementById('displayImage1');
+        const image2 = document.getElementById('displayImage2');
+
+        // Track time intervals for image changes
+        let lastImageChange = 0;
+        const IMAGE_CHANGE_INTERVAL = 8000; // Change image every 5 seconds
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function getRandomPosition() {
+            const root = document.documentElement;
+            const topMin = parseFloat(getComputedStyle(root).getPropertyValue('--image-top-min'));
+            const topMax = parseFloat(getComputedStyle(root).getPropertyValue('--image-top-max'));
+            const leftMin = parseFloat(getComputedStyle(root).getPropertyValue('--image-left-min'));
+            const leftMax = parseFloat(getComputedStyle(root).getPropertyValue('--image-left-max'));
+
+            const randomTop = Math.random() * (topMax - topMin) + topMin;
+            const randomLeft = Math.random() * (leftMax - leftMin) + leftMin;
+            return { top: `${randomTop}%`, left: `${randomLeft}%` };
+        }
+
+        function changeImage() {
+            if (availableImages.length === 0) {
+                availableImages = [...images];
+                shuffleArray(availableImages);
+            }
+
+            const nextImageSrc = availableImages.pop();
+            const newPosition = getRandomPosition();
+
+            const nextWrapper = currentWrapper === 1 ? wrapper2 : wrapper1;
+            const nextImageElement = currentWrapper === 1 ? image2 : image1;
+
+            nextWrapper.style.top = newPosition.top;
+            nextWrapper.style.left = newPosition.left;
+            nextImageElement.src = nextImageSrc;
+
+            if (currentWrapper === 1) {
+                image2.classList.add('visible');
+                image1.classList.remove('visible');
+            } else {
+                image1.classList.add('visible');
+                image2.classList.remove('visible');
+            }
+
+            currentWrapper = currentWrapper === 1 ? 2 : 1;
+            lastImageChange = Date.now();
+        }
+
+        function checkImageUpdate() {
+            const now = Date.now();
+            if (now - lastImageChange >= IMAGE_CHANGE_INTERVAL) {
+                changeImage();
+            }
+            requestAnimationFrame(checkImageUpdate);
+        }
+
+        window.addEventListener('load', function () {
+            shuffleArray(availableImages);
+
+            // Set initial images
+            const firstImage = availableImages.pop();
+            const secondImage = availableImages.pop();
+            const pos1 = getRandomPosition();
+            const pos2 = getRandomPosition();
+
+            wrapper1.style.top = pos1.top;
+            wrapper1.style.left = pos1.left;
+            image1.src = firstImage;
+            image1.classList.add('visible');
+
+            wrapper2.style.top = pos2.top;
+            wrapper2.style.left = pos2.left;
+            image2.src = secondImage;
+
+            lastImageChange = Date.now();
+
+            // Start the image update loop
+            checkImageUpdate();
+
+            // Handle audio
+            audio.loop = true;
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(function (error) {
+                    console.log("Autoplay was prevented by the browser");
+                    const playButton = document.createElement('button');
+                    playButton.textContent = 'Play Audio';
+                    playButton.style.position = 'fixed';
+                    playButton.style.top = '20px';
+                    playButton.style.left = '20px';
+                    playButton.style.zIndex = '3';
+                    playButton.onclick = function () {
+                        audio.play();
+                        this.remove();
+                    };
+                    document.body.appendChild(playButton);
+                });
+            }
+        });
+
+        function updateFromURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            const root = document.documentElement;
+
+            const cssVars = {
+                'textColor': '--text-color',
+                'bgColor': '--bg-color',
+                'timestampColor': '--timestamp-color',
+                'fontSize': '--font-size',
+                'lineSpacing': '--line-spacing',
+                'cursorWidth': '--cursor-width',
+                'cursorHeight': '--cursor-height',
+                'imageTopMin': '--image-top-min',
+                'imageTopMax': '--image-top-max',
+                'imageLeftMin': '--image-left-min',
+                'imageLeftMax': '--image-left-max'
+            };
+
+            for (const [param, cssVar] of Object.entries(cssVars)) {
+                if (params.has(param)) {
+                    let value = params.get(param);
+                    if (['fontSize', 'lineSpacing', 'cursorWidth', 'cursorHeight'].includes(param)) {
+                        value += 'px';
+                    }
+                    root.style.setProperty(cssVar, value);
+                }
+            }
+        }
+
         const startTime = Date.now();
 
         function formatElapsedTime() {
@@ -195,7 +377,6 @@
             const container = document.getElementById('terminal-container');
             const cursor = document.querySelector('.cursor');
 
-            // Move cursor to end after each line
             const moveCursor = () => {
                 terminal.appendChild(cursor);
             };
@@ -203,7 +384,7 @@
             for (const text of CONFIG.lines) {
                 const line = createLine(text);
                 terminal.appendChild(line);
-                moveCursor();  // Move cursor after new line
+                moveCursor();
 
                 container.scrollTop = container.scrollHeight;
 
@@ -215,35 +396,6 @@
             }
         }
 
-        // Update CSS variables from URL parameters if present
-        function updateFromURLParams() {
-            const params = new URLSearchParams(window.location.search);
-            const root = document.documentElement;
-
-            // CSS Variable mapping
-            const cssVars = {
-                'textColor': '--text-color',
-                'bgColor': '--bg-color',
-                'timestampColor': '--timestamp-color',
-                'fontSize': '--font-size',
-                'lineSpacing': '--line-spacing',
-                'cursorWidth': '--cursor-width',
-                'cursorHeight': '--cursor-height'
-            };
-
-            for (const [param, cssVar] of Object.entries(cssVars)) {
-                if (params.has(param)) {
-                    let value = params.get(param);
-                    // Add 'px' to numeric values that need it
-                    if (['fontSize', 'lineSpacing', 'cursorWidth', 'cursorHeight'].includes(param)) {
-                        value += 'px';
-                    }
-                    root.style.setProperty(cssVar, value);
-                }
-            }
-        }
-
-        // Initialize
         updateFromURLParams();
         printLines();
     </script>

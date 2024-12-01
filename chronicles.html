@@ -218,6 +218,9 @@
         const image1 = document.getElementById('displayImage1');
         const image2 = document.getElementById('displayImage2');
 
+        let userIsScrolling = false;
+        let isAtBottom = true;
+
         // Track time intervals for image changes
         let lastImageChange = 0;
         const IMAGE_CHANGE_INTERVAL = 8000; // Change image every 5 seconds
@@ -367,6 +370,23 @@
             const container = document.getElementById('terminal-container');
             const cursor = document.querySelector('.cursor');
 
+            // Add scroll event listener
+            container.addEventListener('scroll', () => {
+                // Check if user has scrolled up
+                const maxScroll = container.scrollHeight - container.clientHeight;
+                isAtBottom = Math.abs(container.scrollTop - maxScroll) < 10;
+                
+                // If user scrolls up, mark as manual scrolling
+                if (!isAtBottom) {
+                    userIsScrolling = true;
+                }
+                
+                // If user scrolls to bottom, resume automatic scrolling
+                if (isAtBottom) {
+                    userIsScrolling = false;
+                }
+            });
+
             const moveCursor = () => {
                 terminal.appendChild(cursor);
             };
@@ -376,7 +396,10 @@
                 terminal.appendChild(line);
                 moveCursor();
 
-                container.scrollTop = container.scrollHeight;
+                // Only auto-scroll if user isn't manually scrolling
+                if (!userIsScrolling) {
+                    container.scrollTop = container.scrollHeight;
+                }
 
                 await new Promise(resolve => setTimeout(resolve, CONFIG.fadeInDelay));
                 line.style.transition = `opacity ${CONFIG.fadeInDuration}ms`;

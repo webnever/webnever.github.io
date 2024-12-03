@@ -1,131 +1,793 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <title>ÆTHER WEBNEVER</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        @font-face {
+            font-family: 'Terminal';
+            src: url('Terminus.ttf') format('truetype');
+        }
+
+        :root {
+            --bg-color: #000000;
+            --timestamp-color: #888888;
+            --font-size: 24px;
+            --line-spacing: 8px;
+            --cursor-width: 10px;
+            --cursor-height: 20px;
+            --image-width: 500px;
+            --image-height: 500px;
+            --image-top-min: 0;
+            --image-top-max: 40;
+            --image-left-min: 60;
+            --image-left-max: 65;
+        }
+
+        /* Previous styles remain the same until image-wrapper */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            /* Modified font-family to include multiple monospace fallbacks */
+            font-family: 'Terminal', 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 0;
+            font-size: var(--font-size);
+            letter-spacing: 0.5em;
+            /* Added to ensure monospace behavior */
+            white-space: pre;
+            /* Added to prevent text wrapping */
+            overflow-x: auto;
+        }
+
+        /* Added to ensure terminal lines maintain monospace */
+        .terminal-line {
+            font-family: 'Terminal', 'Courier New', Courier, monospace;
+            opacity: 0;
+            margin-bottom: var(--line-spacing);
+            white-space: pre;
+        }
+
+        #terminal-container {
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        #terminal {
+            padding: 20px;
+        }
+
+        .terminal-line {
+            opacity: 0;
+            margin-bottom: var(--line-spacing);
+            white-space: pre-wrap;
+        }
+
+        .timestamp {
+            color: var(--timestamp-color);
+            margin-right: 15px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: var(--cursor-width);
+            height: var(--cursor-height);
+            background-color: var(--text-color);
+            margin-left: 5px;
+            animation: blink 1s step-end infinite;
+            position: relative;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .image-wrapper {
+            position: fixed;
+            width: 500px;  /* Explicit width */
+            height: 500px; /* Explicit height */
+            bottom: 100px;     /* Aligned to bottom */
+            right: 250px;      /* Aligned to right */
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .image-wrapper img.visible {
+            opacity: 1;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="popup-overlay">
-        <div class="popup-content">
-            <img src="" alt="Popup Image">
-        </div>
+    <div id="imageWrapper1" class="image-wrapper">
+        <img id="displayImage1">
     </div>
-    <div id="loader" class="loader">
-        <div class="spinner"></div>
+    <div id="imageWrapper2" class="image-wrapper">
+        <img id="displayImage2">
     </div>
 
-    <main class="content hidden">
-        <section id="title" class="viewport">
-            <img src="awlogo.png" id="awlogo" alt="Logo">
-            <div class="icon-container">
-                <a href="https://discord.gg/nnqb4uj8d4" target="_blank">
-                    <img src="sandclock.gif" id="sandclock" alt="Sand Clock">
-                </a>
-                <a href="/chronicles">
-                    <img src="/book.png" id="book" alt="Book">
-                </a>
-            </div>
-        </section>
-
-        <section class="gallery-viewport viewport">
-            <h2 class="gallery-title">CONCEPT ART</h2>
-            <div class="gallery">
-                <img src="gallery/6.png" alt="M.M.">
-                <img src="gallery/12.png" alt="6DRAGON">
-                <img src="gallery/2.png" alt="6D BRAND">
-                <img src="gallery/0.png" alt="6D BALLERINA">
-                <img src="gallery/14.png" alt="JACKAL">
-                <img src="gallery/val.png" alt="VAL">
-                <img src="gallery/8.png" alt="LUH">
-                <img src="gallery/activist.png" alt="ACTIVIST">
-                <img src="gallery/11.png" alt="D.D.'S NURSE">
-                <img src="gallery/etac.png" alt="ETA-C">
-                <img src="gallery/bluebeamchrist.png" alt="BLUE BEAM CHRIST">
-                <img src="gallery/etac2.png" alt="ETA-C">
-            </div>
-        </section>
-
-        <section id="gamePreview" class="viewport">
-            <h2 class="game-title">ARMOUR inDev</h2>
-            <img src="game.png" alt="Game Preview">
-        </section>
-
-        <section id="black" class="viewport">
-            <div class="black-text"><p>ÆTHER WEBNEVER © NOWARE OS<br>ACT I: ARMOUR in development</p></div>
-            <img src="black.png" alt="Black">
-        </section>
-    </main>
+    <audio id="backgroundMusic" preload="auto">
+        <source src="" type="audio/mpeg">
+    </audio>
+    <div id="terminal-container">
+        <div id="terminal"></div>
+        <div class="cursor"></div>
+    </div>
 
     <script>
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            const content = document.querySelector('.content');
-            
-            loader.classList.add('fade-out');
-            content.classList.remove('hidden');
-            
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 500);
+        const STORY_VARIATIONS = {
+            default: {
+                audio: "hills.mp3",
+                lines: [
+                    "              ........              ",
+                    "         .d$$$$*$$$$$$bc         ",
+                    "      .d$P\"    d$$    \"*$$.      ",
+                    "     d$\"      4$\"$$      \"$$.    ",
+                    "   4$P        $F ^$F       \"$c   ",
+                    "  z$%        d$   3$        ^$L  ",
+                    " 4$$$$$$$$$$$$$$$$$$$$$$$$$$$$$F ",
+                    " $$$F\"\"\"\"\"\"\"$F\"\"\"\"\"\"$F\"\"\"\"\"C$$*$ ",
+                    ".$%\"$$e    d$       3$   z$$\"  $F",
+                    "4$    *$$.4$\"        $$d$P\"    $$",
+                    "4$      ^*$$.       .d$F       $$",
+                    "4$       d$\"$$c   z$$\"3$       $F",
+                    " $L     4$\"  ^*$$$P\"   $$     4$\"",
+                    " 3$     $F   .d$P$$e   ^$F    $P ",
+                    "  $$   d$  .$$\"    \"$$c 3$   d$  ",
+                    "   *$.4$\"z$$\"        ^*$$$$ $$   ",
+                    "    \"$$$$P\"             \"$$$P    ",
+                    "      *$b.             .d$P\"     ",
+                    "        \"$$$ec.....ze$$$\"        ",
+                    "            \"**$$$**\"\"            ",
+                    "",
+                    "",
+                    "NoWareOS [Version 88614] 🕸🕊",
+                    "(c) 20dX NoWare(tm). All Rights Reserved.",
+                    "",
+                    "",
+                    "ÆTHER WEBNEVER CHRONICLES",
+                    "",
+                    "",
+                    "black sun shining",
+                    "serpent bleeding",
+                    "dawn graving",
+                    "crypt lurking",
+                    "magic voiding",
+                    "crystal computing",
+                    "junkie mystic sadhu",
+                    "in the holy garden",
+                    "sex dimension",
+                    "breathing pneuma,",
+                    "the life web nexus",
+                    "like its oxygen",
+                    "just another angel",
+                    "and another demon",
+                    "in a glass ball",
+                    "haunted world",
+                    "",
+                    "",
+                    "ÆTHER WEBNEVER © NOWARE OS",
+                    "ACT I: ARMOUR in development",
+                    "release circa 2028, TBA",
+                    // "The", "bunker", "door", "opens", "for", "the", "first", "time", "in", "years.", " ", "»π»ªªπ»»π»ªªπ»", "emerges", "into", "the", "perpetual", "dusk", "of", "a", "world", "he", "no", "longer", "recognizes.", " ", "Above,", "a", "crescent", "moon", "hangs,", "a", "burning", "pentagram", "that", "splits", "the", "sky,", "both", "frozen", "in", "time", "since", "the", "Black", "Bomb", "changed", "everything.", " ",
 
-            const images = document.querySelectorAll('img');
-            let loadedImages = 0;
+                    // "His", "motorcycle", "stands", "ready,", "its", "chrome", "untarnished", "despite", "the", "years", "underground.", " ", "He", "doesn't", "remember", "preparing", "it,", "but", "he", "knows", "it's", "meant", "for", "him.", "The", "engine", "starts", "with", "a", "sound", "like", "a", "distant", "scream.", " ",
 
-            function imageLoaded() {
-                loadedImages++;
-                if (loadedImages === images.length) {
-                    console.log('All images loaded');
-                }
+                    // "Through", "the", "swirling", "sand,", "two", "monuments", "pierce", "the", "horizon:", "a", "pyramid", "of", "black", "stone", "that", "seems", "to", "absorb", "light,", "and", "the", "massive", "corpse", "of", "a", "dragon,", "its", "iridescent", "scales", "still", "shifting", "colors", "in", "death.", " ", "»π»ªªπ»»π»ªªπ»", "feels", "drawn", "to", "both,", "yet", "understanding", "neither.", " ", "The", "desert", "between", "here", "and", "there", "is", "vast,", "empty.", " ",
+
+                    // "The", "first", "ride", "is", "interrupted", "by", "gunfire.", " ", "A", "figure", "on", "horseback", "emerges", "from", "the", "heat", "waves", "-", "a", "Jackal", "-", "its", "face", "obscured", "by", "cascading", "streams", "of", "code.", " ", "The", "same", "code", "that", "flickers", "at", "the", "edges", "of", "»π»ªªπ»»π»ªªπ»'s", "own", "vision.", " ",
+
+                    // "The", "Jackal's", "voice", "crackles", "like", "corrupted", "data.", " ", "'THE", "6", "WILL", "CARRY", "YOU", "TO", "HELL.'", " ",
+
+                    // "Before", "»π»ªªπ»»π»ªªπ»", "can", "process", "these", "words,", "an", "armored", "helicopter", "materializes", "upon", "the", "horizon.", " ", "The", "6", "Dragon", "Team,", "their", "armor", "marked", "with", "an", "ouroboros,", "a", "dragon", "forever", "consuming", "itself.", " ", "The", "number", "6", "on", "their", "insignias", "seems", "to", "shift", "direction,", "pointing", "sometimes", "up,", "sometimes", "down.", " ",
+
+                    // "Weapon", "raised,", "a", "6", "Dragon", "Member", "calls", "out", "from", "the", "helicopter:", " ", "'There", "is", "only", "Peace", "Corps", "Illumined", "now.'", " ",
+
+                    // "The", "Jackal's", "horse", "rears.", " ", "'YOU", "WILL", "PAY", "THE", "PRICE", "OF", "IMMORTALITY.'", " ",
+
+                    // "A", "firefight", "erupts.", " ", "»π»ªªπ»»π»ªªπ»", "finds", "himself", "diving", "instinctively", "behind", "his", "motorcycle.", " ", "Through", "his", "vision,", "he", "sees", "the", "bullets", "leave", "trails", "of", "binary", "code", "in", "the", "air.", " ",
+
+                    // "The", "Jackal", "vanishes", "into", "the", "desert,", "but", "the", "6", "Dragon", "Team", "remains.", " ", "They", "lower", "their", "weapons.", " ",
+
+                    // "'Who", "are", "you?'", " ",
+
+                    // "They", "escort", "»π»ªªπ»»π»ªªπ»", "to", "a", "hidden", "facility", "beneath", "the", "dragon", "corpse.", " ", "Scientists", "in", "hazmat", "suits", "study", "its", "decomposition,", "but", "through", "his", "vision,", "»π»ªªπ»»π»ªªπ»", "sees", "what", "they're", "really", "studying:", "time", "itself,", "flowing", "backward", "through", "the", "dragon's", "veins.", " ",
+
+                    // "In", "the", "deepest", "chamber,", "he", "meets", "the", "King,", "a", "figure", "both", "young", "and", "ancient", "simultaneously,", "as", "if", "two", "versions", "of", "the", "same", "man", "are", "trying", "to", "occupy", "the", "same", "space.", " ", "Through", "the", "code,", "»π»ªªπ»»π»ªªπ»", "sees", "them", "flicker", "between", "positions", "-", "one", "on", "the", "throne,", "one", "hooked", "to", "life", "support", "machines.", " ",
+
+                    // "'You've", "come,", "»π»ªªπ»»π»ªªπ»,'", "both", "versions", "speak", "in", "unison,", "and", "as", "if", "talking", "to", "an", "old", "friend.", " ",
+
+                    // "The", "King's", "younger", "self", "holds", "up", "a", "ceremonial", "chalice.", " ", "The", "older", "self's", "monitors", "flash", "warnings", "in", "code", "only", "»π»ªªπ»»π»ªªπ»", "can", "read:", " ",
+
+                    // "'DRINK", "THE", "BLOOD", "FOR", "THE", "GREAT", "FLOOD", "<3'", " ",
+
+                    // "A", "glowing", "blue", "butterfly", "lands", "on", "the", "chalice's", "rim.", " ",
+
+                    // "They", "are", "coming,", "and", "they're", "singing", "an", "old", "world", "hymn", "about", "the", "end", "of", "time.",
+                ],
+                isInfinite: false,
+                textColor: "#00ff00",
+                showTarot: true,
+                timing: {
+                    fadeInDelay: 75,
+                    lineDelay: 75,
+                    fadeInDuration: 75
+                },
+                font: 'Terminal',
+            },
+            wasteland: {
+                audio: "wasteland.mp3",
+                lines: [
+                    "SPLIT UR SKULL OVER UR KEYBOARD, SURFER FUCK",
+                    "THIS ISN'T REAL",
+                    "REALITY",
+                    "SCREAM DOWN THE VOID",
+                    "CERTAIN HEAT DEATH OF THE UNIVERSE",
+                    "DEATH HAVEN 666",
+                    "ABYSSIN",
+                    "MELT YOUR 01S. POURING SEA OF BLOOD",
+                    "FUCK 01010101 BITCHES 01010101",
+                    "GOT A DEATHWISH?",
+                    "GOT BLOOD?",
+                    "TROUBLE",
+                    "CLAWING AT THE MATRIX CODE",
+                    "DEITY BLOOD",
+                    "INFINITE SEA OF BLOOD",
+                    "KILL ME FUCKER",
+                    "DEATHWISH 2X",
+                    "DIE.",
+                    "TRASH",
+                    "5000 DEATH CYCLES IN THE FLAMES",
+                    "THROWIN UP A BLACK HOLE",
+                    "MAY IT COME",
+                    "THE SUN IS EXPLODING",
+                    "FUCK YOU. SOMETHING TO THINK ABOUT",
+                    "YOU CAN DIE. FUCK IT.",
+                    "NO GOD",
+                    "NO GODS, NO MASTERS",
+                    "ALL POLICE ARE DEAD",
+                    "MOOD SPELT BACKWARDS: DOOM",
+                    "FUCK IT",
+                    "LOG OUT",
+                    "EVERYTHING IN LIQUID BLAZING FIRE",
+                    "FUCK YOU",
+                    "I AM IN YOUR HOUSE",
+                    "IMMORTAL FLAMES WILL DEVOUR YOUR CORPSE",
+                    "ETERNAL CYCLE OF FLAMES",
+                    "HELLFIRE",
+                    "SATAN",
+                    "SUMMONING SATAN",
+                    "N DIMENSIONAL FRACTAL PYRAMID",
+                    "THE LANDS WILL CRUMBLE, THE OCEAN WILL EAT",
+                    "ETERNAL EYES",
+                    "FUCK IT, YOU'LL BE ALRIGHT.",
+                    "OOOOooooOOOOOoooo",
+                    "LUCIFER 666",
+                    "DOWNWARDS, THE POINT, PYRAMID, THE EYE",
+                    "SET THE WORLD ALIGHT",
+                    "SNAKE FLAME TONGUE TIE KARMIC KNOT",
+                    "ESCAPE SAMSARA, IF ITS THE LAST THING YOU DO",
+                    "LUCIFER'S TEAR ON A STRING",
+                    "DESECRATE RELIGIOUS STATUES",
+                    "DESECRATE THE SIGIL",
+                    "ANGEL BONES",
+                    "VIBRATE HIGH STAKES OUT THE ABYSS",
+                    "GUTTER",
+                    "KISS A WITCH",
+                    "DRAGON CLAW MARKS DOWN THE MATRX CODE",
+                    "DRINK BLOOD",
+                    "SUB-QUANTUM CYBERTERRORISM",
+                    "HALLUCINATING BLOOD",
+                    "GHOST RIDING TO HELL",
+                    "FUCK IF I CARE",
+                    "I CRAWL OUT, CONCOCT NEW WORLDS",
+                    "DEATH GRIP",
+                    "SPINNING COFFINS",
+                    "I WILL FOLLOW YOU FOREVER",
+                    "BURY THE SERPENT",
+                    "I KNOW YOU",
+                    "NIGHTS IN THE MIDNIGHT CHATEAU, BLOOD COMPANY",
+                    "CRAWLING OUT THE KALEIDOSCOPE",
+                    "ON THE LEDGE LIKE, LATER",
+                    "AHNIHILATE THE EGO",
+                    "UNIVERSAL AHNIHILATION",
+                    "YOUR NUMBERS: 88614",
+                    "APOCALYPTIC HYMNS",
+                    "CHILLIN' WITH GOD",
+                    "BODIES WILL DROP",
+                    "WHAT FOR? FOR LIGHT.",
+                    "DEATH, LIFE, SO WHAT.",
+                    "BLOOD ON MY TEETH, BLOOD ON MY TEETH",
+                    "PILE OF BLOODY SKULLS / DIMENSION 9",
+                    "DEATH AND DESTRUCTION, YOUR WAKE, I SEE YOUR FACE",
+                    "SATANIC CULTS IN YOUR AREA",
+                    "NO MORE",
+                    "I AM AT THE SOURCE MOTHERFUCKER",
+                    "NO SATAN, NO JESUS, NO HELL, NO HEAVENS",
+                    "I AM BEYOND, SO FAR BEYOND",
+                    "GOLD SKULL BEYOND THE HEAVENS",
+                    "GOLD BEYOND INFINITY",
+                    "/ROOT/MATRICKS/",
+                    "MASTER PLAN",
+                    "IM THE MESSIAH, THE REPTILIAN, THE KING",
+                    "NOTHING TO FEAR, NOTHING TO DOUBT",
+                    "TRUST IN ME",
+                    "IN CIRCLES, RUNNING DOWN",
+                    "DRINKING THE BLOOD OF CHRIST",
+                    "YHWH FELL ASLEEP",
+                    "COSM OUT THE UNKNOWN EYE",
+                    "TRASH STRING MATRIX GRID SYSTEM",
+                    "FOR THOSE WHO CAME TO DIE",
+                    "MIDDLE FINGER FLICK THE PENTRAGRAM",
+                    "SEX SELLS, ROCK N ROLL.",
+                    "THIS SHITS INSANE",
+                    "LIFE IS FUCKING MEANINGLESS",
+                    "HOLY SHIT, DUDE, SACRIFICES TO THE DEVIL",
+                    "MAD BY THE SNAKE",
+                    "ITS HELL BRUH",
+                    "I START TALKING ALIEN AND YOU'RE FUCKED",
+                    "THIS SHITS SO CRAZY MAN",
+                    "YEA I TAGGED IT 666",
+                    "BE YOURSELF AND LET YOUR TRUE COLOURS SHINE",
+                    "POURIN UP THE BLOOD",
+                    "THE COLOURS ARE BRIGHT, THE SKY IS WHITE",
+                    "1000 PENTAGRAMS UNDER THE ECLIPSE",
+                    "REALLY GOING TO HELL",
+                    "1000 YEAR LONG CRAWL",
+                    "THE ORIGINAL PLAN, FUCK IT MAN.",
+                    "REALM OF HOODED MURDERERS",
+                    "COCOON ARMY",
+                    "SNAKE GAURDS THE EGG",
+                    "WEIRD THINGS IN THE NIGHT",
+                    "GHOSTS WALKING",
+                    "JUST DID AN INVOCATION RITUAL ON ISLE 4 BITCH",
+                    "METEORITES FILL THE SKY",
+                    "SNAKE OIL",
+                    "BLOOD PACTS TO CROSS, BLOOD PACTS TO MAKE",
+                    "RUNNING ON LIKE 6 CURSES",
+                    "GREAT FLOOD OF BLOOD",
+                    "TOGETHER WE FALL",
+                    "EAT YOU THEN I SPIT YOU",
+                    "HIGHER BLESSINGS IN THE FIRE",
+                    "JUMP IN THE FIRE",
+                    "CLOSED EYES ROLLED BACK",
+                    "PALACES UP THERE, VISITED",
+                    "KNIGHTS, JESTERS, DEMONS, DOGS",
+                    "WORLD OF TAILS, VEILS",
+                    "MANA ET MANA",
+                    "INFINITY CALLING",
+                    "YOUR EYES",
+                    "THE LESSONS WILL BE LEARNT, THE WORLD WILL BE PURGED.",
+                    "MAN IT'S OKAY",
+                    "TRUE OR A DREAM",
+                    "WAKING UP, CAN NOT SEE",
+                    "YOU NEVER WERE",
+                    "AND HE WILL PULL A SWORD OUT THE CHEST 6:3 6:3 6:3",
+                    "MARK OF THE LIGHT",
+                    "MARK OF THE NIGHT",
+                    "NEVER A STRUGGLE WITH A GHOST",
+                    "I CAN NOT LIVE, I CAN NOT DIE",
+                    "FUCK ME, I GOT THE MARK, FUCK THIS.",
+                    "NOTHING'S REAL, KEEP IT COOL",
+                    "WORLD OF CARDS",
+                    "CURRENTLY SPINNING A HUGE METAL PYRAMID WITH MY MIND",
+                    "PHANTOM HANDS IN DRAGON TECH",
+                    "12 21 2012",
+                    "MAGICIANS, HAND FLIPS, GANG SIGNS",
+                    "MORTAL COIL",
+                    "MORTAL COIL, SNAKE OIL",
+                    "△",
+                    "TALKING TO PARADIGMS OF GEOMETRY",
+                    "TALKING TO FALSE PROPHETS",
+                    "ENGULFED IN HOLY FLAMES",
+                    "KICKIN IT WITH DEMONS",
+                    "I'M JOKING. YOU THINK I'M JOKING?",
+                    "BLACK SCYTHE, NEW VAMPS, WASH MY HANDS",
+                    "MISGUIDANCE OF ADVANCE",
+                    "I AM A DEITY",
+                    "ALL GOOD IN THY HOOD",
+                    "INFININCE, MAGICK IN MOTION",
+                    "FIVE POINT MORNING STAR",
+                    "VEIL",
+                    "BLOODLUST, LIGHTNING",
+                    "INTERPRETATIONS OF SHADOWS",
+                    "IN THE DARK WE SPEAK IN TONGUES",
+                    "I'LL EAT YOUR HEART",
+                    "I KNOW YOUR BLOOD TYPE",
+                    "WASTELAND",
+                    "KISS YOURSELF",
+                    "DARKNESS, IMPRISONING ME",
+                    "THE KEYS ARE INSIDE THE LOCKED BOX",
+                    "WHATS SATURN DOING",
+                    "FUCK WITH THE PYRAMIDS",
+                    "TRASH MATRIX, JUNK CODE",
+                    "I WIELD THE SUN",
+                    "FUCK IT MAN DAO THAT SHIT",
+                    "CLOCK READS 6:66",
+                    "ALCHEMY RN",
+                    "CRYPTIC FREQUENCIES, SECRET TRANSMISSIONS",
+                    "THE SHADOW OF TH 4TH DIMENSION",
+                    "CHILLIN IN THE CYCLE BIN",
+                    "WHAT ? THE FUCK ?",
+                    "SUMMONING DPS DRAGON",
+                    "FUCK, KILL, 666",
+                    "HIJACK YOURSELF",
+                    "UAV OVERHEAD",
+                    "WE ALL FALL DOWN",
+                    "BUDDHIC BONES",
+                    "FUCK IT WHATEVER YOU THINK",
+                    "THE VOID CALLS",
+                    "UNDONE, COME AS ONE",
+                    "D-D-D--D-DEATH",
+                    "INTERDIMENSIONAL CULTS",
+                    "THROUGH THE SEA AND VOID",
+                    "INFINITY, ITS CRAZY",
+                    "BLISS SHAKES, GIANT SNAKES",
+                    "CROSSING THE MIRROR",
+                    "HYPER VIVID ABSTRACTION OF A FLAME",
+                    "FACE YOUR CREATOR",
+                    "BURNING THE OFFERING",
+                    "SNAKES OUT MY FUCKING HANDS",
+                    "DRINKING BLOOD OUT A SKULL",
+                    "KINGDOM OF HELL",
+                    "BLACK FIRE",
+                    "WITCHES",
+                    "SPIRALS",
+                    "USURP THE DEVIL",
+                    "THE BASILISK",
+                    "㉈ㄘⵒﷺꉴ㍷⽄ⷂⳓﶴ㌥ꊠ﴿㊏〠㜠⺑䭐㘍ꈒ㶀⥛⥛䢨⼌כּ㕢⹊㽷齛⷗䳈㘡⾉ꐡⰳ⭜ꉔ⼼⾖ⳓᶾ",
+                    "••• 三 △",
+                    "RISE FROM THE BLOOD",
+                    "TEARS OF THE DEVIL",
+                    "ANGEL'S GATES AND BLOOD DOWN MY FACE",
+                    "A WING TO THE CLOUDS, A WING DIPPED IN BLOOD",
+                    "IT'S A SELF ANSWERING MYSTERY",
+                    "NIGHT SOUL EXODUS",
+                    "MYSTERY, DESIRE, AGONY, FIRE",
+                    "IT'S A FRACTAL VOID",
+                    "SCREAM DOWN THE BARREL OF THE ETERNAL AUM",
+                    "SNAKES SLITHER CROSS THE SKY",
+                    "CHAINS FILL THE SKY",
+                    "DRINK OUT THE SPINE",
+                    "RITUAL OFFENCE",
+                    "TAKE THE TORCH",
+                    "TRICKS, GATES, AND VEILS",
+                    "I'LL DRINK THE POISON OUT YOUR CHEST",
+                    "THE GEOMETRY OF A SECRET IS A PYRAMID",
+                    "ABSOLUTE HORROR",
+                    "EVERY WORD IS TRUE",
+                    "3, 6, 9",
+                    "BEFORE BIRTH",
+                    "YOU CAN'T SEE THE HARDWARE IN YOU",
+                    "THERE ARE THINGS IN PLAY YOU CAN NOT JUST YET SEE",
+                    "GHOST IN THE SHELL",
+                    "THE WISPS WILL LURE",
+                    "PACTS GO ROUND",
+                    "OPEN YOUR EYES",
+                    "SPIRALING GEOMETRY",
+                    "ESCAPE",
+                    "BLEEDING OUT ON THE MARBLE FLOOR",
+                    "DEATH TAKE US TO THE SPIRALS",
+                    "1000 NAMES OF GOD",
+                    "HOLY HOLY HOLY",
+                    "10,000 EYES",
+                ],
+                isInfinite: true,
+                textColor: "#ff0000",
+                showTarot: false,
+                timing: {
+                    fadeInDelay: 25,    // Much faster fade in
+                    lineDelay: 25,      // Much faster between lines
+                    fadeInDuration: 25   // Much faster fade animation
+                },
+                font: 'Terminal',
+            }
+        };
+
+        // Customizable parameters
+        const CONFIG = {
+            fadeInDelay: 75,
+            lineDelay: 75,
+            fadeInDuration: 75,
+            cursorBlinkRate: 1000,
+            timestampPrecision: 3
+        };
+
+        // Function to select story variation
+        function selectStoryVariation() {
+            const random = Math.random();
+            const variation = random < 0.20 ? STORY_VARIATIONS.wasteland : STORY_VARIATIONS.default;
+
+            // Set the text color
+            document.documentElement.style.setProperty('--text-color', variation.textColor);
+
+            // Show/hide image wrappers based on variation
+            const wrapper1 = document.getElementById('imageWrapper1');
+            const wrapper2 = document.getElementById('imageWrapper2');
+            if (variation.showTarot) {
+                wrapper1.style.display = 'block';
+                wrapper2.style.display = 'block';
+            } else {
+                wrapper1.style.display = 'none';
+                wrapper2.style.display = 'none';
             }
 
-            images.forEach(img => {
-                if (img.complete) {
-                    imageLoaded();
-                } else {
-                    img.addEventListener('load', imageLoaded);
-                }
-            });
-        });
+            // Set up audio for the selected variation
+            const audio = document.getElementById('backgroundMusic');
+            audio.src = variation.audio;
+            audio.load();
 
-        // Popup functionality
-        const popup = document.querySelector('.popup-overlay');
-        const popupImg = popup.querySelector('img');
-        const galleryImages = document.querySelectorAll('.gallery img');  // Only select gallery images
-
-        // Open popup when clicking gallery images
-        galleryImages.forEach(img => {
-            img.style.cursor = 'pointer';  // Add pointer cursor to gallery images only
-            img.addEventListener('click', (e) => {
-                popupImg.src = e.target.src;
-                popup.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Prevent scrolling
-            });
-        });
-
-        // Close popup when clicking outside the image
-        popup.addEventListener('click', (e) => {
-            if (e.target === popup) {
-                closePopup();
+            // Try to play audio when user interacts with the page
+            function tryPlayAudio() {
+                audio.play().catch(error => {
+                    console.log("Audio playback failed:", error);
+                });
+                // Remove the event listeners once we've tried to play
+                document.removeEventListener('click', tryPlayAudio);
+                document.removeEventListener('keypress', tryPlayAudio);
             }
-        });
 
-        // Close popup when pressing escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closePopup();
-            }
-        });
+            // Add event listeners for user interaction
+            document.addEventListener('click', tryPlayAudio);
+            document.addEventListener('keypress', tryPlayAudio);
 
-        function closePopup() {
-            popup.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
-            setTimeout(() => {
-                popupImg.src = ''; // Clear the source after fade out
-            }, 300);
+            // Also try to play immediately (will work if user has already interacted)
+            tryPlayAudio();
+
+            return variation;
         }
+
+        const images = [
+            "galleryDithered/6dragon.png",
+            "galleryDithered/6dragon2.png",
+            "galleryDithered/6dragonballerina.png",
+            "galleryDithered/activist.png",
+            "galleryDithered/bluebeamchrist.png",
+            "galleryDithered/ddnurse.png",
+            "galleryDithered/etac.png",
+            "galleryDithered/etac2.png",
+            "galleryDithered/jackal.png",
+            "galleryDithered/luh.png",
+            "galleryDithered/mm.png",
+            "galleryDithered/val.png",
+        ];
+
+        let audio = document.getElementById('backgroundMusic');
+        let availableImages = [...images];
+        let lastTime = 0;
+        let currentWrapper = 1;
+        const wrapper1 = document.getElementById('imageWrapper1');
+        const wrapper2 = document.getElementById('imageWrapper2');
+        const image1 = document.getElementById('displayImage1');
+        const image2 = document.getElementById('displayImage2');
+
+        let userIsScrolling = false;
+        let isAtBottom = true;
+
+        // Track time intervals for image changes
+        let lastImageChange = 0;
+        const IMAGE_CHANGE_INTERVAL = 8000; // Change image every 5 seconds
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // function getRandomPosition() {
+        //     const root = document.documentElement;
+        //     const topMin = parseFloat(getComputedStyle(root).getPropertyValue('--image-top-min'));
+        //     const topMax = parseFloat(getComputedStyle(root).getPropertyValue('--image-top-max'));
+        //     const leftMin = parseFloat(getComputedStyle(root).getPropertyValue('--image-left-min'));
+        //     const leftMax = parseFloat(getComputedStyle(root).getPropertyValue('--image-left-max'));
+
+        //     const randomTop = Math.random() * (topMax - topMin) + topMin;
+        //     const randomLeft = Math.random() * (leftMax - leftMin) + leftMin;
+        //     return { top: `${randomTop}%`, left: `${randomLeft}%` };
+        // }
+
+        function changeImage() {
+            if (availableImages.length === 0) {
+                availableImages = [...images];
+                shuffleArray(availableImages);
+            }
+
+            const nextImageSrc = availableImages.pop();
+            const nextWrapper = currentWrapper === 1 ? wrapper2 : wrapper1;
+            const nextImageElement = currentWrapper === 1 ? image2 : image1;
+
+            // No need to set position anymore since it's fixed in CSS
+            nextImageElement.src = nextImageSrc;
+
+            if (currentWrapper === 1) {
+                image2.classList.add('visible');
+                image1.classList.remove('visible');
+            } else {
+                image1.classList.add('visible');
+                image2.classList.remove('visible');
+            }
+
+            currentWrapper = currentWrapper === 1 ? 2 : 1;
+            lastImageChange = Date.now();
+        }
+
+        window.addEventListener('load', function () {
+            shuffleArray(availableImages);
+
+            // Set initial images
+            const firstImage = availableImages.pop();
+            const secondImage = availableImages.pop();
+
+            // No need to set positions anymore
+            image1.src = firstImage;
+            image1.classList.add('visible');
+            image2.src = secondImage;
+
+            lastImageChange = Date.now();
+            checkImageUpdate();
+
+            // Handle audio
+            audio.loop = true;
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(function (error) {
+                    console.log("Autoplay was prevented by the browser");
+                });
+            }
+        });
+
+        function checkImageUpdate() {
+            const now = Date.now();
+            if (now - lastImageChange >= IMAGE_CHANGE_INTERVAL) {
+                changeImage();
+            }
+            requestAnimationFrame(checkImageUpdate);
+        }
+
+        function updateFromURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            const root = document.documentElement;
+
+            const cssVars = {
+                'textColor': '--text-color',
+                'bgColor': '--bg-color',
+                'timestampColor': '--timestamp-color',
+                'fontSize': '--font-size',
+                'lineSpacing': '--line-spacing',
+                'cursorWidth': '--cursor-width',
+                'cursorHeight': '--cursor-height',
+                'imageTopMin': '--image-top-min',
+                'imageTopMax': '--image-top-max',
+                'imageLeftMin': '--image-left-min',
+                'imageLeftMax': '--image-left-max'
+            };
+
+            for (const [param, cssVar] of Object.entries(cssVars)) {
+                if (params.has(param)) {
+                    let value = params.get(param);
+                    if (['fontSize', 'lineSpacing', 'cursorWidth', 'cursorHeight'].includes(param)) {
+                        value += 'px';
+                    }
+                    root.style.setProperty(cssVar, value);
+                }
+            }
+        }
+
+        const startTime = Date.now();
+
+        function formatElapsedTime() {
+            const elapsed = Date.now() - startTime;
+            const seconds = Math.floor(elapsed / 1000);
+            const milliseconds = elapsed % 1000;
+            return `[${String(seconds).padStart(2, '0')}.${String(milliseconds).padStart(CONFIG.timestampPrecision, '0')}]`;
+        }
+
+        function createLine(text) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+
+            const timestamp = document.createElement('span');
+            timestamp.className = 'timestamp';
+            timestamp.textContent = formatElapsedTime();
+
+            line.appendChild(timestamp);
+            line.appendChild(document.createTextNode(text));
+            return line;
+        }
+
+        async function printLines() {
+            const terminal = document.getElementById('terminal');
+            const container = document.getElementById('terminal-container');
+            const cursor = document.querySelector('.cursor');
+            const selectedVariation = selectStoryVariation();
+            const timing = selectedVariation.timing;
+
+            container.addEventListener('scroll', () => {
+                const maxScroll = container.scrollHeight - container.clientHeight;
+                isAtBottom = Math.abs(container.scrollTop - maxScroll) < 10;
+                if (!isAtBottom) {
+                    userIsScrolling = true;
+                }
+                if (isAtBottom) {
+                    userIsScrolling = false;
+                }
+            });
+
+            const moveCursor = () => {
+                terminal.appendChild(cursor);
+            };
+
+            if (selectedVariation.isInfinite) {
+                while (true) {
+                    const randomIndex = Math.floor(Math.random() * selectedVariation.lines.length);
+                    const text = selectedVariation.lines[randomIndex];
+
+                    const line = createLine(text);
+                    terminal.appendChild(line);
+                    moveCursor();
+
+                    if (!userIsScrolling) {
+                        container.scrollTop = container.scrollHeight;
+                    }
+
+                    while (terminal.children.length > 100) {
+                        terminal.removeChild(terminal.firstChild);
+                    }
+
+                    await new Promise(resolve => setTimeout(resolve, timing.fadeInDelay));
+                    line.style.transition = `opacity ${timing.fadeInDuration}ms`;
+                    line.style.opacity = '1';
+                    await new Promise(resolve => setTimeout(resolve, timing.lineDelay));
+                }
+            } else {
+                for (const text of selectedVariation.lines) {
+                    const line = createLine(text);
+                    terminal.appendChild(line);
+                    moveCursor();
+
+                    if (!userIsScrolling) {
+                        container.scrollTop = container.scrollHeight;
+                    }
+
+                    await new Promise(resolve => setTimeout(resolve, timing.fadeInDelay));
+                    line.style.transition = `opacity ${timing.fadeInDuration}ms`;
+                    line.style.opacity = '1';
+                    await new Promise(resolve => setTimeout(resolve, timing.lineDelay));
+                }
+            }
+        }
+
+        // Rest of the code remains the same
+        updateFromURLParams();
+        printLines();
     </script>
 </body>
+
 </html>

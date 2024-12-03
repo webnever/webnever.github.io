@@ -834,64 +834,42 @@
                 terminal.appendChild(cursor);
             };
 
+            const printLine = async (text) => {
+                const line = createLine(text);
+                terminal.appendChild(line);
+                moveCursor();
+
+                if (!userIsScrolling) {
+                    container.scrollTop = container.scrollHeight;
+                }
+
+                await new Promise(resolve => setTimeout(resolve, timing.fadeInDelay));
+                line.style.transition = `opacity ${timing.fadeInDuration}ms`;
+                line.style.opacity = '1';
+                await new Promise(resolve => setTimeout(resolve, timing.lineDelay));
+            };
+
             if (selectedVariation.isInfinite) {
                 while (true) {
                     const randomIndex = Math.floor(Math.random() * selectedVariation.lines.length);
                     const text = selectedVariation.lines[randomIndex];
 
-                    const line = createLine(text);
-                    terminal.appendChild(line);
-                    moveCursor();
-
-                    if (!userIsScrolling) {
-                        container.scrollTop = container.scrollHeight;
-                    }
+                    await printLine(text);
 
                     while (terminal.children.length > 100) {
                         terminal.removeChild(terminal.firstChild);
                     }
-
-                    await new Promise(resolve => setTimeout(resolve, timing.fadeInDelay));
-                    line.style.transition = `opacity ${timing.fadeInDuration}ms`;
-                    line.style.opacity = '1';
-                    await new Promise(resolve => setTimeout(resolve, timing.lineDelay));
                 }
             } else {
+                // Print all story lines
                 for (const text of selectedVariation.lines) {
-                    const line = createLine(text);
-                    terminal.appendChild(line);
-                    moveCursor();
-
-                    if (!userIsScrolling) {
-                        container.scrollTop = container.scrollHeight;
-                    }
-
-                    await new Promise(resolve => setTimeout(resolve, timing.fadeInDelay));
-                    line.style.transition = `opacity ${timing.fadeInDuration}ms`;
-                    line.style.opacity = '1';
-                    await new Promise(resolve => setTimeout(resolve, timing.lineDelay));
+                    await printLine(text);
                 }
 
-                // Add empty line before social links
-                const emptyLine = createLine('');
-                terminal.appendChild(emptyLine);
-                emptyLine.style.opacity = '1';
-
-                // Add social links as cleaner hyperlinks
-                const discordLine = createLine('>discord');
-                const xLine = createLine('>x.com');
-
-                terminal.appendChild(discordLine);
-                terminal.appendChild(xLine);
-                moveCursor();
-
-                // Make the lines visible
-                discordLine.style.opacity = '1';
-                xLine.style.opacity = '1';
-
-                if (!userIsScrolling) {
-                    container.scrollTop = container.scrollHeight;
-                }
+                // Print empty line and social links with same timing
+                await printLine('');
+                await printLine('>discord');
+                await printLine('>x.com');
             }
         }
 

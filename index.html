@@ -99,12 +99,36 @@
             }
         }
 
+        .logo-wrapper {
+            position: fixed;
+            top: 0;
+            right: 50px;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .logo-wrapper.hidden {
+            opacity: 0;
+        }
+
+        .logo-wrapper img {
+            width: 500px;
+            height: 500px;
+            object-fit: contain;
+        }
+
         .image-wrapper {
             position: fixed;
-            width: 500px;  /* Explicit width */
-            height: 500px; /* Explicit height */
-            bottom: 100px;     /* Aligned to bottom */
-            right: 250px;      /* Aligned to right */
+            width: 500px;
+            /* Explicit width */
+            height: 500px;
+            /* Explicit height */
+            bottom: 100px;
+            /* Aligned to bottom */
+            right: 250px;
+            /* Aligned to right */
             z-index: 2;
             pointer-events: none;
         }
@@ -124,6 +148,9 @@
 </head>
 
 <body>
+    <div class="logo-wrapper" id="logoWrapper">
+        <img src="awlogoDithered.png">
+    </div>
     <div id="imageWrapper1" class="image-wrapper">
         <img id="displayImage1">
     </div>
@@ -529,12 +556,16 @@
             // Show/hide image wrappers based on variation
             const wrapper1 = document.getElementById('imageWrapper1');
             const wrapper2 = document.getElementById('imageWrapper2');
+            const logoWrapper = document.getElementById('logoWrapper');
+
             if (variation.showTarot) {
                 wrapper1.style.display = 'block';
                 wrapper2.style.display = 'block';
+                logoWrapper.classList.remove('hidden');
             } else {
                 wrapper1.style.display = 'none';
                 wrapper2.style.display = 'none';
+                logoWrapper.classList.add('hidden');
             }
 
             // Set up audio for the selected variation

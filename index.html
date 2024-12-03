@@ -144,6 +144,32 @@
         .image-wrapper img.visible {
             opacity: 1;
         }
+
+        .social-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 3;
+            font-family: 'Terminal', 'Courier New', Courier, monospace;
+        }
+
+        .social-buttons.visible {
+            opacity: 1;
+        }
+
+        .social-link {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: var(--font-size);
+            margin-right: 20px;
+            letter-spacing: 0.5em;
+        }
+
+        .social-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -164,6 +190,11 @@
     <div id="terminal-container">
         <div id="terminal"></div>
         <div class="cursor"></div>
+    </div>
+
+    <div class="social-buttons" id="socialButtons">
+        <a href="https://discord.gg/nnqb4uj8d4" target="_blank" class="social-link">>discord</a>
+        <a href="https://x.com/noware_os" target="_blank" class="social-link">>x.com</a>
     </div>
 
     <script>
@@ -759,6 +790,7 @@
             const cursor = document.querySelector('.cursor');
             const selectedVariation = selectStoryVariation();
             const timing = selectedVariation.timing;
+            const socialButtons = document.getElementById('socialButtons');
 
             container.addEventListener('scroll', () => {
                 const maxScroll = container.scrollHeight - container.clientHeight;
@@ -812,6 +844,9 @@
                     line.style.opacity = '1';
                     await new Promise(resolve => setTimeout(resolve, timing.lineDelay));
                 }
+
+                // Show social buttons after all lines are printed
+                socialButtons.classList.add('visible');
             }
         }
 

@@ -574,311 +574,331 @@
             }
         };
 
-        // Customizable parameters
-        const CONFIG = {
-            fadeInDelay: 75,
-            lineDelay: 75,
-            fadeInDuration: 75,
-            cursorBlinkRate: 1000,
-            timestampPrecision: 3
-        };
-
-        // Function to select story variation
-        function selectStoryVariation() {
-            const random = Math.random();
-            const variation = random < 0.20 ? STORY_VARIATIONS.wasteland : STORY_VARIATIONS.default;
-
-            // Set the text color
-            document.documentElement.style.setProperty('--text-color', variation.textColor);
-
-            // Show/hide image wrappers based on variation
-            const wrapper1 = document.getElementById('imageWrapper1');
-            const wrapper2 = document.getElementById('imageWrapper2');
-            const logoWrapper = document.getElementById('logoWrapper');
-
-            if (variation.showTarot) {
-                wrapper1.style.display = 'block';
-                wrapper2.style.display = 'block';
-                logoWrapper.classList.remove('hidden');
-            } else {
-                wrapper1.style.display = 'none';
-                wrapper2.style.display = 'none';
-                logoWrapper.classList.add('hidden');
-            }
-
-            // Set up audio for the selected variation
-            const audio = document.getElementById('backgroundMusic');
-            audio.src = variation.audio;
-            audio.load();
-
-            // Try to play audio when user interacts with the page
-            function tryPlayAudio() {
-                audio.play().catch(error => {
-                    console.log("Audio playback failed:", error);
-                });
-                // Remove the event listeners once we've tried to play
-                document.removeEventListener('click', tryPlayAudio);
-                document.removeEventListener('keypress', tryPlayAudio);
-            }
-
-            // Add event listeners for user interaction
-            document.addEventListener('click', tryPlayAudio);
-            document.addEventListener('keypress', tryPlayAudio);
-
-            // Also try to play immediately (will work if user has already interacted)
-            tryPlayAudio();
-
-            return variation;
-        }
-
-        const images = [
-            "galleryDithered/6dragon.png",
-            "galleryDithered/6dragon2.png",
-            "galleryDithered/6dragonballerina.png",
-            "galleryDithered/activist.png",
-            "galleryDithered/bluebeamchrist.png",
-            "galleryDithered/ddnurse.png",
-            "galleryDithered/etac.png",
-            "galleryDithered/etac2.png",
-            "galleryDithered/jackal.png",
-            "galleryDithered/luh.png",
-            "galleryDithered/mm.png",
-            "galleryDithered/val.png",
-            "galleryDithered/hypermetal.png"
-        ];
-
-        let audio = document.getElementById('backgroundMusic');
-        let availableImages = [...images];
-        let lastTime = 0;
-        let currentWrapper = 1;
-        const wrapper1 = document.getElementById('imageWrapper1');
-        const wrapper2 = document.getElementById('imageWrapper2');
-        const image1 = document.getElementById('displayImage1');
-        const image2 = document.getElementById('displayImage2');
-
-        let userIsScrolling = false;
-        let isAtBottom = true;
-
-        // Track time intervals for image changes
-        let lastImageChange = 0;
-        const IMAGE_CHANGE_INTERVAL = 8000; // Change image every 5 seconds
-
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        // function getRandomPosition() {
-        //     const root = document.documentElement;
-        //     const topMin = parseFloat(getComputedStyle(root).getPropertyValue('--image-top-min'));
-        //     const topMax = parseFloat(getComputedStyle(root).getPropertyValue('--image-top-max'));
-        //     const leftMin = parseFloat(getComputedStyle(root).getPropertyValue('--image-left-min'));
-        //     const leftMax = parseFloat(getComputedStyle(root).getPropertyValue('--image-left-max'));
-
-        //     const randomTop = Math.random() * (topMax - topMin) + topMin;
-        //     const randomLeft = Math.random() * (leftMax - leftMin) + leftMin;
-        //     return { top: `${randomTop}%`, left: `${randomLeft}%` };
-        // }
-
-        function changeImage() {
-            if (availableImages.length === 0) {
-                availableImages = [...images];
-                shuffleArray(availableImages);
-            }
-
-            const nextImageSrc = availableImages.pop();
-            const nextWrapper = currentWrapper === 1 ? wrapper2 : wrapper1;
-            const nextImageElement = currentWrapper === 1 ? image2 : image1;
-            const currentImageElement = currentWrapper === 1 ? image1 : image2;
-
-            // Set the new image source
-            nextImageElement.src = nextImageSrc;
-
-            // Switch visibility with a slight delay to ensure smooth transition
-            setTimeout(() => {
-                // Show next image
-                nextImageElement.classList.add('visible');
-                // Hide current image
-                currentImageElement.classList.remove('visible');
-                // Switch current wrapper
-                currentWrapper = currentWrapper === 1 ? 2 : 1;
-            }, 50);
-
-            lastImageChange = Date.now();
-        }
-
-        window.addEventListener('load', function () {
-            shuffleArray(availableImages);
-
-            // Set initial images
-            const firstImage = availableImages.pop();
-            const secondImage = availableImages.pop();
-
-            image1.src = firstImage;
-            image2.src = secondImage;
-
-            // Show the first image
-            image1.classList.add('visible');
-
-            lastImageChange = Date.now();
-            checkImageUpdate();
-
-            // Handle audio
-            audio.loop = true;
-            const playPromise = audio.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(function (error) {
-                    console.log("Autoplay was prevented by the browser");
-                });
-            }
-        });
-
-
-        function checkImageUpdate() {
-            const now = Date.now();
-            if (now - lastImageChange >= IMAGE_CHANGE_INTERVAL) {
-                changeImage();
-            }
-            requestAnimationFrame(checkImageUpdate);
-        }
-
-        function updateFromURLParams() {
-            const params = new URLSearchParams(window.location.search);
-            const root = document.documentElement;
-
-            const cssVars = {
-                'textColor': '--text-color',
-                'bgColor': '--bg-color',
-                'timestampColor': '--timestamp-color',
-                'fontSize': '--font-size',
-                'lineSpacing': '--line-spacing',
-                'cursorWidth': '--cursor-width',
-                'cursorHeight': '--cursor-height',
-                'imageTopMin': '--image-top-min',
-                'imageTopMax': '--image-top-max',
-                'imageLeftMin': '--image-left-min',
-                'imageLeftMax': '--image-left-max'
+            // Customizable parameters
+            const CONFIG = {
+                fadeInDelay: 75,
+                lineDelay: 75,
+                fadeInDuration: 75,
+                cursorBlinkRate: 1000,
+                timestampPrecision: 3
             };
 
-            for (const [param, cssVar] of Object.entries(cssVars)) {
-                if (params.has(param)) {
-                    let value = params.get(param);
-                    if (['fontSize', 'lineSpacing', 'cursorWidth', 'cursorHeight'].includes(param)) {
-                        value += 'px';
-                    }
-                    root.style.setProperty(cssVar, value);
+            // Function to select story variation
+            function selectStoryVariation() {
+                const random = Math.random();
+                const variation = random < 0.20 ? STORY_VARIATIONS.wasteland : STORY_VARIATIONS.default;
+
+                // Set the text color
+                document.documentElement.style.setProperty('--text-color', variation.textColor);
+
+                // Show/hide image wrappers based on variation
+                const wrapper1 = document.getElementById('imageWrapper1');
+                const wrapper2 = document.getElementById('imageWrapper2');
+                const logoWrapper = document.getElementById('logoWrapper');
+
+                if (variation.showTarot) {
+                    wrapper1.style.display = 'block';
+                    wrapper2.style.display = 'block';
+                    logoWrapper.classList.remove('hidden');
+                } else {
+                    wrapper1.style.display = 'none';
+                    wrapper2.style.display = 'none';
+                    logoWrapper.classList.add('hidden');
                 }
-            }
-        }
 
-        const startTime = Date.now();
+                // Set up audio for the selected variation
+                const audio = document.getElementById('backgroundMusic');
+                audio.src = variation.audio;
+                audio.load();
 
-        function formatElapsedTime() {
-            const elapsed = Date.now() - startTime;
-            const seconds = Math.floor(elapsed / 1000);
-            const milliseconds = elapsed % 1000;
-            return `[${String(seconds).padStart(2, '0')}.${String(milliseconds).padStart(CONFIG.timestampPrecision, '0')}]`;
-        }
-
-        function createLine(text) {
-            const line = document.createElement('div');
-            line.className = 'terminal-line';
-
-            const timestamp = document.createElement('span');
-            timestamp.className = 'timestamp';
-            timestamp.textContent = formatElapsedTime();
-            line.appendChild(timestamp);
-
-            // Check if this is a social link line
-            if (text === '>discord') {
-                const link = document.createElement('a');
-                link.href = 'https://discord.gg/nnqb4uj8d4';
-                link.target = '_blank';
-                link.textContent = '>discord';
-                line.appendChild(link);
-            } else if (text === '>x.com') {
-                const link = document.createElement('a');
-                link.href = 'https://x.com/noware_os';
-                link.target = '_blank';
-                link.textContent = '>x.com';
-                line.appendChild(link);
-            } else {
-                // Regular text line
-                line.appendChild(document.createTextNode(text));
-            }
-
-            return line;
-        }
-
-        async function printLines() {
-            const terminal = document.getElementById('terminal');
-            const container = document.getElementById('terminal-container');
-            const cursor = document.querySelector('.cursor');
-            const selectedVariation = selectStoryVariation();
-            const timing = selectedVariation.timing;
-
-            container.addEventListener('scroll', () => {
-                const maxScroll = container.scrollHeight - container.clientHeight;
-                isAtBottom = Math.abs(container.scrollTop - maxScroll) < 10;
-                if (!isAtBottom) {
-                    userIsScrolling = true;
+                // Try to play audio when user interacts with the page
+                function tryPlayAudio() {
+                    audio.play().catch(error => {
+                        console.log("Audio playback failed:", error);
+                    });
+                    // Remove the event listeners once we've tried to play
+                    document.removeEventListener('click', tryPlayAudio);
+                    document.removeEventListener('keypress', tryPlayAudio);
                 }
-                if (isAtBottom) {
-                    userIsScrolling = false;
+
+                // Add event listeners for user interaction
+                document.addEventListener('click', tryPlayAudio);
+                document.addEventListener('keypress', tryPlayAudio);
+
+                // Also try to play immediately (will work if user has already interacted)
+                tryPlayAudio();
+
+                return variation;
+            }
+
+            const images = [
+                "galleryDithered/6dragon.png",
+                "galleryDithered/6dragon2.png",
+                "galleryDithered/6dragonballerina.png",
+                "galleryDithered/activist.png",
+                "galleryDithered/bluebeamchrist.png",
+                "galleryDithered/ddnurse.png",
+                "galleryDithered/etac.png",
+                "galleryDithered/etac2.png",
+                "galleryDithered/jackal.png",
+                "galleryDithered/luh.png",
+                "galleryDithered/mm.png",
+                "galleryDithered/val.png",
+                "galleryDithered/hypermetal.png"
+            ];
+
+            let audio = document.getElementById('backgroundMusic');
+            let availableImages = [...images];
+            let lastTime = 0;
+            let currentWrapper = 1;
+            const wrapper1 = document.getElementById('imageWrapper1');
+            const wrapper2 = document.getElementById('imageWrapper2');
+            const image1 = document.getElementById('displayImage1');
+            const image2 = document.getElementById('displayImage2');
+
+            let userIsScrolling = false;
+            let isAtBottom = true;
+
+            // Track time intervals for image changes
+            let lastImageChange = 0;
+            const IMAGE_CHANGE_INTERVAL = 8000; // Change image every 5 seconds
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // function getRandomPosition() {
+            //     const root = document.documentElement;
+            //     const topMin = parseFloat(getComputedStyle(root).getPropertyValue('--image-top-min'));
+            //     const topMax = parseFloat(getComputedStyle(root).getPropertyValue('--image-top-max'));
+            //     const leftMin = parseFloat(getComputedStyle(root).getPropertyValue('--image-left-min'));
+            //     const leftMax = parseFloat(getComputedStyle(root).getPropertyValue('--image-left-max'));
+
+            //     const randomTop = Math.random() * (topMax - topMin) + topMin;
+            //     const randomLeft = Math.random() * (leftMax - leftMin) + leftMin;
+            //     return { top: `${randomTop}%`, left: `${randomLeft}%` };
+            // }
+
+            function changeImage() {
+                if (availableImages.length === 0) {
+                    availableImages = [...images];
+                    shuffleArray(availableImages);
+                }
+
+                const nextImageSrc = availableImages.pop();
+                const nextWrapper = currentWrapper === 1 ? wrapper2 : wrapper1;
+                const nextImageElement = currentWrapper === 1 ? image2 : image1;
+                const currentImageElement = currentWrapper === 1 ? image1 : image2;
+
+                // Set the new image source
+                nextImageElement.src = nextImageSrc;
+
+                // Switch visibility with a slight delay to ensure smooth transition
+                setTimeout(() => {
+                    // Show next image
+                    nextImageElement.classList.add('visible');
+                    // Hide current image
+                    currentImageElement.classList.remove('visible');
+                    // Switch current wrapper
+                    currentWrapper = currentWrapper === 1 ? 2 : 1;
+                }, 50);
+
+                lastImageChange = Date.now();
+            }
+
+            window.addEventListener('load', function () {
+                shuffleArray(availableImages);
+
+                // Set initial images
+                const firstImage = availableImages.pop();
+                const secondImage = availableImages.pop();
+
+                image1.src = firstImage;
+                image2.src = secondImage;
+
+                // Show the first image
+                image1.classList.add('visible');
+
+                lastImageChange = Date.now();
+                checkImageUpdate();
+
+                // Get the selected variation first
+                const selectedVariation = selectStoryVariation();
+                
+                // Handle audio
+                const audio = document.getElementById('backgroundMusic');
+                audio.src = selectedVariation.audio; // Set the audio source based on variation
+                audio.loop = true;
+                
+                const enableAudio = confirm("> ENABLE AUDIO.");
+                if (enableAudio) {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const source = audioContext.createMediaElementSource(audio);
+                    const gainNode = audioContext.createGain();
+                    gainNode.gain.value = 0.5; // Set initial volume to 50%
+                    
+                    // Connect the nodes
+                    source.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    // Try to play
+                    audio.play().catch(error => {
+                        console.log("Audio playback failed:", error);
+                    });
+                    
+                    document.body.classList.add('audio-enabled');
+                } else {
+                    document.body.classList.add('audio-disabled');
                 }
             });
 
-            const moveCursor = () => {
-                terminal.appendChild(cursor);
-            };
 
-            const printLine = async (text) => {
-                const line = createLine(text);
-                terminal.appendChild(line);
-                moveCursor();
-
-                if (!userIsScrolling) {
-                    container.scrollTop = container.scrollHeight;
+            function checkImageUpdate() {
+                const now = Date.now();
+                if (now - lastImageChange >= IMAGE_CHANGE_INTERVAL) {
+                    changeImage();
                 }
+                requestAnimationFrame(checkImageUpdate);
+            }
 
-                await new Promise(resolve => setTimeout(resolve, timing.fadeInDelay));
-                line.style.transition = `opacity ${timing.fadeInDuration}ms`;
-                line.style.opacity = '1';
-                await new Promise(resolve => setTimeout(resolve, timing.lineDelay));
-            };
+            function updateFromURLParams() {
+                const params = new URLSearchParams(window.location.search);
+                const root = document.documentElement;
 
-            if (selectedVariation.isInfinite) {
-                while (true) {
-                    const randomIndex = Math.floor(Math.random() * selectedVariation.lines.length);
-                    const text = selectedVariation.lines[randomIndex];
+                const cssVars = {
+                    'textColor': '--text-color',
+                    'bgColor': '--bg-color',
+                    'timestampColor': '--timestamp-color',
+                    'fontSize': '--font-size',
+                    'lineSpacing': '--line-spacing',
+                    'cursorWidth': '--cursor-width',
+                    'cursorHeight': '--cursor-height',
+                    'imageTopMin': '--image-top-min',
+                    'imageTopMax': '--image-top-max',
+                    'imageLeftMin': '--image-left-min',
+                    'imageLeftMax': '--image-left-max'
+                };
 
-                    await printLine(text);
-
-                    while (terminal.children.length > 100) {
-                        terminal.removeChild(terminal.firstChild);
+                for (const [param, cssVar] of Object.entries(cssVars)) {
+                    if (params.has(param)) {
+                        let value = params.get(param);
+                        if (['fontSize', 'lineSpacing', 'cursorWidth', 'cursorHeight'].includes(param)) {
+                            value += 'px';
+                        }
+                        root.style.setProperty(cssVar, value);
                     }
                 }
-            } else {
-                // Print all story lines
-                for (const text of selectedVariation.lines) {
-                    await printLine(text);
+            }
+
+            const startTime = Date.now();
+
+            function formatElapsedTime() {
+                const elapsed = Date.now() - startTime;
+                const seconds = Math.floor(elapsed / 1000);
+                const milliseconds = elapsed % 1000;
+                return `[${String(seconds).padStart(2, '0')}.${String(milliseconds).padStart(CONFIG.timestampPrecision, '0')}]`;
+            }
+
+            function createLine(text) {
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+
+                const timestamp = document.createElement('span');
+                timestamp.className = 'timestamp';
+                timestamp.textContent = formatElapsedTime();
+                line.appendChild(timestamp);
+
+                // Check if this is a social link line
+                if (text === '>discord') {
+                    const link = document.createElement('a');
+                    link.href = 'https://discord.gg/nnqb4uj8d4';
+                    link.target = '_blank';
+                    link.textContent = '>discord';
+                    line.appendChild(link);
+                } else if (text === '>x.com') {
+                    const link = document.createElement('a');
+                    link.href = 'https://x.com/noware_os';
+                    link.target = '_blank';
+                    link.textContent = '>x.com';
+                    line.appendChild(link);
+                } else {
+                    // Regular text line
+                    line.appendChild(document.createTextNode(text));
                 }
 
-                // Print empty line and social links with same timing
-                await printLine('');
-                await printLine('>discord');
-                await printLine('>x.com');
+                return line;
             }
-        }
+
+            async function printLines() {
+                const terminal = document.getElementById('terminal');
+                const container = document.getElementById('terminal-container');
+                const cursor = document.querySelector('.cursor');
+                const selectedVariation = selectStoryVariation();
+                const timing = selectedVariation.timing;
+
+                container.addEventListener('scroll', () => {
+                    const maxScroll = container.scrollHeight - container.clientHeight;
+                    isAtBottom = Math.abs(container.scrollTop - maxScroll) < 10;
+                    if (!isAtBottom) {
+                        userIsScrolling = true;
+                    }
+                    if (isAtBottom) {
+                        userIsScrolling = false;
+                    }
+                });
+
+                const moveCursor = () => {
+                    terminal.appendChild(cursor);
+                };
+
+                const printLine = async (text) => {
+                    const line = createLine(text);
+                    terminal.appendChild(line);
+                    moveCursor();
+
+                    if (!userIsScrolling) {
+                        container.scrollTop = container.scrollHeight;
+                    }
+
+                    await new Promise(resolve => setTimeout(resolve, timing.fadeInDelay));
+                    line.style.transition = `opacity ${timing.fadeInDuration}ms`;
+                    line.style.opacity = '1';
+                    await new Promise(resolve => setTimeout(resolve, timing.lineDelay));
+                };
+
+                if (selectedVariation.isInfinite) {
+                    while (true) {
+                        const randomIndex = Math.floor(Math.random() * selectedVariation.lines.length);
+                        const text = selectedVariation.lines[randomIndex];
+
+                        await printLine(text);
+
+                        while (terminal.children.length > 100) {
+                            terminal.removeChild(terminal.firstChild);
+                        }
+                    }
+                } else {
+                    // Print all story lines
+                    for (const text of selectedVariation.lines) {
+                        await printLine(text);
+                    }
+
+                    // Print empty line and social links with same timing
+                    await printLine('');
+                    await printLine('>discord');
+                    await printLine('>x.com');
+                }
+            }
 
 
-        // Rest of the code remains the same
-        updateFromURLParams();
-        printLines();
-    </script>
+            // Rest of the code remains the same
+            updateFromURLParams();
+            printLines();
+        </script>
 </body>
 
 </html>

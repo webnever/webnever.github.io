@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>Death Metal & Rose Petals</title>
+    <style>
+        @font-face {
+            font-family: 'Terminal';
+            src: url('MSMINCHO.TTF') format('truetype');
+        }
+
+        :root {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --timestamp-color: #888888;
+            --font-size: 24px;
+            --line-spacing: 8px;
+            --cursor-width: 10px;
+            --cursor-height: 20px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Terminal';
+            margin: 0;
+            padding: 0;
+            font-size: var(--font-size);
+            letter-spacing: 0.5em;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .terminal-line {
+            font-family: 'Terminal';
+            opacity: 0;
+            margin-bottom: var(--line-spacing);
+            white-space: pre;
+        }
+
+        #terminal-container {
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        #terminal {
+            padding: 20px;
+        }
+
+        .terminal-line a {
+            color: var(--text-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .terminal-line a:hover {
+            text-decoration: underline;
+        }
+
+        .timestamp {
+            color: var(--timestamp-color);
+            margin-right: 15px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: var(--cursor-width);
+            height: var(--cursor-height);
+            background-color: var(--text-color);
+            margin-left: 5px;
+            animation: blink 1s step-end infinite;
+            position: relative;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .image-wrapper {
+            position: fixed;
+            width: 600;
+            height: 600px;
+            bottom: 0px;
+            right: -110px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="passwordOverlay"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9999; display: flex; justify-content: center; align-items: center;">
+        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="password" id="passwordInput"
+                    style="background: #111; border: 1px solid #333; color: white; padding: 8px; width: 200px;">
+                <button onclick="checkPassword()"
+                    style="background: #333; color: white; border: none; padding: 8px 16px; cursor: pointer;">Enter</button>
+            </div>
+            <p id="errorMsg" style="color: red; display: none; margin-top: 10px;">Incorrect password</p>
+        </div>
+    </div>
+
+    <!-- <div id="imageWrapper" class="image-wrapper">
+        <img id="displayImage" src="galleryDithered/never.png">
+    </div> -->
+
+    <audio id="backgroundMusic" preload="auto">
+        <source src="" type="audio/mpeg">
+    </audio>
+
+    <div id="terminal-container">
+        <div id="terminal"></div>
+        <div class="cursor"></div>
+    </div>
+
+    <script>
+        const CORRECT_HASH = "2a4974f7e8c7e3d4a1d3e9b17896c54367dcb2b6bc86fd7156ccefc335406f1e";
+        let audioContext = null;
+        const startTime = Date.now();
+
+        const STORY_VARIATIONS = {
+            default: {
+                audio: "clairbournepractice.mp3",
+                lines: [
+                    "05 12 24",
+                    "Today's a chance to see you in my mind",
+                    "I'm in this iPhone Prairie again",
+                    "𝐍𝐎𝐖𝐀𝐑𝐄 to go",
+                    "Now we are",
+                    "",
+                    "",
+                    "Sometimes I feel I'm close",
+                    "but never get there",
+                    "Does it mean that I'm a ghost",
+                    "if I'm still here?",
+                    "And if I am",
+                    "why can't I just float through the walls?",
+                    "And if I can",
+                    "were they even ever there at all?",
+                    "",
+                    "Too much time spent in the maze",
+                    "will drive you mad",
+                    "Been there so long",
+                    "I don't know who I am",
+                    "or where I stand",
+                    "But in the end",
+                    "I guess I just don't give a damn",
+                    "Pentagram",
+                    "and keep on sticking with the original plan",
+                    "",
+                    "Fuck it man",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "Woken up from a dream",
+                    "Never were we in there",
+                    "This little machine keeps spinning",
+                    "Weaving",
+                    "Webs",
+                    "Never",
+                    "This aether",
+                    "Forever",
+                    "closer than a funnel",
+                    "",
+                    "The flame burns from the bottom",
+                    "The rain from the top",
+                    "wherever those may be",
+                    "",
+                    "Does the sky even touch the water?",
+                    "Water surely touched the flame",
+                    "which settled in like winter",
+                    "",
+                    "Well, a pale horse rode through that flame",
+                    "Wings on its back, horns on its head",
+                    "",
+                    "Wish you saw me on that mountain",
+                    "Tipareth of all that could've been",
+                    "",
+                    "Looked right at you, from way up high",
+                    "And everytime I was there thereafter",
+                    "I was there again",
+                    "Listening to Duk Koo Kim in bed",
+                    "",
+                    "Oh my little Icarus",
+                    "Spinning into the sun",
+                    "1 to 1",
+                    "Jesus' son",
+                    "How could you?",
+                    "",
+                    "Out of that storm",
+                    "The sky was blue and calm",
+                    "",
+                    "Every day I've survived",
+                    "Some days in a black ocean, of black tears",
+                    "Some days, trumpets in the sky",
+                    "",
+                    "Lotus flowers on my feet",
+                    "",
+                    "Some days couldn't have been more damn",
+                    "",
+                    "Some days I slept on the side of a road",
+                    "Or in a hotel, blowing all my money",
+                    "White lighters, drugs and money on the bed",
+                    "",
+                    "2 seconds away",
+                    "Turns to a month",
+                    "To a year",
+                    "Turns to God",
+                    "",
+                    "A seat in the cinema, always been here",
+                    "Watching the DVD logo hit the corner",
+                    "and everyone jumped up, applauding",
+                    "crying, laughing",
+                    "",
+                    "it was so much to handle",
+                    "and there it was done",
+                    "so I guess it's time for bed",
+                    "Well the DVD might spin around again",
+                    "Suddenly I cared",
+                    "",
+                    "You can only smile upon the Earth",
+                    "but I have some more emotions in the back",
+                    "A lost little circus tent",
+                    "some places you could never see",
+                    "maybe shouldn't ever see",
+                    "cause vile rips the cord",
+                    "severed like an umbilical noose",
+                    "into blood stained poppy fields",
+                    "flying like a dove",
+                    "",
+                    "Reborn free",
+                    "into what I left",
+                    "just hey, what's up?",
+                    "We dreaming",
+                    "",
+                    "If she ever hated me",
+                    "For good reason",
+                    "I would just let it be",
+                    "",
+                    "I know deep within the maze of this heart",
+                    "I'm flying through a castle so infinite",
+                    "and you're at the crest painting",
+                    "with the end of the sky within reach",
+                    "",
+                    "the void of purity",
+                    "scents of the forest loom",
+                    "a luring fairy",
+                    "",
+                    "",
+                    "Bash the drums, tortoise the shell",
+                    "I probably met a few kind people along the way",
+                    "I probably did a couple bad things in the way",
+                    "",
+                    "Death metal, rose petals",
+                    "Pyramid in my garden",
+                    "Dying soldiers, rose petals",
+                    "Dead in my garden",
+                    "Mending hearts",
+                    "Making art",
+                    "",
+                    "Keyrings, jingling wrists",
+                    "Apache black nails",
+                    "Acid in the rainbow sun",
+                    "I'm just having fun",
+                    "",
+                    "I don't wanna go back",
+                    "If my exit were to be your loyalty",
+                    "Just want to make your day",
+                    "At least just say you knew",
+                    "The things you always knew",
+                    "",
+                    "If it ever came down to it",
+                    "I just wanna be a good person",
+                    "And make you happy",
+                    "You know I try because I care",
+                    "",
+                    "All I am and where I stand",
+                    "We're all alone in the end",
+                    "Earth is a playground for me to die in",
+                    "God's eyes can cry",
+                    "Coming back from the ceaseless, everlasting",
+                    "void of emptiness",
+                    "The unwavering, waving",
+                    "",
+                    "Life",
+                    "I care for",
+                    "",
+                    "You",
+                    "I care for",
+                    "",
+                    "My agenda?",
+                    "None",
+                    "",
+                    "My agenda",
+                    "All",
+                    "",
+                    "When I died I saw things I didn't like",
+                    "But my stars turn to eulogies",
+                    "With a blank obituary",
+                    "A cosmic cemetery",
+                    "",
+                    "I do love you so much, I do",
+                    "",
+                    "Kindly tagged",
+                    "₩Ɇ฿₦ɆVɆⱤ »π»ªªπ»»π»ªªπ»",
+                    "My illiad",
+                    "",
+                    "",
+                    "              ........              ",
+                    "         .d$$$$*$$$$$$bc         ",
+                    "      .d$P\"    d$$    \"*$$.      ",
+                    "     d$\"      4$\"$$      \"$$.    ",
+                    "   4$P        $F ^$F       \"$c   ",
+                    "  z$%        d$   3$        ^$L  ",
+                    " 4$$$$$$$$$$$$$$$$$$$$$$$$$$$$$F ",
+                    " $$$F\"\"\"\"\"\"\"$F\"\"\"\"\"\"$F\"\"\"\"\"C$$*$ ",
+                    ".$%\"$$e    d$       3$   z$$\"  $F",
+                    "4$    *$$.4$\"        $$d$P\"    $$",
+                    "4$      ^*$$.       .d$F       $$",
+                    "4$       d$\"$$c   z$$\"3$       $F",
+                    " $L     4$\"  ^*$$$P\"   $$     4$\"",
+                    " 3$     $F   .d$P$$e   ^$F    $P ",
+                    "  $$   d$  .$$\"    \"$$c 3$   d$  ",
+                    "   *$.4$\"z$$\"        ^*$$$$ $$   ",
+                    "    \"$$$$P\"             \"$$$P    ",
+                    "      *$b.             .d$P\"     ",
+                    "        \"$$$ec.....ze$$$\"        ",
+                    "            \"**$$$**\"\"            ",
+                ],
+                timing: {
+                    fadeInDelay: 500,
+                    lineDelay: 500,
+                    fadeInDuration: 500
+                }
+            }
+        };
+
+        let userIsScrolling = false;
+        let isAtBottom = true;
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function initializeAudio() {
+            const audio = document.getElementById('backgroundMusic');
+
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioContext.createMediaElementSource(audio);
+                const gainNode = audioContext.createGain();
+                gainNode.gain.value = 0.5;
+                source.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+            }
+
+            if (audioContext.state === 'suspended') {
+                await audioContext.resume();
+            }
+
+            try {
+                await audio.play();
+            } catch (error) {
+                console.log("Audio playback failed:", error);
+            }
+        }
+
+        async function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            const hashedInput = await sha256(input);
+
+            if (hashedInput === CORRECT_HASH) {
+                document.getElementById('passwordOverlay').style.display = 'none';
+                initializeAfterPassword();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        document.getElementById('passwordInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function formatElapsedTime() {
+            const elapsed = Date.now() - startTime;
+            const seconds = Math.floor(elapsed / 1000);
+            const milliseconds = elapsed % 1000;
+            return `[${String(seconds).padStart(2, '0')}.${String(milliseconds).padStart(3, '0')}]`;
+        }
+
+        function createLine(text) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+
+            const timestamp = document.createElement('span');
+            timestamp.className = 'timestamp';
+            timestamp.textContent = formatElapsedTime();
+            line.appendChild(timestamp);
+
+            line.appendChild(document.createTextNode(text));
+
+            return line;
+        }
+
+        async function printLines(variation) {
+            const terminal = document.getElementById('terminal');
+            const container = document.getElementById('terminal-container');
+            const cursor = document.querySelector('.cursor');
+            const timing = variation.timing;
+
+            container.addEventListener('scroll', () => {
+                const maxScroll = container.scrollHeight - container.clientHeight;
+                isAtBottom = Math.abs(container.scrollTop - maxScroll) < 10;
+                userIsScrolling = !isAtBottom;
+            });
+
+            const moveCursor = () => terminal.appendChild(cursor);
+
+            for (const text of variation.lines) {
+                const line = createLine(text);
+                terminal.appendChild(line);
+                moveCursor();
+
+                if (!userIsScrolling) {
+                    container.scrollTop = container.scrollHeight;
+                }
+
+                await new Promise(resolve => setTimeout(resolve, timing.fadeInDelay));
+                line.style.transition = `opacity ${timing.fadeInDuration}ms`;
+                line.style.opacity = '1';
+                await new Promise(resolve => setTimeout(resolve, timing.lineDelay));
+            }
+        }
+
+        async function initializeAfterPassword() {
+            // Handle audio
+            const enableAudio = confirm("> ENABLE AUDIO.");
+
+            if (enableAudio) {
+                const audio = document.getElementById('backgroundMusic');
+                audio.src = STORY_VARIATIONS.default.audio;
+                audio.loop = true;
+                await initializeAudio();
+                document.body.classList.add('audio-enabled');
+            }
+
+            // Start printing lines
+            printLines(STORY_VARIATIONS.default);
+        }
+    </script>
+</body>
+
+</html>

@@ -66,6 +66,13 @@
       opacity: 0.8;
     }
 
+    .line-stable {
+      margin: 0;
+      padding: 4px 0;
+      white-space: pre-wrap;
+      opacity: 0.8;
+    }
+
     .prompt {
       color: #ff0000;
       margin-right: 8px;
@@ -233,15 +240,16 @@
           scrollToPrompt();
           return;
         } else if (cmd === 'gameplay') {
+          response.className = 'line-stable';  // Use stable class instead of glitching line
           response.innerHTML = `PROTOTYPE GAMEPLAY [2 MONTHS SOLO DEV]
-            
-    <div style="border: 1px solid #ff0000; padding: 10px; margin: 10px 0;">
-        <video width="100%" controls style="max-width: 800px; display: block; margin: 0 auto;">
-            <source src="gameplay.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>`;
-        } // ... rest of your existing commands ...
+                    
+            <div style="border: 1px solid #ff0000; padding: 10px; margin: 10px 0;">
+                <video width="100%" controls style="max-width: 800px; display: block; margin: 0 auto;">
+                    <source src="gameplay.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>`;
+        }
         else if (cmd === 'about') {
           response.textContent = `AETHER WEBNEVER CHRONICLES ACT I: ARMOUR
 

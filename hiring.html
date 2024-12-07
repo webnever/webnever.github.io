@@ -137,10 +137,20 @@
     button:hover {
       background: #FF0000;
     }
+
+    .splash-image {
+      position: fixed;
+      top: 40px;
+      right: 40px;
+      width: 400px; /* Adjust size as needed */
+      z-index: 100;
+      pointer-events: none; /* This prevents the image from interfering with text selection */
+    }
   </style>
 </head>
 
 <body>
+  <img src="splashred.png" class="splash-image" alt="Decorative splash">
   <div class="terminal">
     <div id="output"></div>
     <div class="input-line">

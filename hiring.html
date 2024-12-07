@@ -166,6 +166,12 @@
     const cursor = document.querySelector('.cursor');
     let isTyping = true;
 
+    // Helper function to scroll to command prompt
+    function scrollToPrompt() {
+      const inputLine = document.querySelector('.input-line');
+      inputLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+
     function typeText() {
       if (currentLine < text.length) {
         if (currentChar < text[currentLine].length) {
@@ -174,7 +180,7 @@
           line.textContent = text[currentLine].substring(0, currentChar + 1);
           if (!line.parentElement) output.appendChild(line);
           currentChar++;
-          line.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          scrollToPrompt();
           setTimeout(typeText, typingSpeed);
         } else {
           currentLine++;
@@ -184,6 +190,7 @@
           } else {
             isTyping = false;
             cursor.classList.remove('hidden');
+            scrollToPrompt();
           }
         }
       }
@@ -213,6 +220,7 @@
         } else if (cmd === 'clear') {
           output.innerHTML = '';
           command.textContent = '';
+          scrollToPrompt();
           return;
         } else if (cmd === 'gameplay') {
           response.innerHTML = `PROTOTYPE GAMEPLAY [2 MONTHS SOLO DEV]
@@ -290,7 +298,9 @@
         output.appendChild(cmdLine);
         output.appendChild(response);
         command.textContent = '';
-        response.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+        // Scroll to command prompt after adding new content
+        setTimeout(scrollToPrompt, 100); // Small delay to ensure content is rendered
       }
     });
 

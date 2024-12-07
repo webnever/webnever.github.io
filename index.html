@@ -587,7 +587,7 @@
         // Function to select story variation
         function selectStoryVariation() {
             const random = Math.random();
-            const variation = random < 0.20 ? STORY_VARIATIONS.wasteland : STORY_VARIATIONS.default;
+            const variation = random < 0.05 ? STORY_VARIATIONS.wasteland : STORY_VARIATIONS.default;
 
             // Set the text color
             document.documentElement.style.setProperty('--text-color', variation.textColor);

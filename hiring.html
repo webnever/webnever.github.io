@@ -229,11 +229,11 @@
           response.textContent = `AVAILABLE COMMANDS:
     - COMMANDS: DISPLAY AVAILABLE COMMANDS
     - CLEAR: CLEAR TERMINAL
+    - GAMEPLAY: VIEW PROTOTYPE GAMEPLAY
     - ABOUT: PROJECT OVERVIEW
     - POSITION: VIEW JOB DETAILS
     - REQUIREMENTS: VIEW REQUIRED SKILLS
-    - APPLY: APPLICATION INSTRUCTIONS
-    - GAMEPLAY: VIEW PROTOTYPE GAMEPLAY`;
+    - APPLY: APPLICATION INSTRUCTIONS`;
         } else if (cmd === 'clear') {
           output.innerHTML = '';
           command.textContent = '';
@@ -248,7 +248,8 @@
                     <source src="gameplay.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-            </div>`;
+            </div>
+    TYPE 'ABOUT' TO CONTINUE`;
         }
         else if (cmd === 'about') {
           response.textContent = `AETHER WEBNEVER CHRONICLES ACT I: ARMOUR

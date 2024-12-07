@@ -1,184 +1,231 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <title>NOWARE OS HIRING</title>
-    <style>
-        @font-face {
-          font-family: 'MSMincho';
-          src: url('MSMINCHO.TTF') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-        }
-    
-        body {
-          background-color: #000;
-          color: #ff0000;
-          font-family: 'MSMincho', monospace;
-          font-size: 22px;
-          padding: 2rem;
-          line-height: 1.6;
-          margin: 0;
-          overflow-x: hidden;
-          text-transform: uppercase;
-        }
-    
-        .terminal {
-          max-width: 1500px;
-          margin: 0 auto;
-        }
-    
-        .cursor {
-          display: inline-block;
-          width: 10px;
-          height: 1.2em;
-          background-color: #ff0000;
-          animation: blink 1s infinite;
-          margin-left: 4px;
-          vertical-align: middle;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>NOWARE OS HIRING</title>
+  <style>
+    @font-face {
+      font-family: 'MSMincho';
+      src: url('MSMINCHO.TTF') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
 
-        .cursor.hidden {
-          display: none;
-        }
-    
-        @keyframes blink {
-          0%, 49% { opacity: 1; }
-          50%, 100% { opacity: 0; }
-        }
-    
-        .line {
-          margin: 0;
-          padding: 4px 0;
-          white-space: pre-wrap;
-          animation: glitch 1.5s infinite;
-          opacity: 0.8;
-        }
-    
-        .prompt {
-          color: #ff0000;
-          margin-right: 8px;
-        }
-    
-        .input-line {
-          display: flex;
-          align-items: center;
-        }
-    
-        .hidden {
-          display: none;
-        }
-    
-        .job-listing {
-          margin: 20px 0;
-          padding: 10px;
-          border: 1px solid #ff0000;
-        }
-    
-        @keyframes glitch {
-          0% { opacity: 0.8; }
-          2% { opacity: 0.4; }
-          4% { opacity: 0.8; }
-          19% { opacity: 0.8; }
-          21% { opacity: 0.4; }
-          23% { opacity: 0.8; }
-          80% { opacity: 0.8; }
-          83% { opacity: 0.4; }
-          85% { opacity: 0.8; }
-        }
-    
-        button {
-          background: #ff0000;
-          color: #000;
-          border: none;
-          padding: 8px 16px;
-          font-family: 'MSMincho', monospace;
-          cursor: pointer;
-          margin-top: 10px;
-        }
-    
-        button:hover {
-          background: #FF0000;
-        }
-    </style>
+    body {
+      background-color: #000;
+      color: #ff0000;
+      font-family: 'MSMincho', monospace;
+      font-size: 22px;
+      padding: 2rem;
+      line-height: 1.6;
+      margin: 0;
+      overflow-x: hidden;
+      text-transform: uppercase;
+    }
+
+    .terminal {
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.2em;
+      background-color: #ff0000;
+      animation: blink 1s infinite;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .cursor.hidden {
+      display: none;
+    }
+
+    @keyframes blink {
+
+      0%,
+      49% {
+        opacity: 1;
+      }
+
+      50%,
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .line {
+      margin: 0;
+      padding: 4px 0;
+      white-space: pre-wrap;
+      animation: glitch 1.5s infinite;
+      opacity: 0.8;
+    }
+
+    .prompt {
+      color: #ff0000;
+      margin-right: 8px;
+    }
+
+    .input-line {
+      display: flex;
+      align-items: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .job-listing {
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #ff0000;
+    }
+
+    @keyframes glitch {
+      0% {
+        opacity: 0.8;
+      }
+
+      2% {
+        opacity: 0.4;
+      }
+
+      4% {
+        opacity: 0.8;
+      }
+
+      19% {
+        opacity: 0.8;
+      }
+
+      21% {
+        opacity: 0.4;
+      }
+
+      23% {
+        opacity: 0.8;
+      }
+
+      80% {
+        opacity: 0.8;
+      }
+
+      83% {
+        opacity: 0.4;
+      }
+
+      85% {
+        opacity: 0.8;
+      }
+    }
+
+    button {
+      background: #ff0000;
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      font-family: 'MSMincho', monospace;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #FF0000;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="terminal">
-        <div id="output"></div>
-        <div class="input-line">
-            <span class="prompt">></span>
-            <span id="command"></span>
-            <span class="cursor hidden"></span>
-        </div>
+  <div class="terminal">
+    <div id="output"></div>
+    <div class="input-line">
+      <span class="prompt">></span>
+      <span id="command"></span>
+      <span class="cursor hidden"></span>
     </div>
-    <script>
-        const text = [
-            "NOWARE OS' AETHER WEBNEVER CHRONICLES ACT I: ARMOUR",
-            "TRANSMISSION'S BRIEF, I'LL TELL YOU EVERYTHING I CAN.",
-            "CALLING 3D ARTISTS WITH PSX-STYLE EXPERIENCE. BLOCKBENCH PREFERRED.",
-            "TYPE 'COMMANDS' TO ACCESS THE TERMINAL",
-        ];
+  </div>
+  <script>
+    const text = [
+      "NOWARE OS' AETHER WEBNEVER CHRONICLES ACT I: ARMOUR",
+      "TRANSMISSION'S BRIEF, I'LL TELL YOU EVERYTHING I CAN.",
+      "CALLING 3D ARTISTS WITH PSX-STYLE EXPERIENCE. BLOCKBENCH PREFERRED.",
+      "TYPE 'COMMANDS' TO ACCESS THE TERMINAL",
+    ];
 
-        let currentLine = 0;
-        let currentChar = 0;
-        const typingSpeed = 30;
-        const lineDelay = 500;
-        const output = document.getElementById('output');
-        const command = document.getElementById('command');
-        const cursor = document.querySelector('.cursor');
-        let isTyping = true;
+    let currentLine = 0;
+    let currentChar = 0;
+    const typingSpeed = 30;
+    const lineDelay = 500;
+    const output = document.getElementById('output');
+    const command = document.getElementById('command');
+    const cursor = document.querySelector('.cursor');
+    let isTyping = true;
 
-        function typeText() {
-            if (currentLine < text.length) {
-                if (currentChar < text[currentLine].length) {
-                    const line = output.children[currentLine] || document.createElement('p');
-                    line.className = 'line';
-                    line.textContent = text[currentLine].substring(0, currentChar + 1);
-                    if (!line.parentElement) output.appendChild(line);
-                    currentChar++;
-                    line.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                    setTimeout(typeText, typingSpeed);
-                } else {
-                    currentLine++;
-                    currentChar = 0;
-                    if (currentLine < text.length) {
-                        setTimeout(typeText, lineDelay);
-                    } else {
-                        isTyping = false;
-                        cursor.classList.remove('hidden');
-                    }
-                }
-            }
+    function typeText() {
+      if (currentLine < text.length) {
+        if (currentChar < text[currentLine].length) {
+          const line = output.children[currentLine] || document.createElement('p');
+          line.className = 'line';
+          line.textContent = text[currentLine].substring(0, currentChar + 1);
+          if (!line.parentElement) output.appendChild(line);
+          currentChar++;
+          line.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          setTimeout(typeText, typingSpeed);
+        } else {
+          currentLine++;
+          currentChar = 0;
+          if (currentLine < text.length) {
+            setTimeout(typeText, lineDelay);
+          } else {
+            isTyping = false;
+            cursor.classList.remove('hidden');
+          }
         }
+      }
+    }
 
-        document.addEventListener('keydown', (e) => {
-            if (isTyping) return; // Ignore input while typing
+    document.addEventListener('keydown', (e) => {
+      if (isTyping) return; // Ignore input while typing
 
-            if (e.key.length === 1) {
-                command.textContent += e.key.toUpperCase();
-            } else if (e.key === 'Backspace') {
-                command.textContent = command.textContent.slice(0, -1);
-            } else if (e.key === 'Enter') {
-                const cmd = command.textContent.toLowerCase().trim();
-                const response = document.createElement('p');
-                response.className = 'line';
-                
-                if (cmd === 'commands') {
-                    response.textContent = `AVAILABLE COMMANDS:
+      if (e.key.length === 1) {
+        command.textContent += e.key.toUpperCase();
+      } else if (e.key === 'Backspace') {
+        command.textContent = command.textContent.slice(0, -1);
+      } else if (e.key === 'Enter') {
+        const cmd = command.textContent.toLowerCase().trim();
+        const response = document.createElement('p');
+        response.className = 'line';
+
+        if (cmd === 'commands') {
+          response.textContent = `AVAILABLE COMMANDS:
     - COMMANDS: DISPLAY AVAILABLE COMMANDS
     - CLEAR: CLEAR TERMINAL
     - ABOUT: PROJECT OVERVIEW
     - POSITION: VIEW JOB DETAILS
     - REQUIREMENTS: VIEW REQUIRED SKILLS
-    - APPLY: APPLICATION INSTRUCTIONS`;
-                } else if (cmd === 'clear') {
-                    output.innerHTML = '';
-                    command.textContent = '';
-                    return;
-                } else if (cmd === 'about') {
-                    response.textContent = `AETHER WEBNEVER CHRONICLES ACT I: ARMOUR
+    - APPLY: APPLICATION INSTRUCTIONS
+    - GAMEPLAY: VIEW PROTOTYPE GAMEPLAY`;
+        } else if (cmd === 'clear') {
+          output.innerHTML = '';
+          command.textContent = '';
+          return;
+        } else if (cmd === 'gameplay') {
+          response.innerHTML = `PROTOTYPE GAMEPLAY [2 MONTHS SOLO DEV]
+            
+    <div style="border: 1px solid #ff0000; padding: 10px; margin: 10px 0;">
+        <video width="100%" controls style="max-width: 800px; display: block; margin: 0 auto;">
+            <source src="gameplay.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>`;
+        } // ... rest of your existing commands ...
+        else if (cmd === 'about') {
+          response.textContent = `AETHER WEBNEVER CHRONICLES ACT I: ARMOUR
 
     An isometric point-and-click shooter adventure with narrative-driven gameplay.
     Set in a surreal sci-fi fantasy world in the wake of a mysterious depopulation event:
@@ -188,9 +235,11 @@
 
     ESTIMATED RELEASE: 2028
     DEVELOPMENT STAGE: EARLY PRODUCTION
-    TEAM SIZE: SOLO DEVELOPER + KEY CONTRIBUTORS`;
-                } else if (cmd === 'position') {
-                    response.textContent = `POSITION: 3D ARTIST - PSX STYLE SPECIALIST
+    TEAM SIZE: SOLO DEVELOPER + KEY CONTRIBUTORS
+
+    TYPE 'POSITION' TO CONTINUE`;
+        } else if (cmd === 'position') {
+          response.textContent = `POSITION: 3D ARTIST - PSX STYLE SPECIALIST
 
     ROLE OVERVIEW:
     - CREATE LOW-POLY 3D MODELS WITH AUTHENTIC PSX-ERA AESTHETICS
@@ -205,9 +254,11 @@
     - THE AETHER WEBNEVER SERIES WILL MAKE ITS MARK UPON THE SCORCHING EARTH
 
     LOCATION: REMOTE
-    PAY: NEGOTIABLE FLAT RATE PER FORTNIGHT + REVSHARE`;
-                } else if (cmd === 'requirements') {
-                    response.textContent = `REQUIRED SKILLS:
+    PAY: PER MODEL + NEGOTIABLE REVSHARE
+    
+    TYPE 'REQUIREMENTS' TO CONTINUE`;
+        } else if (cmd === 'requirements') {
+          response.textContent = `REQUIRED SKILLS:
 
     - PROVEN EXPERIENCE CREATING PS1/PSX-STYLE 3D MODELS
     - PROVEN EXPERIENCE ANIMATING
@@ -216,9 +267,11 @@
     - PORTFOLIO DEMONSTRATING RETRO 3D ART STYLE
     - ABILITY TO WORK INDEPENDENTLY WHILE MAINTAINING CONSISTENT COMMUNICATION
     - PASSION FOR RETRO GAMING AESTHETICS AND SURREAL SCI-FI FANTASY
-    - UNDERSTANDING OF GODOT ENGINE`;
-                } else if (cmd === 'apply') {
-                    response.textContent = `APPLICATION INSTRUCTIONS:
+    - UNDERSTANDING OF GODOT ENGINE
+    
+    TYPE 'APPLY' TO CONTINUE`;
+        } else if (cmd === 'apply') {
+          response.textContent = `APPLICATION INSTRUCTIONS:
 
     SEND THE FOLLOWING TO [webneverdev@gmail.com]:
     - PORTFOLIO FEATURING PSX-STYLE WORK EXAMPLES
@@ -227,21 +280,22 @@
     - AVAILABILITY AND PREFERRED WORK ARRANGEMENT
 
     YOU WILL RECEIVE A RESPONSE BEFORE THE MIDNIGHT BELL TOLLS.`;
-                } else {
-                    response.textContent = `COMMAND '${cmd.toUpperCase()}' NOT FOUND. TYPE 'COMMANDS' FOR AVAILABLE COMMANDS.`;
-                }
-                
-                const cmdLine = document.createElement('p');
-                cmdLine.className = 'line';
-                cmdLine.textContent = '> ' + command.textContent;
-                output.appendChild(cmdLine);
-                output.appendChild(response);
-                command.textContent = '';
-                response.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }
-        });
+        } else {
+          response.textContent = `COMMAND '${cmd.toUpperCase()}' NOT FOUND. TYPE 'COMMANDS' FOR AVAILABLE COMMANDS.`;
+        }
 
-        typeText();
-    </script>
+        const cmdLine = document.createElement('p');
+        cmdLine.className = 'line';
+        cmdLine.textContent = '> ' + command.textContent;
+        output.appendChild(cmdLine);
+        output.appendChild(response);
+        command.textContent = '';
+        response.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+    });
+
+    typeText();
+  </script>
 </body>
+
 </html>

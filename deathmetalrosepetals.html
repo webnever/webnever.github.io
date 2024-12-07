@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <title>Death Metal & Rose Petals</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
         @font-face {
             font-family: 'Terminal';
@@ -143,228 +144,24 @@
     </div>
 
     <script>
-        const CORRECT_HASH = "2a4974f7e8c7e3d4a1d3e9b17896c54367dcb2b6bc86fd7156ccefc335406f1e";
         let audioContext = null;
         const startTime = Date.now();
+        const CORRECT_HASH = "2a4974f7e8c7e3d4a1d3e9b17896c54367dcb2b6bc86fd7156ccefc335406f1e";
 
-        const STORY_VARIATIONS = {
-            default: {
-                audio: "clairbournepractice.mp3",
-                lines: [
-                    "05 12 24",
-                    "Today's a chance to see you in my mind",
-                    "I'm in this iPhone Prairie again",
-                    "𝐍𝐎𝐖𝐀𝐑𝐄 to go",
-                    "Now we are",
-                    "",
-                    "",
-                    "Sometimes I feel I'm close",
-                    "but never get there",
-                    "Does it mean that I'm a ghost",
-                    "if I'm still here?",
-                    "And if I am",
-                    "why can't I just float through the walls?",
-                    "And if I can",
-                    "were they even ever there at all?",
-                    "",
-                    "Too much time spent in the maze",
-                    "will drive you mad",
-                    "Been there so long",
-                    "I don't know who I am",
-                    "or where I stand",
-                    "But in the end",
-                    "I guess I just don't give a damn",
-                    "Pentagram",
-                    "and keep on sticking with the original plan",
-                    "",
-                    "Fuck it man",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "Woken up from a dream",
-                    "Never were we in there",
-                    "This little machine keeps spinning",
-                    "Weaving",
-                    "Webs",
-                    "Never",
-                    "This aether",
-                    "Forever",
-                    "closer than a funnel",
-                    "",
-                    "The flame burns from the bottom",
-                    "The rain from the top",
-                    "wherever those may be",
-                    "",
-                    "Does the sky even touch the water?",
-                    "Water surely touched the flame",
-                    "which settled in like winter",
-                    "",
-                    "Well, a pale horse rode through that flame",
-                    "Wings on its back, horns on its head",
-                    "",
-                    "Wish you saw me on that mountain",
-                    "Tipareth of all that could've been",
-                    "",
-                    "Looked right at you, from way up high",
-                    "And everytime I was there thereafter",
-                    "I was there again",
-                    "Listening to Duk Koo Kim in bed",
-                    "",
-                    "Oh my little Icarus",
-                    "Spinning into the sun",
-                    "1 to 1",
-                    "Jesus' son",
-                    "How could you?",
-                    "",
-                    "Out of that storm",
-                    "The sky was blue and calm",
-                    "",
-                    "Every day I've survived",
-                    "Some days in a black ocean, of black tears",
-                    "Some days, trumpets in the sky",
-                    "",
-                    "Lotus flowers on my feet",
-                    "",
-                    "Some days couldn't have been more damn",
-                    "",
-                    "Some days I slept on the side of a road",
-                    "Or in a hotel, blowing all my money",
-                    "White lighters, drugs and money on the bed",
-                    "",
-                    "2 seconds away",
-                    "Turns to a month",
-                    "To a year",
-                    "Turns to God",
-                    "",
-                    "A seat in the cinema, always been here",
-                    "Watching the DVD logo hit the corner",
-                    "and everyone jumped up, applauding",
-                    "crying, laughing",
-                    "",
-                    "it was so much to handle",
-                    "and there it was done",
-                    "so I guess it's time for bed",
-                    "Well the DVD might spin around again",
-                    "Suddenly I cared",
-                    "",
-                    "You can only smile upon the Earth",
-                    "but I have some more emotions in the back",
-                    "A lost little circus tent",
-                    "some places you could never see",
-                    "maybe shouldn't ever see",
-                    "cause vile rips the cord",
-                    "severed like an umbilical noose",
-                    "into blood stained poppy fields",
-                    "flying like a dove",
-                    "",
-                    "Reborn free",
-                    "into what I left",
-                    "just hey, what's up?",
-                    "We dreaming",
-                    "",
-                    "If she ever hated me",
-                    "For good reason",
-                    "I would just let it be",
-                    "",
-                    "I know deep within the maze of this heart",
-                    "I'm flying through a castle so infinite",
-                    "and you're at the crest painting",
-                    "with the end of the sky within reach",
-                    "",
-                    "the void of purity",
-                    "scents of the forest loom",
-                    "a luring fairy",
-                    "",
-                    "",
-                    "Bash the drums, tortoise the shell",
-                    "I probably met a few kind people along the way",
-                    "I probably did a couple bad things in the way",
-                    "",
-                    "Death metal, rose petals",
-                    "Pyramid in my garden",
-                    "Dying soldiers, rose petals",
-                    "Dead in my garden",
-                    "Mending hearts",
-                    "Making art",
-                    "",
-                    "Keyrings, jingling wrists",
-                    "Apache black nails",
-                    "Acid in the rainbow sun",
-                    "I'm just having fun",
-                    "",
-                    "I don't wanna go back",
-                    "If my exit were to be your loyalty",
-                    "Just want to make your day",
-                    "At least just say you knew",
-                    "The things you always knew",
-                    "",
-                    "If it ever came down to it",
-                    "I just wanna be a good person",
-                    "And make you happy",
-                    "You know I try because I care",
-                    "",
-                    "All I am and where I stand",
-                    "We're all alone in the end",
-                    "Earth is a playground for me to die in",
-                    "God's eyes can cry",
-                    "Coming back from the ceaseless, everlasting",
-                    "void of emptiness",
-                    "The unwavering, waving",
-                    "",
-                    "Life",
-                    "I care for",
-                    "",
-                    "You",
-                    "I care for",
-                    "",
-                    "My agenda?",
-                    "None",
-                    "",
-                    "My agenda",
-                    "All",
-                    "",
-                    "When I died I saw things I didn't like",
-                    "But my stars turn to eulogies",
-                    "With a blank obituary",
-                    "A cosmic cemetery",
-                    "",
-                    "I do love you so much, I do",
-                    "",
-                    "Kindly tagged",
-                    "₩Ɇ฿₦ɆVɆⱤ »π»ªªπ»»π»ªªπ»",
-                    "My illiad",
-                    "",
-                    "",
-                    "              ........              ",
-                    "         .d$$$$*$$$$$$bc         ",
-                    "      .d$P\"    d$$    \"*$$.      ",
-                    "     d$\"      4$\"$$      \"$$.    ",
-                    "   4$P        $F ^$F       \"$c   ",
-                    "  z$%        d$   3$        ^$L  ",
-                    " 4$$$$$$$$$$$$$$$$$$$$$$$$$$$$$F ",
-                    " $$$F\"\"\"\"\"\"\"$F\"\"\"\"\"\"$F\"\"\"\"\"C$$*$ ",
-                    ".$%\"$$e    d$       3$   z$$\"  $F",
-                    "4$    *$$.4$\"        $$d$P\"    $$",
-                    "4$      ^*$$.       .d$F       $$",
-                    "4$       d$\"$$c   z$$\"3$       $F",
-                    " $L     4$\"  ^*$$$P\"   $$     4$\"",
-                    " 3$     $F   .d$P$$e   ^$F    $P ",
-                    "  $$   d$  .$$\"    \"$$c 3$   d$  ",
-                    "   *$.4$\"z$$\"        ^*$$$$ $$   ",
-                    "    \"$$$$P\"             \"$$$P    ",
-                    "      *$b.             .d$P\"     ",
-                    "        \"$$$ec.....ze$$$\"        ",
-                    "            \"**$$$**\"\"            ",
-                ],
-                timing: {
-                    fadeInDelay: 500,
-                    lineDelay: 500,
-                    fadeInDuration: 500
-                }
+        // Function to decrypt content
+        function getStoryVariations() {
+            try {
+                const decrypted = CryptoJS.AES.decrypt(encryptedContent, encryptionKey);
+                return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+            } catch (e) {
+                console.error('Decryption failed:', e);
+                return null;
             }
-        };
+        }
 
+        const encryptionKey = "X9m#K2p$L5v@N8q";
+        const encryptedContent = "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";
+        
         let userIsScrolling = false;
         let isAtBottom = true;
 
@@ -469,19 +266,24 @@
         }
 
         async function initializeAfterPassword() {
-            // Handle audio
             const enableAudio = confirm("> ENABLE AUDIO.");
+            const variations = getStoryVariations();
+
+            if (!variations) {
+                console.error('Failed to load content');
+                return;
+            }
 
             if (enableAudio) {
                 const audio = document.getElementById('backgroundMusic');
-                audio.src = STORY_VARIATIONS.default.audio;
+                audio.src = variations.default.audio;
                 audio.loop = true;
                 await initializeAudio();
                 document.body.classList.add('audio-enabled');
             }
 
             // Start printing lines
-            printLines(STORY_VARIATIONS.default);
+            printLines(variations.default);
         }
     </script>
 </body>

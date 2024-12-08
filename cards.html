@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <title>YOUR CARDS</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -15,21 +16,32 @@
             box-sizing: border-box;
         }
 
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 30px;  /* Offset 50px to the right */
+            right: -30px; /* Compensate for the offset */
+            bottom: 0;
+            background-image: url('/tarot/bg.png');
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: top center;
+            opacity: 0.5;
+            image-rendering: pixelated;  /* Nearest neighbor filtering */
+            z-index: -1;
+            pointer-events: none;
+        }
+
         body {
             background-color: black;
-            color: #ff0000;
-            font-family: monospace;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
         @keyframes progressiveLoad {
-            0% {
-                clip-path: inset(0 0 100% 0);
-            }
-            100% {
-                clip-path: inset(0 0 0 0);
-            }
+            0% { clip-path: inset(0 0 100% 0); }
+            100% { clip-path: inset(0 0 0 0); }
         }
 
         .progressive-load {
@@ -42,21 +54,6 @@
             aspect-ratio: 2/3;
             overflow: hidden;
             background: black;
-        }
-
-        .card-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, 
-                rgba(255, 0, 0, 0.2) 0%,
-                transparent 50%);
-            z-index: 2;
-            pointer-events: none;
-            animation: progressiveLoad 2s linear;
         }
 
         .loading-line {
@@ -72,17 +69,8 @@
         }
 
         @keyframes loadingLine {
-            0% {
-                transform: scaleY(1) translateY(0);
-            }
-            100% {
-                transform: scaleY(1) translateY(150%);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
+            0% { transform: scaleY(1) translateY(0); }
+            100% { transform: scaleY(1) translateY(150%); }
         }
 
         @keyframes glitch {
@@ -98,10 +86,6 @@
             animation: glitch 0.2s ease-in-out infinite;
         }
 
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
         .card-container {
             border: 2px solid #ff0000;
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
@@ -111,18 +95,6 @@
             width: 90%;
             margin: 2rem auto;
             transition: all 0.3s ease;
-        }
-
-        .terminal-text {
-            font-family: 'Courier New', monospace;
-            color: #ff0000;
-            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-        }
-
-        .terminal-text::before {
-            content: '>';
-            margin-right: 0.5rem;
-            opacity: 0.7;
         }
 
         .scanline {
@@ -156,6 +128,7 @@
             const [isGlitching, setIsGlitching] = React.useState(false);
             const [isLoading, setIsLoading] = React.useState(false);
 
+            // Previous tarotCards array remains the same
             const tarotCards = [
                 { filename: "/tarot/0912190455860_00_0_Fool.jpg", name: "The Fool", number: "00" },
                 { filename: "/tarot/0912190455860_01_1_Magician.jpg", name: "The Magician", number: "01" },
@@ -221,6 +194,7 @@
                 { filename: "/tarot/0912190455860_77_Pentacle_King.jpg", name: "King of Pentacles", number: "PK" }
             ];
 
+
             const getRandomCard = () => {
                 const randomIndex = Math.floor(Math.random() * tarotCards.length);
                 return tarotCards[randomIndex];
@@ -260,7 +234,7 @@
             }, []);
 
             return (
-                <div className="min-h-screen bg-black p-8 flex items-center justify-center">
+                <div className="min-h-screen p-8 flex items-center justify-center">
                     <div className="card-container">
                         {currentCard && (
                             <div className="card-image">

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOUR CARDS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: black;
+            color: #ff0000;
+            font-family: monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes progressiveLoad {
+            0% {
+                clip-path: inset(0 0 100% 0);
+            }
+            100% {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        .progressive-load {
+            animation: progressiveLoad 2s linear;
+        }
+
+        .card-image {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2/3;
+            overflow: hidden;
+            background: black;
+        }
+
+        .card-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, 
+                rgba(255, 0, 0, 0.2) 0%,
+                transparent 50%);
+            z-index: 2;
+            pointer-events: none;
+            animation: progressiveLoad 2s linear;
+        }
+
+        .loading-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #ff0000;
+            transform-origin: 0 50%;
+            z-index: 3;
+            animation: loadingLine 2s linear;
+        }
+
+        @keyframes loadingLine {
+            0% {
+                transform: scaleY(1) translateY(0);
+            }
+            100% {
+                transform: scaleY(1) translateY(150%);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .glitch {
+            animation: glitch 0.2s ease-in-out infinite;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .card-container {
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            margin: 2rem auto;
+            transition: all 0.3s ease;
+        }
+
+        .terminal-text {
+            font-family: 'Courier New', monospace;
+            color: #ff0000;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+        }
+
+        .terminal-text::before {
+            content: '>';
+            margin-right: 0.5rem;
+            opacity: 0.7;
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(255, 0, 0, 0.1) 51%,
+                transparent 51%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        .card-image img {
+            filter: invert(100%) sepia(100%) saturate(10000%) hue-rotate(0deg) !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const TarotDisplay = () => {
+            const [currentCard, setCurrentCard] = React.useState(null);
+            const [isVisible, setIsVisible] = React.useState(false);
+            const [isGlitching, setIsGlitching] = React.useState(false);
+            const [isLoading, setIsLoading] = React.useState(false);
+
+            const tarotCards = [
+                { filename: "/tarot/0912190455860_00_0_Fool.jpg", name: "The Fool", number: "00" },
+                { filename: "/tarot/0912190455860_01_1_Magician.jpg", name: "The Magician", number: "01" },
+                { filename: "/tarot/0912190455860_02_2_High_Priestess.jpg", name: "The High Priestess", number: "02" },
+                { filename: "/tarot/0912190455860_03_3_Empress.jpg", name: "The Empress", number: "03" },
+                { filename: "/tarot/0912190455860_04_4_Emperor.jpg", name: "The Emperor", number: "04" },
+                { filename: "/tarot/0912190455860_05_5_Hierophant.jpg", name: "The Hierophant", number: "05" },
+                { filename: "/tarot/0912190455860_06_6_Lovers.jpg", name: "The Lovers", number: "06" },
+                { filename: "/tarot/0912190455860_07_7_Chariot.jpg", name: "The Chariot", number: "07" },
+                { filename: "/tarot/0912190455860_08_8_Strength.jpg", name: "Strength", number: "08" },
+                { filename: "/tarot/0912190455860_09_9_Hermit.jpg", name: "The Hermit", number: "09" },
+                { filename: "/tarot/0912190455860_10_10_Wheel_of_Fortune.jpg", name: "Wheel of Fortune", number: "10" },
+                { filename: "/tarot/0912190455860_11_11_Justice.jpg", name: "Justice", number: "11" },
+                { filename: "/tarot/0912190455860_12_12_Hanged_Man.jpg", name: "The Hanged Man", number: "12" },
+                { filename: "/tarot/0912190455860_13_13_Death.jpg", name: "Death", number: "13" },
+                { filename: "/tarot/0912190455860_14_14_Temperance.jpg", name: "Temperance", number: "14" },
+                { filename: "/tarot/0912190455860_15_15_Devil.jpg", name: "The Devil", number: "15" },
+                { filename: "/tarot/0912190455860_16_16_Tower.jpg", name: "The Tower", number: "16" },
+                { filename: "/tarot/0912190455860_17_17_Star.jpg", name: "The Star", number: "17" },
+                { filename: "/tarot/0912190455860_18_18_Moon.jpg", name: "The Moon", number: "18" },
+                { filename: "/tarot/0912190455860_19_19_Sun.jpg", name: "The Sun", number: "19" },
+                { filename: "/tarot/0912190455860_20_20_Judgement.jpg", name: "Judgement", number: "20" },
+                { filename: "/tarot/0912190455860_21_21_World.jpg", name: "The World", number: "21" },
+                // Wands
+                ...[1,2,3,4,5,6,7,8,9,10].map(n => ({
+                    filename: `/tarot/0912190455860_${21+n}_Wand_${n}.jpg`,
+                    name: `${n} of Wands`,
+                    number: `W${n}`
+                })),
+                { filename: "/tarot/0912190455860_32_Wand_Page.jpg", name: "Page of Wands", number: "WP" },
+                { filename: "/tarot/0912190455860_33_Wand_Knight.jpg", name: "Knight of Wands", number: "WN" },
+                { filename: "/tarot/0912190455860_34_Wand_Queen.jpg", name: "Queen of Wands", number: "WQ" },
+                { filename: "/tarot/0912190455860_35_Wand_King.jpg", name: "King of Wands", number: "WK" },
+                // Cups
+                ...[1,2,3,4,5,6,7,8,9,10].map(n => ({
+                    filename: `/tarot/0912190455860_${35+n}_Cup_${n}.jpg`,
+                    name: `${n} of Cups`,
+                    number: `C${n}`
+                })),
+                { filename: "/tarot/0912190455860_46_Cup_Page.jpg", name: "Page of Cups", number: "CP" },
+                { filename: "/tarot/0912190455860_47_Cup_Knight.jpg", name: "Knight of Cups", number: "CN" },
+                { filename: "/tarot/0912190455860_48_Cup_Queen.jpg", name: "Queen of Cups", number: "CQ" },
+                { filename: "/tarot/0912190455860_49_Cup_King.jpg", name: "King of Cups", number: "CK" },
+                // Swords
+                ...[1,2,3,4,5,6,7,8,9,10].map(n => ({
+                    filename: `/tarot/0912190455860_${49+n}_Sword_${n}.jpg`,
+                    name: `${n} of Swords`,
+                    number: `S${n}`
+                })),
+                { filename: "/tarot/0912190455860_60_Sword_Page.jpg", name: "Page of Swords", number: "SP" },
+                { filename: "/tarot/0912190455860_61_Sword_Knight.jpg", name: "Knight of Swords", number: "SN" },
+                { filename: "/tarot/0912190455860_62_Sword_Queen.jpg", name: "Queen of Swords", number: "SQ" },
+                { filename: "/tarot/0912190455860_63_Sword_King.jpg", name: "King of Swords", number: "SK" },
+                // Pentacles
+                ...[1,2,3,4,5,6,7,8,9,10].map(n => ({
+                    filename: `/tarot/0912190455860_${63+n}_Pentacle_${n}.jpg`,
+                    name: `${n} of Pentacles`,
+                    number: `P${n}`
+                })),
+                { filename: "/tarot/0912190455860_74_Pentacle_Page.jpg", name: "Page of Pentacles", number: "PP" },
+                { filename: "/tarot/0912190455860_75_Pentacle_Knight.jpg", name: "Knight of Pentacles", number: "PN" },
+                { filename: "/tarot/0912190455860_76_Pentacle_Queen.jpg", name: "Queen of Pentacles", number: "PQ" },
+                { filename: "/tarot/0912190455860_77_Pentacle_King.jpg", name: "King of Pentacles", number: "PK" }
+            ];
+
+            const getRandomCard = () => {
+                const randomIndex = Math.floor(Math.random() * tarotCards.length);
+                return tarotCards[randomIndex];
+            };
+
+            React.useEffect(() => {
+                const showNextCard = () => {
+                    setIsVisible(false);
+                    setIsGlitching(false);
+                    
+                    setTimeout(() => {
+                        setCurrentCard(getRandomCard());
+                        setIsVisible(true);
+                        setIsLoading(true);
+                        
+                        setTimeout(() => {
+                            setIsLoading(false);
+                        }, 2000);
+                        
+                        const glitchInterval = setInterval(() => {
+                            setIsGlitching(prev => !prev);
+                        }, 100);
+                        
+                        setTimeout(() => {
+                            clearInterval(glitchInterval);
+                            setIsGlitching(false);
+                        }, 1000);
+                        
+                        setTimeout(showNextCard, 7000);
+                    }, 1000);
+                };
+
+                showNextCard();
+                return () => {
+                    clearTimeout(showNextCard);
+                };
+            }, []);
+
+            return (
+                <div className="min-h-screen bg-black p-8 flex items-center justify-center">
+                    <div className="card-container">
+                        {currentCard && (
+                            <div className="card-image">
+                                {isLoading && <div className="loading-line" />}
+                                <img
+                                    key={currentCard.filename}
+                                    src={currentCard.filename}
+                                    alt={currentCard.name}
+                                    className={`
+                                        w-full h-full object-contain
+                                        ${isGlitching ? 'glitch' : ''}
+                                        ${isLoading ? 'progressive-load' : ''}
+                                    `}
+                                />
+                                <div className="scanline" />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<TarotDisplay />, document.getElementById('root'));
+    </script>
+</body>
+</html>

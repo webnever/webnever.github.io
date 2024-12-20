@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SigilSync</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .wiki-entry {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .wiki-logo {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wiki-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .encrypted-content {
+            font-family: monospace;
+            white-space: nowrap;
+            overflow-x: auto;
+            color: #666;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f8f8;
+            border-radius: 4px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px 0;
+            width: 200px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .decrypted-content {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e8f4ff;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>SigilSync</h1>
+    <p>SigilSync serves as a repository for encrypted philosophical and theoretical texts from global communities. This platform enables scholars, researchers, and philosophical collectives to preserve their academic manifestos and theoretical frameworks using strong cryptographic standards. Like a digital library, we archive philosophical propositions and theoretical frameworks from established groups, creating a verifiable timeline of intellectual development in the digital age.</p>
+    
+    <div class="wiki-entry">
+        <div class="wiki-logo">
+            <img src="/sigilsync/peacecorpsillumined.png" alt="Peace Corps Illumined">
+        </div>
+        <h2>Peace Corps Illumined</h2>
+        <div class="encrypted-content" id="encrypted1"></div>
+        <input type="password" id="password1" placeholder="Enter password">
+        <button onclick="decrypt(1)">Decrypt</button>
+        <div class="decrypted-content" id="decrypted1"></div>
+    </div>
+
+    <div class="wiki-entry">
+        <div class="wiki-logo">
+            <img src="sigilsync/voidc.png" alt="VOID-C">
+        </div>
+        <h2>VOID-C</h2>
+        <div class="encrypted-content" id="encrypted2"></div>
+        <input type="password" id="password2" placeholder="Enter password">
+        <button onclick="decrypt(2)">Decrypt</button>
+        <div class="decrypted-content" id="decrypted2"></div>
+    </div>
+
+    <script>
+        // Utility function for generating new encrypted entries
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function generateNewEntry(text, password) {
+            // Generate password hash
+            const hashedPassword = await sha256(password);
+            
+            // Generate encrypted content
+            const encrypted = CryptoJS.AES.encrypt(text, password).toString();
+            
+            // Format for easy copying
+            console.log('Generated Entry:');
+            console.log('Password Hash:', hashedPassword);
+            console.log('Encrypted Content:', encrypted);
+            console.log('\nFormatted for code:');
+            console.log(`passwordHash: "${hashedPassword}",`);
+            console.log(`encryptedContent: "${encrypted}",`);
+            
+            return { hashedPassword, encrypted };
+        }
+
+        // Pre-computed password hashes using SHA-256
+        const PASSWORD_HASHES = {
+            1: "333e0a1e27815d0ceee55c473fe3dc93d56c63e3bee2b3b4aee8eed6d70191a3", // peace_corps
+            2: "3aa3c1142ef65600a6cd3587ccb8e49659ce2dd1cf0e89749e0f4bcff5a57ba1"  // void
+        };
+
+        // Pre-encrypted content using AES
+        const ENCRYPTED_CONTENT = {
+            1: "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",
+            2: "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"
+        };
+
+        async function decrypt(id) {
+            const password = document.getElementById(`password${id}`).value;
+            const hashedInput = await sha256(password);
+            
+            try {
+                // First verify the password hash
+                if (hashedInput !== PASSWORD_HASHES[id]) {
+                    alert('Incorrect password');
+                    return;
+                }
+
+                // If password hash matches, attempt decryption
+                const decrypted = CryptoJS.AES.decrypt(
+                    ENCRYPTED_CONTENT[id],
+                    password
+                ).toString(CryptoJS.enc.Utf8);
+                
+                if (decrypted) {
+                    const decryptedDiv = document.getElementById(`decrypted${id}`);
+                    decryptedDiv.textContent = decrypted;
+                    decryptedDiv.style.display = 'block';
+                } else {
+                    alert('Decryption failed');
+                }
+            } catch (e) {
+                console.error('Decryption error:', e);
+                alert('Decryption failed');
+            }
+        }
+
+        // Initialize content
+        window.onload = function() {
+            document.getElementById('encrypted1').textContent = ENCRYPTED_CONTENT[1];
+            document.getElementById('encrypted2').textContent = ENCRYPTED_CONTENT[2];
+        };
+
+        // Example usage in console:
+        // await generateNewEntry("Your secret text here", "your_password_here")
+    </script>
+</body>
+</html>

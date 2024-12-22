@@ -145,10 +145,10 @@
             <img src="sigilsync/voidc.png" alt="VOID-C">
         </div>
         <h2>VOID-C</h2>
-        <div class="encrypted-content" id="encrypted2"></div>
-        <input type="password" id="password2" placeholder="Enter password">
-        <button onclick="decrypt(2)">Decrypt</button>
-        <div class="decrypted-content" id="decrypted2"></div>
+        <div class="encrypted-content" id="encrypted3"></div>
+        <input type="password" id="password3" placeholder="Enter password">
+        <button onclick="decrypt(3)">Decrypt</button>
+        <div class="decrypted-content" id="decrypted3"></div>
     </div>
 
     <script>
@@ -226,6 +226,7 @@
         window.onload = function() {
             document.getElementById('encrypted1').textContent = ENCRYPTED_CONTENT[1];
             document.getElementById('encrypted2').textContent = ENCRYPTED_CONTENT[2];
+            document.getElementById('encrypted3').textContent = ENCRYPTED_CONTENT[3];
         };
 
         // Example usage in console:

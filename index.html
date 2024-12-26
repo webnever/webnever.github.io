@@ -177,10 +177,38 @@
         .social-link:hover {
             text-decoration: underline;
         }
+
+        #mobile-message {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Terminal', 'Courier New', Courier, monospace;
+            font-size: 24px;
+            text-align: center;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            letter-spacing: 0.5em;
+            padding: 20px;
+        }
+
+        @media (min-width: 769px) {
+            #mobile-message {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <div id="mobile-message">Mobile not supported</div>
+
     <div class="logo-wrapper" id="logoWrapper">
         <img src="awlogoDithered.png">
     </div>
@@ -207,6 +235,10 @@
     </div>
 
     <script>
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        }
+
         const STORY_VARIATIONS = {
             default: {
                 audio: "sand.mp3",
@@ -678,6 +710,21 @@
         }
 
         window.addEventListener('load', async function () {
+            // Check if mobile and show/hide appropriate content
+            const mobileMessage = document.getElementById('mobile-message');
+            const mainContent = document.getElementById('terminal-container');
+            const imageWrappers = document.querySelectorAll('.image-wrapper');
+            const logoWrapper = document.getElementById('logoWrapper');
+            const socialButtons = document.getElementById('socialButtons');
+            
+            if (isMobile()) {
+                mobileMessage.style.display = 'flex';
+                mainContent.style.display = 'none';
+                imageWrappers.forEach(wrapper => wrapper.style.display = 'none');
+                logoWrapper.style.display = 'none';
+                socialButtons.style.display = 'none';
+                return; // Stop execution for mobile devices
+            }
             // Initialize images first
             shuffleArray(availableImages);
             const firstImage = availableImages.pop();

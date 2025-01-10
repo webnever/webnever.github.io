@@ -46,7 +46,6 @@
     }
 
     @keyframes blink {
-
       0%,
       49% {
         opacity: 1;
@@ -149,9 +148,33 @@
       position: fixed;
       top: 40px;
       right: 40px;
-      width: 400px; /* Adjust size as needed */
+      width: 400px;
       z-index: 100;
-      pointer-events: none; /* This prevents the image from interfering with text selection */
+      pointer-events: none;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .image-container {
+      border: 1px solid #ff0000;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+    }
+
+    .image-container p {
+      margin: 10px 0 0 0;
+      color: #ff0000;
     }
   </style>
 </head>
@@ -170,7 +193,7 @@
     const text = [
       "NOWARE OS' AETHER WEBNEVER CHRONICLES ACT I: ARMOUR",
       "TRANSMISSION'S BRIEF, I'LL TELL YOU EVERYTHING I CAN.",
-      "CALLING 3D ARTISTS WITH PSX-STYLE EXPERIENCE. BLOCKBENCH PREFERRED",
+      "CALLING 3D ARTISTS WITH PSX/N64-STYLE EXPERIENCE.",
       "TYPE 'COMMANDS' TO ACCESS THE TERMINAL",
     ];
 
@@ -183,7 +206,6 @@
     const cursor = document.querySelector('.cursor');
     let isTyping = true;
 
-    // Helper function to scroll to command prompt
     function scrollToPrompt() {
       const inputLine = document.querySelector('.input-line');
       inputLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -214,7 +236,7 @@
     }
 
     document.addEventListener('keydown', (e) => {
-      if (isTyping) return; // Ignore input while typing
+      if (isTyping) return;
 
       if (e.key.length === 1) {
         command.textContent += e.key.toUpperCase();
@@ -230,6 +252,7 @@
     - COMMANDS: DISPLAY AVAILABLE COMMANDS
     - CLEAR: CLEAR TERMINAL
     - GAMEPLAY: VIEW PROTOTYPE GAMEPLAY
+    - GRAPHICS: VIEW REFERENCE IMAGES
     - ABOUT: PROJECT OVERVIEW
     - POSITION: VIEW JOB DETAILS
     - REQUIREMENTS: VIEW REQUIRED SKILLS
@@ -240,18 +263,36 @@
           scrollToPrompt();
           return;
         } else if (cmd === 'gameplay') {
-          response.className = 'line-stable';  // Use stable class instead of glitching line
+          response.className = 'line-stable';
           response.innerHTML = `PROTOTYPE GAMEPLAY [2 MONTHS SOLO DEV]
                     
             <div style="border: 1px solid #ff0000; padding: 10px; margin: 10px 0;">
-                <video width="100%" controls style="max-width: 800px; display: block; margin: 0 auto;">
+                <video width="100%" controls style="max-width: 1000px; display: block; margin: 0 auto;">
                     <source src="gameplay.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
+    TYPE 'GRAPHICS' TO CONTINUE`;
+        } else if (cmd === 'graphics') {
+          response.className = 'line-stable';
+          response.innerHTML = `GRAPHICS REFERENCE EXAMPLES:
+
+            <div class="image-grid">
+              <div class="image-container">
+                <img src="ref/ref1.png">
+              </div>
+              
+              <div class="image-container">
+                <img src="ref/ref2.png">
+              </div>
+              
+              <div class="image-container">
+                <img src="ref/ref3.png" >
+              </div>
+            </div>
+
     TYPE 'ABOUT' TO CONTINUE`;
-        }
-        else if (cmd === 'about') {
+        } else if (cmd === 'about') {
           response.textContent = `AETHER WEBNEVER CHRONICLES ACT I: ARMOUR
 
     An isometric point-and-click shooter adventure with narrative-driven gameplay.
@@ -269,32 +310,29 @@
           response.textContent = `POSITION: 3D ARTIST - PSX STYLE SPECIALIST
 
     ROLE OVERVIEW:
-    - CREATE LOW-POLY 3D MODELS WITH AUTHENTIC PSX-ERA AESTHETICS
+    - CREATE LOW-POLY 3D MODELS WITH AUTHENTIC PSX/N64-ERA AESTHETICS
     - MOODY, EDGY, STYLE 
     - DEVELOP CHARACTER MODELS, ENVIRONMENTS, AND PROPS
     - CREATE SNAPPING ANIMATIONS, SIMILAR TO OLD SCHOOL RUNESCAPE
-    - WE WILL BE USING A HQ4X UPSCALING SHADER INSTEAD OF VERTEX SNAPPING
-    - WE MAY BE IMPLEMENTING AN IK SYSTEM. RIGGING EXPERIENCE PREFERRED.
     - YOU WILL LIKELY BE WORKING ON A LISTS OF ASSETS
-    - MAINTAIN ARTISTIC CONSISTENCY WITH PROJECT'S SURREAL SCI-FI FANTASY VISION
+    - MAINTAIN ARTISTIC CONSISTENCY WITH PROJECT'S SURREALIST SCI-FI FANTASY VISION
     - COLLABORATE CLOSELY WITH SOLO DEVELOPER ON ART DIRECTION
     - PART-TIME / CONTRACT BASIS WITH POTENTIAL FOR EXTENDED COLLABORATION
 
     LOCATION: REMOTE
     PAY: PER MODEL (MAXIMUM $500AUD/FORTNIGHT) + NEGOTIABLE REVSHARE
-    STARTING JANUARY 2025
+    STARTING EARLY 2025
     
     TYPE 'REQUIREMENTS' TO CONTINUE`;
         } else if (cmd === 'requirements') {
           response.textContent = `REQUIRED SKILLS:
 
-    - PROVEN EXPERIENCE CREATING PS1/PSX-STYLE 3D MODELS
+    - PROVEN EXPERIENCE CREATING PS1/N64-STYLE 3D MODELS
     - PROVEN EXPERIENCE ANIMATING
-    - PROFICIENCY IN BLOCKBENCH, METRIC SNAPPING STYLE HEAVILY PREFERRED
-    - KNOWLEDGE OF PSX-ERA TEXTURING
+    - KNOWLEDGE OF N64-ERA TEXTURING
     - PORTFOLIO DEMONSTRATING RETRO 3D ART STYLE
     - ABILITY TO WORK INDEPENDENTLY WHILE MAINTAINING CONSISTENT COMMUNICATION
-    - PASSION FOR RETRO GAMING AESTHETICS AND SURREAL SCI-FI FANTASY
+    - PASSION FOR RETRO GAMING AESTHETICS AND SURREALIST SCI-FI FANTASY
     - UNDERSTANDING OF GODOT ENGINE
     
     TYPE 'APPLY' TO CONTINUE`;
@@ -302,7 +340,7 @@
           response.textContent = `APPLICATION INSTRUCTIONS:
 
     SEND THE FOLLOWING TO [webneverdev@gmail.com]:
-    - PORTFOLIO FEATURING PSX-STYLE WORK EXAMPLES
+    - PORTFOLIO FEATURING PSX/N64-STYLE WORK EXAMPLES
     - RELEVANT EXPERIENCE
     - BRIEF STATEMENT ABOUT YOUR INTEREST IN ARMOUR
     - AVAILABILITY AND PREFERRED WORK ARRANGEMENT
@@ -320,8 +358,7 @@
         output.appendChild(response);
         command.textContent = '';
 
-        // Scroll to command prompt after adding new content
-        setTimeout(scrollToPrompt, 100); // Small delay to ensure content is rendered
+        setTimeout(scrollToPrompt, 100);
       }
     });
 

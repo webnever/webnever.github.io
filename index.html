@@ -232,6 +232,7 @@
     </div>
 
     <div class="social-buttons" id="socialButtons">
+        <a href="/gameplay" target="_blank" class="social-link">>gameplay</a>
         <a href="https://discord.gg/nnqb4uj8d4" target="_blank" class="social-link">>discord</a>
         <a href="https://x.com/noware_os" target="_blank" class="social-link">>x.com</a>
         <a href="/hiring" class="social-link">>hiring</a>
@@ -825,7 +826,13 @@
             line.appendChild(timestamp);
 
             // Check if this is a social link line
-            if (text === '>discord') {
+            if (text === '>gameplay') {
+                const link = document.createElement('a');
+                link.href = '/gameplay';
+                link.target = '_blank';
+                link.textContent = '>gameplay';
+                line.appendChild(link);
+            } else if (text === '>discord') {
                 const link = document.createElement('a');
                 link.href = 'https://discord.gg/nnqb4uj8d4';
                 link.target = '_blank';
@@ -920,6 +927,7 @@
 
                 // Print empty line and all social links with same timing
                 await printLine('');
+                await printLine('>gameplay')
                 await printLine('>discord');
                 await printLine('>x.com');
                 await printLine('>hiring');  // Added this line

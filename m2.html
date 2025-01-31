@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>m2</title>
+    <style> 
+        body { margin: 0; background: #000; overflow: hidden; } 
+    </style>
+</head>
+<body>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.162.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.162.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+        // Rest of the code remains the same as before, just updated class references
+        const CONFIG = {
+            BACKGROUND: {
+                // Camera
+                CAMERA_FOV: 90,
+                CAMERA_NEAR: 0.1,
+                CAMERA_FAR: 1000,
+                CAMERA_POSITION_Z: 15,
+                
+                // Text Layout
+                CHAR_SPACING: 0.35,
+                LINE_SPACING: 0.5,
+                FONT_SIZE: 0.3,
+                FONT_DEPTH: 0.1,
+                FONT_SEGMENTS: 4,
+                
+                // Text Appearance
+                TEXT_COLOR: 0x00ff88,
+                BASE_OPACITY: 0.3,
+                OPACITY_RANGE: 0.7,
+                
+                // Animation
+                DISPLACEMENT_INTENSITY: 3.0,
+                ANIMATION_SPEED: 1.0,
+                
+                // Rotation
+                ROTATION_DAMPING: 1.0,
+                MAX_ROTATION: Math.PI/8,
+
+                // Glow
+                BLOOM_STRENGTH: 0.5,
+                BLOOM_RADIUS: 0.75,
+                BLOOM_THRESHOLD: 0.3
+            },
+            
+            FOREGROUND: {
+                // Text Layout
+                CHAR_SPACING: 0.4,
+                LINE_SPACING: 0.8,
+                FONT_SIZE: 0.4,
+                FONT_DEPTH: 0.1,
+                FONT_SEGMENTS: 4,
+                Z_OFFSET: 2.5,
+                
+                // Text Appearance
+                TEXT_COLOR: 0xffffff,
+                BASE_OPACITY: 1.0,
+                OPACITY_RANGE: 0.5,
+                
+                // Animation
+                DISPLACEMENT_INTENSITY: 0,
+                ANIMATION_SPEED: 0.7,
+                
+                // Rotation
+                ROTATION_DAMPING: 0.8,
+                MAX_ROTATION: Math.PI/6,
+
+                // Glow
+                BLOOM_STRENGTH: 2.0,
+                BLOOM_RADIUS: 1.0,
+                BLOOM_THRESHOLD: 0.2
+            },
+
+            // Shared Assets
+            FONT_PATH: 'm2/DOS.json',
+            HEIGHTMAP_PATH: 'm2/pentagram.png'
+        };
+
+        const TEXT_CONTENT = {
+            BACKGROUND: `
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2
+WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2/WEBNEVER-M2`,
+
+            FOREGROUND: `
+NoWareOS [Version 88614]
+(c) 20dX NoWare(tm). All Rights Reserved.
+`
+        };
+
+        let scene, camera, renderer, composer;
+        let backgroundGroup, foregroundGroup;
+        let targetRotation = { x: 0, y: 0 };
+        let currentRotation = { 
+            background: { x: 0, y: 0 },
+            foreground: { x: 0, y: 0 }
+        };
+
+        async function loadTexture(url) {
+            return new Promise((resolve, reject) => {
+                new THREE.TextureLoader().load(url, resolve, undefined, reject);
+            });
+        }
+
+        async function loadFont(url) {
+            return new Promise((resolve, reject) => {
+                new FontLoader().load(url, resolve, undefined, reject);
+            });
+        }
+
+        function createCharacterMesh(char, x, y, config, font) {
+            const geometry = new TextGeometry(char, {
+                font: font,
+                size: config.FONT_SIZE,
+                height: config.FONT_DEPTH,
+                curveSegments: config.FONT_SEGMENTS,
+                bevelEnabled: false
+            });
+
+            geometry.computeBoundingBox();
+            const centerOffset = new THREE.Vector3();
+            geometry.boundingBox.getCenter(centerOffset);
+            geometry.translate(-centerOffset.x, -centerOffset.y, 0);
+
+            const material = new THREE.MeshBasicMaterial({
+                color: config.TEXT_COLOR,
+                transparent: true,
+                opacity: 1
+            });
+            
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(x, y, 0);
+            return mesh;
+        }
+
+        function createTextGroup(text, config, font, heightMap, zOffset = 0) {
+            const group = new THREE.Group();
+            const characters = [];
+            const lines = text.trim().split('\n');
+            const gridWidth = Math.max(...lines.map(line => line.length));
+            const gridHeight = lines.length;
+
+            lines.forEach((line, lineIndex) => {
+                [...line].forEach((char, charIndex) => {
+                    if (char !== ' ') {
+                        const x = (charIndex - line.length/2) * config.CHAR_SPACING;
+                        const y = (lines.length/2 - lineIndex) * config.LINE_SPACING;
+                        const mesh = createCharacterMesh(char, x, y, config, font);
+                        group.add(mesh);
+                        characters.push({
+                            mesh,
+                            gridX: charIndex / gridWidth,
+                            gridY: lineIndex / gridHeight
+                        });
+                    }
+                });
+            });
+
+            group.position.z = zOffset;
+            return { group, characters };
+        }
+
+        function setupPostProcessing() {
+            const renderScene = new RenderPass(scene, camera);
+            
+            const bloomPass = new UnrealBloomPass(
+                new THREE.Vector2(window.innerWidth, window.innerHeight),
+                CONFIG.BACKGROUND.BLOOM_STRENGTH,
+                CONFIG.BACKGROUND.BLOOM_RADIUS,
+                CONFIG.BACKGROUND.BLOOM_THRESHOLD
+            );
+
+            composer = new EffectComposer(renderer);
+            composer.addPass(renderScene);
+            composer.addPass(bloomPass);
+        }
+
+        async function init() {
+            try {
+                scene = new THREE.Scene();
+                camera = new THREE.PerspectiveCamera(
+                    CONFIG.BACKGROUND.CAMERA_FOV,
+                    window.innerWidth/window.innerHeight,
+                    CONFIG.BACKGROUND.CAMERA_NEAR,
+                    CONFIG.BACKGROUND.CAMERA_FAR
+                );
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement);
+
+                setupPostProcessing();
+
+                const [font, heightMap] = await Promise.all([
+                    loadFont(CONFIG.FONT_PATH),
+                    loadTexture(CONFIG.HEIGHTMAP_PATH)
+                ]);
+
+                const background = createTextGroup(
+                    TEXT_CONTENT.BACKGROUND, 
+                    CONFIG.BACKGROUND, 
+                    font, 
+                    heightMap
+                );
+                
+                const foreground = createTextGroup(
+                    TEXT_CONTENT.FOREGROUND, 
+                    CONFIG.FOREGROUND, 
+                    font, 
+                    heightMap, 
+                    CONFIG.FOREGROUND.Z_OFFSET
+                );
+
+                backgroundGroup = background.group;
+                foregroundGroup = foreground.group;
+                scene.add(backgroundGroup);
+                scene.add(foregroundGroup);
+
+                camera.position.set(0, 0, CONFIG.BACKGROUND.CAMERA_POSITION_Z);
+
+                let lastImageData = null;
+
+                function getHeightmapValue(x, y) {
+                    if (!lastImageData) {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = heightMap.image.width;
+                        canvas.height = heightMap.image.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(heightMap.image, 0, 0);
+                        lastImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    }
+
+                    const ix = Math.floor(x * heightMap.image.width);
+                    const iy = Math.floor(y * heightMap.image.height);
+                    const idx = (iy * heightMap.image.width + ix) * 4;
+                    return lastImageData.data[idx] / 255.0;
+                }
+
+                document.addEventListener('mousemove', (event) => {
+                    const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                    const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+                    targetRotation.y = mouseX;
+                    targetRotation.x = mouseY;
+                });
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    const time = performance.now() * 0.001;
+
+                    currentRotation.background.x += (targetRotation.x * CONFIG.BACKGROUND.MAX_ROTATION - 
+                                                   currentRotation.background.x) * CONFIG.BACKGROUND.ROTATION_DAMPING;
+                    currentRotation.background.y += (targetRotation.y * CONFIG.BACKGROUND.MAX_ROTATION - 
+                                                   currentRotation.background.y) * CONFIG.BACKGROUND.ROTATION_DAMPING;
+                    
+                    currentRotation.foreground.x += (targetRotation.x * CONFIG.FOREGROUND.MAX_ROTATION - 
+                                                   currentRotation.foreground.x) * CONFIG.FOREGROUND.ROTATION_DAMPING;
+                    currentRotation.foreground.y += (targetRotation.y * CONFIG.FOREGROUND.MAX_ROTATION - 
+                                                   currentRotation.foreground.y) * CONFIG.FOREGROUND.ROTATION_DAMPING;
+
+                    backgroundGroup.rotation.x = currentRotation.background.x;
+                    backgroundGroup.rotation.y = currentRotation.background.y;
+                    foregroundGroup.rotation.x = currentRotation.foreground.x;
+                    foregroundGroup.rotation.y = currentRotation.foreground.y;
+
+                    const bgIntensity = (Math.sin(time * CONFIG.BACKGROUND.ANIMATION_SPEED) * 0.5 + 0.5) * 
+                                      CONFIG.BACKGROUND.DISPLACEMENT_INTENSITY;
+                    const fgIntensity = (Math.sin(time * CONFIG.FOREGROUND.ANIMATION_SPEED) * 0.5 + 0.5) * 
+                                      CONFIG.FOREGROUND.DISPLACEMENT_INTENSITY;
+
+                    background.characters.forEach(({mesh, gridX, gridY}) => {
+                        const height = getHeightmapValue(gridX, gridY);
+                        mesh.position.z = height * bgIntensity;
+                        mesh.material.opacity = CONFIG.BACKGROUND.BASE_OPACITY + 
+                                             height * CONFIG.BACKGROUND.OPACITY_RANGE;
+                    });
+
+                    foreground.characters.forEach(({mesh, gridX, gridY}) => {
+                        const height = getHeightmapValue(gridX, gridY);
+                        mesh.position.z = CONFIG.FOREGROUND.Z_OFFSET + height * fgIntensity;
+                        mesh.material.opacity = CONFIG.FOREGROUND.BASE_OPACITY + 
+                                             height * CONFIG.FOREGROUND.OPACITY_RANGE;
+                    });
+                    
+                    composer.render();
+                }
+
+                animate();
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        init();
+    </script>
+</body>
+</html>

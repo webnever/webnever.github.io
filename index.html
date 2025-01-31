@@ -237,6 +237,7 @@
         <a href="/hiring" class="social-link">>hiring</a>
         <a href="/sigilsync" class="social-link">>sigilsync</a>
         <a href="/cards" class="social-link">>cards</a>
+        <a href="/m2" class="social-link">>m2</a>
     </div>
 
     <script>
@@ -851,6 +852,11 @@
                 link.href = '/cards';
                 link.textContent = '>cards';
                 line.appendChild(link);
+            } else if (text === '>m2') {
+                const link = document.createElement('a');
+                link.href = '/m2';
+                link.textContent = '>m2';
+                line.appendChild(link);
             } else {
                 // Regular text line
                 line.appendChild(document.createTextNode(text));
@@ -919,6 +925,7 @@
                 await printLine('>hiring');  // Added this line
                 await printLine('>sigilsync');
                 await printLine('>cards');
+                await printLine('>m2')
             }
         }
         // Rest of the code remains the same

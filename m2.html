@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>m2</title>
-    <style> 
-        body { margin: 0; background: #000; overflow: hidden; } 
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            overflow: hidden;
+        }
     </style>
 </head>
+
 <body>
     <script type="importmap">
     {
@@ -22,73 +28,59 @@
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
         import { FontLoader } from 'three/addons/loaders/FontLoader.js';
         import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+        import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
 
-        // Rest of the code remains the same as before, just updated class references
         const CONFIG = {
             BACKGROUND: {
-                // Camera
                 CAMERA_FOV: 90,
                 CAMERA_NEAR: 0.1,
                 CAMERA_FAR: 1000,
                 CAMERA_POSITION_Z: 15,
-                
-                // Text Layout
                 CHAR_SPACING: 0.35,
                 LINE_SPACING: 0.5,
                 FONT_SIZE: 0.3,
                 FONT_DEPTH: 0.1,
                 FONT_SEGMENTS: 4,
-                
-                // Text Appearance
                 TEXT_COLOR: 0x00ff88,
-                BASE_OPACITY: 0.3,
+                BASE_OPACITY: 0.1,
                 OPACITY_RANGE: 0.7,
-                
-                // Animation
                 DISPLACEMENT_INTENSITY: 3.0,
                 ANIMATION_SPEED: 1.0,
-                
-                // Rotation
                 ROTATION_DAMPING: 1.0,
-                MAX_ROTATION: Math.PI/8,
-
-                // Glow
+                MAX_ROTATION: Math.PI / 8,
                 BLOOM_STRENGTH: 0.5,
                 BLOOM_RADIUS: 0.75,
                 BLOOM_THRESHOLD: 0.3
             },
-            
+
             FOREGROUND: {
-                // Text Layout
                 CHAR_SPACING: 0.4,
                 LINE_SPACING: 0.8,
                 FONT_SIZE: 0.4,
                 FONT_DEPTH: 0.1,
                 FONT_SEGMENTS: 4,
                 Z_OFFSET: 2.5,
-                
-                // Text Appearance
                 TEXT_COLOR: 0xffffff,
                 BASE_OPACITY: 1.0,
                 OPACITY_RANGE: 0.5,
-                
-                // Animation
                 DISPLACEMENT_INTENSITY: 0,
                 ANIMATION_SPEED: 0.7,
-                
-                // Rotation
                 ROTATION_DAMPING: 0.8,
-                MAX_ROTATION: Math.PI/6,
-
-                // Glow
+                MAX_ROTATION: Math.PI / 6,
                 BLOOM_STRENGTH: 2.0,
                 BLOOM_RADIUS: 1.0,
                 BLOOM_THRESHOLD: 0.2
             },
 
-            // Shared Assets
             FONT_PATH: 'm2/DOS.json',
-            HEIGHTMAP_PATH: 'm2/pentagram.png'
+            HEIGHTMAPS: {
+                PATHS: [
+                    'm2/pentagram2.png',
+                    'm2/cross.png',
+                ],
+                TRANSITION_THRESHOLD: 0.1,
+                CYCLE_DURATION: 4.0
+            }
         };
 
         const TEXT_CONTENT = {
@@ -153,10 +145,17 @@ NoWareOS [Version 88614]
         let scene, camera, renderer, composer;
         let backgroundGroup, foregroundGroup;
         let targetRotation = { x: 0, y: 0 };
-        let currentRotation = { 
+        let currentRotation = {
             background: { x: 0, y: 0 },
             foreground: { x: 0, y: 0 }
         };
+        let perlin;
+        let heightMaps = [];
+        let currentHeightMapIndex = 0;
+        let nextHeightMapIndex = 1;
+        let heightMapImageData = [];
+        let lastTransitionTime = 0;
+        let isTransitioning = false;
 
         async function loadTexture(url) {
             return new Promise((resolve, reject) => {
@@ -168,6 +167,36 @@ NoWareOS [Version 88614]
             return new Promise((resolve, reject) => {
                 new FontLoader().load(url, resolve, undefined, reject);
             });
+        }
+
+        async function loadHeightMaps() {
+            const loader = new THREE.TextureLoader();
+            heightMapImageData = [];
+
+            const loadedMaps = await Promise.all(CONFIG.HEIGHTMAPS.PATHS.map(path =>
+                new Promise((resolve, reject) => {
+                    loader.load(path,
+                        (texture) => {
+                            texture.needsUpdate = true;
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            canvas.width = texture.image.width;
+                            canvas.height = texture.image.height;
+                            ctx.drawImage(texture.image, 0, 0);
+                            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                            heightMapImageData.push(imageData);
+                            resolve(texture);
+                        },
+                        undefined,
+                        (error) => {
+                            console.error('Error loading heightmap:', path, error);
+                            reject(error);
+                        }
+                    );
+                })
+            ));
+
+            return loadedMaps;
         }
 
         function createCharacterMesh(char, x, y, config, font) {
@@ -189,13 +218,13 @@ NoWareOS [Version 88614]
                 transparent: true,
                 opacity: 1
             });
-            
+
             const mesh = new THREE.Mesh(geometry, material);
             mesh.position.set(x, y, 0);
             return mesh;
         }
 
-        function createTextGroup(text, config, font, heightMap, zOffset = 0) {
+        function createTextGroup(text, config, font, zOffset = 0) {
             const group = new THREE.Group();
             const characters = [];
             const lines = text.trim().split('\n');
@@ -205,8 +234,8 @@ NoWareOS [Version 88614]
             lines.forEach((line, lineIndex) => {
                 [...line].forEach((char, charIndex) => {
                     if (char !== ' ') {
-                        const x = (charIndex - line.length/2) * config.CHAR_SPACING;
-                        const y = (lines.length/2 - lineIndex) * config.LINE_SPACING;
+                        const x = (charIndex - line.length / 2) * config.CHAR_SPACING;
+                        const y = (lines.length / 2 - lineIndex) * config.LINE_SPACING;
                         const mesh = createCharacterMesh(char, x, y, config, font);
                         group.add(mesh);
                         characters.push({
@@ -224,7 +253,6 @@ NoWareOS [Version 88614]
 
         function setupPostProcessing() {
             const renderScene = new RenderPass(scene, camera);
-            
             const bloomPass = new UnrealBloomPass(
                 new THREE.Vector2(window.innerWidth, window.innerHeight),
                 CONFIG.BACKGROUND.BLOOM_STRENGTH,
@@ -237,12 +265,50 @@ NoWareOS [Version 88614]
             composer.addPass(bloomPass);
         }
 
+        function getHeightmapValue(x, y, time, normalizedAnimationPhase) {
+            if (!heightMaps.length || !heightMapImageData.length) return 0;
+
+            const width = heightMaps[0].image.width;
+            const height = heightMaps[0].image.height;
+
+            const ix = Math.floor(Math.min(Math.max(x * width, 0), width - 1));
+            const iy = Math.floor(Math.min(Math.max(y * height, 0), height - 1));
+            const idx = (iy * width + ix) * 4;
+
+            const currentValue = heightMapImageData[currentHeightMapIndex]?.data[idx] / 255.0 || 0;
+            const nextValue = heightMapImageData[nextHeightMapIndex]?.data[idx] / 255.0 || 0;
+
+            const scale = 2.0;
+            const noiseValue = (perlin.noise(
+                x * scale + time * 0.1,
+                y * scale,
+                time * 0.2
+            ) + 1) * 0.5;
+
+            let transitionProgress = 0;
+            if (isTransitioning) {
+                transitionProgress = (time - lastTransitionTime) / 0.5;
+                if (transitionProgress > 1) {
+                    transitionProgress = 1;
+                    isTransitioning = false;
+                    currentHeightMapIndex = nextHeightMapIndex;
+                    nextHeightMapIndex = (nextHeightMapIndex + 1) % heightMaps.length;
+                }
+            }
+
+            const blendedHeightmap = currentValue * (1 - transitionProgress) + nextValue * transitionProgress;
+
+            const pentagramWeight = 0.6;
+            const noiseWeight = 0.4;
+            return (blendedHeightmap * pentagramWeight + noiseValue * noiseWeight);
+        }
+
         async function init() {
             try {
                 scene = new THREE.Scene();
                 camera = new THREE.PerspectiveCamera(
                     CONFIG.BACKGROUND.CAMERA_FOV,
-                    window.innerWidth/window.innerHeight,
+                    window.innerWidth / window.innerHeight,
                     CONFIG.BACKGROUND.CAMERA_NEAR,
                     CONFIG.BACKGROUND.CAMERA_FAR
                 );
@@ -251,24 +317,22 @@ NoWareOS [Version 88614]
                 document.body.appendChild(renderer.domElement);
 
                 setupPostProcessing();
+                perlin = new ImprovedNoise();
 
-                const [font, heightMap] = await Promise.all([
-                    loadFont(CONFIG.FONT_PATH),
-                    loadTexture(CONFIG.HEIGHTMAP_PATH)
-                ]);
+                const font = await loadFont(CONFIG.FONT_PATH);
+                heightMaps = await loadHeightMaps();
 
                 const background = createTextGroup(
-                    TEXT_CONTENT.BACKGROUND, 
-                    CONFIG.BACKGROUND, 
-                    font, 
-                    heightMap
+                    TEXT_CONTENT.BACKGROUND,
+                    CONFIG.BACKGROUND,
+                    font,
+                    0
                 );
-                
+
                 const foreground = createTextGroup(
-                    TEXT_CONTENT.FOREGROUND, 
-                    CONFIG.FOREGROUND, 
-                    font, 
-                    heightMap, 
+                    TEXT_CONTENT.FOREGROUND,
+                    CONFIG.FOREGROUND,
+                    font,
                     CONFIG.FOREGROUND.Z_OFFSET
                 );
 
@@ -278,24 +342,6 @@ NoWareOS [Version 88614]
                 scene.add(foregroundGroup);
 
                 camera.position.set(0, 0, CONFIG.BACKGROUND.CAMERA_POSITION_Z);
-
-                let lastImageData = null;
-
-                function getHeightmapValue(x, y) {
-                    if (!lastImageData) {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = heightMap.image.width;
-                        canvas.height = heightMap.image.height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(heightMap.image, 0, 0);
-                        lastImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    }
-
-                    const ix = Math.floor(x * heightMap.image.width);
-                    const iy = Math.floor(y * heightMap.image.height);
-                    const idx = (iy * heightMap.image.width + ix) * 4;
-                    return lastImageData.data[idx] / 255.0;
-                }
 
                 document.addEventListener('mousemove', (event) => {
                     const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
@@ -307,41 +353,47 @@ NoWareOS [Version 88614]
                 function animate() {
                     requestAnimationFrame(animate);
                     const time = performance.now() * 0.001;
+                    const animationPhase = (Math.sin(time * CONFIG.BACKGROUND.ANIMATION_SPEED) * 0.5 + 0.5);
 
-                    currentRotation.background.x += (targetRotation.x * CONFIG.BACKGROUND.MAX_ROTATION - 
-                                                   currentRotation.background.x) * CONFIG.BACKGROUND.ROTATION_DAMPING;
-                    currentRotation.background.y += (targetRotation.y * CONFIG.BACKGROUND.MAX_ROTATION - 
-                                                   currentRotation.background.y) * CONFIG.BACKGROUND.ROTATION_DAMPING;
-                    
-                    currentRotation.foreground.x += (targetRotation.x * CONFIG.FOREGROUND.MAX_ROTATION - 
-                                                   currentRotation.foreground.x) * CONFIG.FOREGROUND.ROTATION_DAMPING;
-                    currentRotation.foreground.y += (targetRotation.y * CONFIG.FOREGROUND.MAX_ROTATION - 
-                                                   currentRotation.foreground.y) * CONFIG.FOREGROUND.ROTATION_DAMPING;
+                    if (!isTransitioning &&
+                        Math.abs(animationPhase - 0.5) < CONFIG.HEIGHTMAPS.TRANSITION_THRESHOLD &&
+                        time - lastTransitionTime > CONFIG.HEIGHTMAPS.CYCLE_DURATION) {
+                        isTransitioning = true;
+                        lastTransitionTime = time;
+                    }
+
+                    currentRotation.background.x += (targetRotation.x * CONFIG.BACKGROUND.MAX_ROTATION -
+                        currentRotation.background.x) * CONFIG.BACKGROUND.ROTATION_DAMPING;
+                    currentRotation.background.y += (targetRotation.y * CONFIG.BACKGROUND.MAX_ROTATION -
+                        currentRotation.background.y) * CONFIG.BACKGROUND.ROTATION_DAMPING;
+
+                    currentRotation.foreground.x += (targetRotation.x * CONFIG.FOREGROUND.MAX_ROTATION -
+                        currentRotation.foreground.x) * CONFIG.FOREGROUND.ROTATION_DAMPING;
+                    currentRotation.foreground.y += (targetRotation.y * CONFIG.FOREGROUND.MAX_ROTATION -
+                        currentRotation.foreground.y) * CONFIG.FOREGROUND.ROTATION_DAMPING;
 
                     backgroundGroup.rotation.x = currentRotation.background.x;
                     backgroundGroup.rotation.y = currentRotation.background.y;
                     foregroundGroup.rotation.x = currentRotation.foreground.x;
                     foregroundGroup.rotation.y = currentRotation.foreground.y;
 
-                    const bgIntensity = (Math.sin(time * CONFIG.BACKGROUND.ANIMATION_SPEED) * 0.5 + 0.5) * 
-                                      CONFIG.BACKGROUND.DISPLACEMENT_INTENSITY;
-                    const fgIntensity = (Math.sin(time * CONFIG.FOREGROUND.ANIMATION_SPEED) * 0.5 + 0.5) * 
-                                      CONFIG.FOREGROUND.DISPLACEMENT_INTENSITY;
+                    const bgIntensity = animationPhase * CONFIG.BACKGROUND.DISPLACEMENT_INTENSITY;
+                    const fgIntensity = animationPhase * CONFIG.FOREGROUND.DISPLACEMENT_INTENSITY;
 
-                    background.characters.forEach(({mesh, gridX, gridY}) => {
-                        const height = getHeightmapValue(gridX, gridY);
+                    background.characters.forEach(({ mesh, gridX, gridY }) => {
+                        const height = getHeightmapValue(gridX, gridY, time, animationPhase);
                         mesh.position.z = height * bgIntensity;
-                        mesh.material.opacity = CONFIG.BACKGROUND.BASE_OPACITY + 
-                                             height * CONFIG.BACKGROUND.OPACITY_RANGE;
+                        mesh.material.opacity = CONFIG.BACKGROUND.BASE_OPACITY +
+                            height * CONFIG.BACKGROUND.OPACITY_RANGE;
                     });
 
-                    foreground.characters.forEach(({mesh, gridX, gridY}) => {
-                        const height = getHeightmapValue(gridX, gridY);
+                    foreground.characters.forEach(({ mesh, gridX, gridY }) => {
+                        const height = getHeightmapValue(gridX, gridY, time, animationPhase);
                         mesh.position.z = CONFIG.FOREGROUND.Z_OFFSET + height * fgIntensity;
-                        mesh.material.opacity = CONFIG.FOREGROUND.BASE_OPACITY + 
-                                             height * CONFIG.FOREGROUND.OPACITY_RANGE;
+                        mesh.material.opacity = CONFIG.FOREGROUND.BASE_OPACITY +
+                            height * CONFIG.FOREGROUND.OPACITY_RANGE;
                     });
-                    
+
                     composer.render();
                 }
 
@@ -362,4 +414,5 @@ NoWareOS [Version 88614]
         init();
     </script>
 </body>
+
 </html>

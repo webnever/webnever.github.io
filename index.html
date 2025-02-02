@@ -245,7 +245,6 @@
 
         const STORY_VARIATIONS = {
             default: {
-                audio: "sand.mp3",
                 lines: [
                     "              ........              ",
                     "         .d$$$$*$$$$$$bc         ",
@@ -309,7 +308,6 @@
                 font: 'Terminal',
             },
             wasteland: {
-                audio: "wasteland.mp3",
                 lines: [
                     "SPLIT UR SKULL OVER UR KEYBOARD, SURFER FUCK",
                     "THIS ISN'T REAL",
@@ -609,28 +607,6 @@
                 logoWrapper.classList.add('hidden');
             }
 
-            // Set up audio for the selected variation
-            const audio = document.getElementById('backgroundMusic');
-            audio.src = variation.audio;
-            audio.load();
-
-            // Try to play audio when user interacts with the page
-            function tryPlayAudio() {
-                audio.play().catch(error => {
-                    console.log("Audio playback failed:", error);
-                });
-                // Remove the event listeners once we've tried to play
-                document.removeEventListener('click', tryPlayAudio);
-                document.removeEventListener('keypress', tryPlayAudio);
-            }
-
-            // Add event listeners for user interaction
-            document.addEventListener('click', tryPlayAudio);
-            document.addEventListener('keypress', tryPlayAudio);
-
-            // Also try to play immediately (will work if user has already interacted)
-            tryPlayAudio();
-
             return variation;
         }
 
@@ -650,7 +626,6 @@
             "galleryDithered/hypermetal.png"
         ];
 
-        let audio = document.getElementById('backgroundMusic');
         let availableImages = [...images];
         let lastTime = 0;
         let currentWrapper = 1;
@@ -741,26 +716,6 @@
 
             // Select the story variation
             const selectedVariation = selectStoryVariation();
-
-            // Set up audio based on the selected variation
-            const audio = document.getElementById('backgroundMusic');
-            audio.src = selectedVariation.audio;
-            audio.loop = true;
-
-            // Set up audio context and gain node
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const source = audioContext.createMediaElementSource(audio);
-            const gainNode = audioContext.createGain();
-            gainNode.gain.value = 0.5;
-
-            source.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            audio.play().catch(error => {
-                console.log("Audio playback failed:", error);
-            });
-
-            document.body.classList.add('audio-enabled');
 
             // Start printing lines with the selected variation
             printLines(selectedVariation);

@@ -12,8 +12,14 @@
             src: url('Terminus.ttf') format('truetype');
         }
 
+        @font-face {
+            font-family: 'MS Mincho';
+            src: url('MSMINCHO.TTF') format('truetype');
+        }
+
         :root {
             --bg-color: #000000;
+            --text-color: #00ff00;
             --timestamp-color: #888888;
             --font-size: 20px;
             --line-spacing: 8px;
@@ -97,7 +103,6 @@
         }
 
         @keyframes blink {
-
             0%,
             50% {
                 opacity: 1;
@@ -178,6 +183,28 @@
             text-decoration: underline;
         }
 
+        .btc-container {
+            position: relative;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btc-text {
+            position: relative;
+            z-index: 2;
+            color: var(--text-color);
+        }
+
+        .btc-image {
+            position: absolute;
+            max-width: 300px;
+            max-height: 100px;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
         #mobile-message {
             display: none;
             position: fixed;
@@ -200,6 +227,210 @@
             object-fit: contain;
         }
 
+        /* Loader styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loader.fade-out {
+            opacity: 0;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #333;
+            border-top: 5px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Content styles */
+        .content {
+            width: 100%;
+            opacity: 1;
+            transition: opacity 0.5s ease-in;
+        }
+
+        .content.hidden {
+            opacity: 0;
+        }
+
+        /* Viewport styles */
+        .viewport {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #title {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #awlogo {
+            width: 50vw;
+            height: auto;
+        }
+
+        .icon-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: -25rem;
+        }
+
+        #sandclock, #book {
+            height: 128px;
+            width: auto;
+        }
+
+        /* Gallery section */
+        .gallery-viewport {
+            background-color: #000;
+            padding: 2vh;
+            height: 200vh;
+        }
+
+        .gallery-title {
+            color: white;
+            font-family: 'MS Mincho', serif;
+            font-size: 5vh;
+            margin-bottom: 5vh;
+            text-align: center;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 1vh;
+            width: 135vh;
+            height: 180vh;
+            aspect-ratio: 3/4;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        /* Game Preview section */
+        #gamePreview {
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-title {
+            color: white;
+            font-family: 'MS Mincho', serif;
+            font-size: 5vh;
+            margin-bottom: 5vh;
+            text-align: center;
+        }
+
+        #gamePreview img {
+            width: 80vw;
+            height: auto;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        /* Black section */
+        #black {
+            position: relative;
+        }
+
+        .black-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: 'MS Mincho', serif;
+            text-align: center;
+            font-size: 3vh;
+            z-index: 2;
+        }
+
+        #black img {
+            width: 95vw;
+            height: auto;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (orientation: portrait) {
+            #awlogo {
+                width: 90vw;
+                height: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery {
+                width: 90vw;
+                height: calc(120vw);
+            }
+        }
+
+        /* Popup styles */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .popup-overlay.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            cursor: default;
+        }
+
+        .popup-content img {
+            width: auto;
+            height: auto;
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
         @media (min-width: 769px) {
             #mobile-message {
                 display: none !important;
@@ -209,6 +440,10 @@
 </head>
 
 <body>
+    <div class="loader">
+        <div class="spinner"></div>
+    </div>
+
     <div id="mobile-message">
         <img src="/splash2.png" alt="Mobile splash">
     </div>
@@ -294,8 +529,8 @@
                     "",
                     "",
                     "ÆTHER WEBNEVER © NOWARE OS",
-                    "ACT I: ARMOUR in development",
-                    "release circa 2028, TBA",
+                    "ARMOUR in development",
+                    "release Dec 9th, 2025",
                 ],
                 isInfinite: false,
                 textColor: "#00ff00",
@@ -526,7 +761,7 @@
                     "SPIRALS",
                     "USURP THE DEVIL",
                     "THE BASILISK",
-                    "㉈ㄘⵒﷺꉴ㍷⽄ⷂⳓﶴ㌥ꊠ﴿㊏〠㜠⺑䭐㘍ꈒ㶀⥛⥛䢨⼌כּ㕢⹊㽷齛⷗䳈㘡⾉ꐡⰳ⭜ꉔ⼼⾖ⳓᶾ",
+                    "㉈ㄘⵒﷺꉴ㍷⽄ⷂⳓﶴ㌥ꊠ﴿㊏〠㜠⺑䭐㘍ꈒ㶀⥛⥛䢨⼌כּ㕢⹊㽷齛⷗䳈㘡⾉ꐡⰳ⭜ꉔ⼼⾖ⳓᶾ",
                     "••• 三 △",
                     "RISE FROM THE BLOOD",
                     "TEARS OF THE DEVIL",
@@ -639,7 +874,7 @@
 
         // Track time intervals for image changes
         let lastImageChange = 0;
-        const IMAGE_CHANGE_INTERVAL = 8000; // Change image every 5 seconds
+        const IMAGE_CHANGE_INTERVAL = 8000; // Change image every 8 seconds
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -648,18 +883,6 @@
             }
             return array;
         }
-
-        // function getRandomPosition() {
-        //     const root = document.documentElement;
-        //     const topMin = parseFloat(getComputedStyle(root).getPropertyValue('--image-top-min'));
-        //     const topMax = parseFloat(getComputedStyle(root).getPropertyValue('--image-top-max'));
-        //     const leftMin = parseFloat(getComputedStyle(root).getPropertyValue('--image-left-min'));
-        //     const leftMax = parseFloat(getComputedStyle(root).getPropertyValue('--image-left-max'));
-
-        //     const randomTop = Math.random() * (topMax - topMin) + topMin;
-        //     const randomLeft = Math.random() * (leftMax - leftMin) + leftMin;
-        //     return { top: `${randomTop}%`, left: `${randomLeft}%` };
-        // }
 
         function changeImage() {
             if (availableImages.length === 0) {
@@ -704,6 +927,15 @@
                 socialButtons.style.display = 'none';
                 return; // Stop execution for mobile devices
             }
+
+            // Hide loader after initial load
+            setTimeout(() => {
+                document.querySelector('.loader').classList.add('fade-out');
+                setTimeout(() => {
+                    document.querySelector('.loader').style.display = 'none';
+                }, 500);
+            }, 1500);
+            
             // Initialize images first
             shuffleArray(availableImages);
             const firstImage = availableImages.pop();
@@ -777,31 +1009,7 @@
             timestamp.textContent = formatElapsedTime();
             line.appendChild(timestamp);
 
-            // Check if this is a social link line
-            if (text === '>gameplay') {
-                const link = document.createElement('a');
-                link.href = '/gameplay';
-                link.target = '_blank';
-                link.textContent = '>gameplay';
-                line.appendChild(link);
-            } else if (text === '>discord') {
-                const link = document.createElement('a');
-                link.href = 'https://discord.gg/nnqb4uj8d4';
-                link.target = '_blank';
-                link.textContent = '>discord';
-                line.appendChild(link);
-            } else if (text === '>x.com') {
-                const link = document.createElement('a');
-                link.href = 'https://x.com/noware_os';
-                link.target = '_blank';
-                link.textContent = '>x.com';
-                line.appendChild(link);
-            } else if (text === '>hiring') {
-                const link = document.createElement('a');
-                link.href = '/hiring';
-                link.textContent = '>hiring';
-                line.appendChild(link);
-            } else if (text === '>sigilsync') {
+            if (text === '>sigilsync') {
                 const link = document.createElement('a');
                 link.href = '/sigilsync';
                 link.textContent = '>sigilsync';
@@ -816,6 +1024,28 @@
                 link.href = '/m2';
                 link.textContent = '>m2';
                 line.appendChild(link);
+            } else if (text === 'BTC Fund: bc1qp7h9pk30pemgx5grm0cusu7wc98r4uzqesc5pq') {
+                // Create a container for BTC address with image
+                const btcContainer = document.createElement('div');
+                btcContainer.className = 'btc-container';
+                
+                // Create the text element
+                const btcText = document.createElement('span');
+                btcText.className = 'btc-text';
+                btcText.textContent = text;
+                
+                // Create the image element
+                const btcImage = document.createElement('img');
+                btcImage.className = 'btc-image';
+                btcImage.src = 'BTC.png';
+                btcImage.alt = 'Bitcoin';
+                
+                // Add elements to container
+                btcContainer.appendChild(btcImage);
+                btcContainer.appendChild(btcText);
+                
+                // Add container to line
+                line.appendChild(btcContainer);
             } else {
                 // Regular text line
                 line.appendChild(document.createTextNode(text));
@@ -879,18 +1109,42 @@
 
                 // Print empty line and all social links with same timing
                 await printLine('');
-                await printLine('>gameplay');
-                await printLine('>discord');
-                await printLine('>x.com');
-                await printLine('>hiring');  // Added this line
                 await printLine('>sigilsync');
                 await printLine('>cards');
                 await printLine('>m2');
-                await printLine('');
-                await printLine('BTC Fund: bc1q6hr3zmxkc9dml2zsmatfwslfqpc77nekf2g66k')
+                await printLine('BTC Fund: bc1qp7h9pk30pemgx5grm0cusu7wc98r4uzqesc5pq');
             }
         }
-        // Rest of the code remains the same
+
+        // Initialize and handle popup for gallery images if we add them later
+        function initGalleryPopups() {
+            const galleryImages = document.querySelectorAll('.gallery img');
+            const popupOverlay = document.createElement('div');
+            popupOverlay.className = 'popup-overlay';
+            document.body.appendChild(popupOverlay);
+            
+            const popupContent = document.createElement('div');
+            popupContent.className = 'popup-content';
+            popupOverlay.appendChild(popupContent);
+            
+            const popupImage = document.createElement('img');
+            popupContent.appendChild(popupImage);
+            
+            galleryImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    popupImage.src = img.src;
+                    popupOverlay.classList.add('active');
+                });
+            });
+            
+            popupOverlay.addEventListener('click', (e) => {
+                if (e.target === popupOverlay) {
+                    popupOverlay.classList.remove('active');
+                }
+            });
+        }
+        
+        // Run any necessary initialization
         updateFromURLParams();
     </script>
 </body>

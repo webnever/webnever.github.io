@@ -846,19 +846,18 @@
         }
 
         const images = [
-            "galleryDithered/6dragon.png",
-            "galleryDithered/6dragon2.png",
-            "galleryDithered/6dragonballerina.png",
-            "galleryDithered/activist.png",
-            "galleryDithered/bluebeamchrist.png",
-            "galleryDithered/ddnurse.png",
-            "galleryDithered/etac.png",
-            "galleryDithered/etac2.png",
-            "galleryDithered/jackal.png",
-            "galleryDithered/luh.png",
-            "galleryDithered/mm.png",
-            "galleryDithered/val.png",
-            "galleryDithered/hypermetal.png"
+            "galleryConceptArtDithered/6dragon.png",
+            "galleryConceptArtDithered/6dragon2.png",
+            "galleryConceptArtDithered/6dragonballerina.png",
+            "galleryConceptArtDithered/activist.png",
+            "galleryConceptArtDithered/bluebeamchrist.png",
+            "galleryConceptArtDithered/ddnurse.png",
+            "galleryConceptArtDithered/etac.png",
+            "galleryConceptArtDithered/etac2.png",
+            "galleryConceptArtDithered/jackal.png",
+            "galleryConceptArtDithered/luh.png",
+            "galleryConceptArtDithered/val.png",
+            "galleryConceptArtDithered/hypermetal.png"
         ];
 
         let availableImages = [...images];
@@ -1009,7 +1008,12 @@
             timestamp.textContent = formatElapsedTime();
             line.appendChild(timestamp);
 
-            if (text === '>sigilsync') {
+            if (text === '>art') {
+                const link = document.createElement('a');
+                link.href = '/art';
+                link.textContent = '>art';
+                line.appendChild(link);
+            } else if (text === '>sigilsync') {
                 const link = document.createElement('a');
                 link.href = '/sigilsync';
                 link.textContent = '>sigilsync';
@@ -1109,6 +1113,7 @@
 
                 // Print empty line and all social links with same timing
                 await printLine('');
+                await printLine('>art');
                 await printLine('>sigilsync');
                 await printLine('>cards');
                 await printLine('>m2');

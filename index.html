@@ -205,6 +205,24 @@
             z-index: 1;
         }
 
+        /* Updated styles for inline BTC display */
+        .btc-line-container {
+            position: relative;
+            display: inline;
+        }
+
+        .btc-background-image {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 300px;
+            max-height: 100px;
+            opacity: 0.3;
+            z-index: -1;
+            pointer-events: none;
+        }
+
         #mobile-message {
             display: none;
             position: fixed;
@@ -857,7 +875,7 @@
             "galleryConceptArtDithered/jackal.png",
             "galleryConceptArtDithered/luh.png",
             "galleryConceptArtDithered/val.png",
-            "galleryConceptArtDithered/hypermetal.png"
+            "galleryConceptArtDithered/hypermetal.png",
         ];
 
         let availableImages = [...images];
@@ -1029,26 +1047,25 @@
                 link.textContent = '>m2';
                 line.appendChild(link);
             } else if (text === 'BTC Fund: bc1qp7h9pk30pemgx5grm0cusu7wc98r4uzqesc5pq') {
-                // Create a container for BTC address with image
-                const btcContainer = document.createElement('div');
-                btcContainer.className = 'btc-container';
+                // Create a container for inline BTC address with background image
+                const btcContainer = document.createElement('span');
+                btcContainer.className = 'btc-line-container';
                 
-                // Create the text element
+                // Create the text element (inline)
                 const btcText = document.createElement('span');
-                btcText.className = 'btc-text';
                 btcText.textContent = text;
                 
-                // Create the image element
+                // Create the background image element
                 const btcImage = document.createElement('img');
-                btcImage.className = 'btc-image';
+                btcImage.className = 'btc-background-image';
                 btcImage.src = 'BTC.png';
                 btcImage.alt = 'Bitcoin';
                 
                 // Add elements to container
-                btcContainer.appendChild(btcImage);
                 btcContainer.appendChild(btcText);
+                btcContainer.appendChild(btcImage);
                 
-                // Add container to line
+                // Add container to line (after timestamp)
                 line.appendChild(btcContainer);
             } else {
                 // Regular text line

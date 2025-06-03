@@ -943,20 +943,10 @@
         }
 
         window.addEventListener('load', async function () {
-            // Check if mobile and show/hide appropriate content
-            const mobileMessage = document.getElementById('mobile-message');
-            const mainContent = document.getElementById('terminal-container');
-            const imageWrappers = document.querySelectorAll('.image-wrapper');
-            const logoWrapper = document.getElementById('logoWrapper');
-            const socialButtons = document.getElementById('socialButtons');
-            
+            // Check if mobile and redirect to /art
             if (isMobile()) {
-                mobileMessage.style.display = 'flex';
-                mainContent.style.display = 'none';
-                imageWrappers.forEach(wrapper => wrapper.style.display = 'none');
-                logoWrapper.style.display = 'none';
-                socialButtons.style.display = 'none';
-                return; // Stop execution for mobile devices
+                window.location.href = '/art';
+                return;
             }
 
             // Hide loader after initial load

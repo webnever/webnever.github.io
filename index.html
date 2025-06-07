@@ -496,12 +496,6 @@
     </div>
 
     <div class="social-buttons" id="socialButtons">
-        <a href="/gameplay" target="_blank" class="social-link">>gameplay</a>
-        <a href="https://discord.gg/nnqb4uj8d4" target="_blank" class="social-link">>discord</a>
-        <a href="https://x.com/noware_os" target="_blank" class="social-link">>x.com</a>
-        <a href="/hiring" class="social-link">>hiring</a>
-        <a href="/sigilsync" class="social-link">>sigilsync</a>
-        <a href="/cards" class="social-link">>cards</a>
         <a href="/m2" class="social-link">>m2</a>
     </div>
 
@@ -1035,16 +1029,6 @@
                 link.href = '/art';
                 link.textContent = '>art';
                 line.appendChild(link);
-            } else if (text === '>sigilsync') {
-                const link = document.createElement('a');
-                link.href = '/sigilsync';
-                link.textContent = '>sigilsync';
-                line.appendChild(link);
-            } else if (text === '>cards') {
-                const link = document.createElement('a');
-                link.href = '/cards';
-                link.textContent = '>cards';
-                line.appendChild(link);
             } else if (text === '>m2') {
                 const link = document.createElement('a');
                 link.href = '/m2';
@@ -1135,8 +1119,6 @@
                 // Print empty line and all social links with same timing
                 await printLine('');
                 await printLine('>art');
-                await printLine('>sigilsync');
-                await printLine('>cards');
                 await printLine('>m2');
                 await printLine('BTC Fund: bc1qp7h9pk30pemgx5grm0cusu7wc98r4uzqesc5pq');
             }

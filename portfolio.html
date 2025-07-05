@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liam Zbaeren - Private Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <style>
+        html, body {
+            background: #000 !important;
+        }
+        /* Custom scrollbar styles */
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 3px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        
+        /* Remove input field outline and selection */
+        input:focus {
+            outline: none !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        input::selection {
+            background: transparent;
+        }
+        
+        input::-moz-selection {
+            background: transparent;
+        }
+        
+        /* Terminal cursor animation */
+        @keyframes pulse {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .animate-pulse {
+            animation: pulse 1s infinite;
+        }
+        
+        /* Tailwind classes for the terminal */
+        .min-h-screen { min-height: 100vh; }
+        .bg-gray-900 { background-color: #111827; }
+        .text-green-400 { color: #34d35c; }
+        .font-mono { font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace; }
+        .p-4 { padding: 1rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .bg-black { background-color: #000000; }
+        .h-full { height: 100%; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .border { border-width: 1px; }
+        .border-gray-700 { border-color: #374151; }
+        .overflow-hidden { overflow: hidden; }
+        .cursor-text { cursor: text; }
+        .bg-gray-800 { background-color: #1f2937; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .space-x-2 > :not([hidden]) ~ :not([hidden]) { margin-left: 0.5rem; }
+        .w-3 { width: 0.75rem; }
+        .h-3 { height: 0.75rem; }
+        .bg-red-500 { background-color: #ef4444; }
+        .bg-yellow-500 { background-color: #eab308; }
+        .bg-green-500 { background-color: #22c55e; }
+        .rounded-full { border-radius: 9999px; }
+        .ml-4 { margin-left: 1rem; }
+        .text-gray-400 { color: #9ca3af; }
+        .text-sm { font-size: 0.875rem; }
+        .h-96 { height: 24rem; }
+        .overflow-y-auto { overflow-y: auto; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .text-blue-400 { color: #60a5fa; }
+        .mr-2 { margin-right: 0.5rem; }
+        .text-white { color: #ffffff; }
+        .whitespace-pre-wrap { white-space: pre-wrap; }
+        .flex-1 { flex: 1 1 0%; }
+        .bg-transparent { background-color: transparent; }
+        .outline-none { outline: 2px solid transparent; outline-offset: 2px; }
+        .text-xs { font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const TerminalPortfolio = () => {
+            const [history, setHistory] = useState([]);
+            const [currentCommand, setCurrentCommand] = useState('');
+            const [isTyping, setIsTyping] = useState(false);
+            const inputRef = useRef(null);
+            const terminalRef = useRef(null);
+
+            const commands = {
+                help: () => [
+                    "Available commands:",
+                    "  help       - Show this help message",
+                    "  about      - Learn about me",
+                    "  skills     - View my technical skills",
+                    "  projects   - See my projects",
+                    "  education  - View education background",
+                    "  contact    - Get contact information",
+                    "  clear      - Clear terminal",
+                    "  ls         - List available sections",
+                    "  cat [file] - Display file contents"
+                ],
+                about: () => [
+                    "Liam Zbaeren - Full Stack Developer",
+                    "════════════════════════════════",
+                    "",
+                    "Passionate software developer with 12 years of experience since I first learned to code.",
+                    "I started coding at the age of 12, writing batch text adventures and using Unity to create games.",
+                    "I have a strong foundation and knowledge of how to code, but am also on the forefront and precipice",
+                    "of utilizing AI tools to build more in less time. I use AI tools as an educator, simulatenously whilst",
+                    "studying at QUT for Information Technology with major in Software Development and Machine Learning.",
+                    "I'm always either coding or making art, the two I often mix together.",
+                ],
+                skills: () => [
+                    "Technical Skills",
+                    "===============",
+                    "",
+                    "Languages:",
+                    "  • C# is my primary language, I use it for most of my visual art and game projects.",
+                    "  • Python I use as the go-to need-something-done-on-the-computer.",
+                    "  • HTML/CSS/JavaScript - I've made a few websites and web apps, simple ones, to display my art.",
+                    "",
+                    "Frameworks & Libraries:",
+                    "  • Godot 4 - My primary game engine.",
+                    "Operating Systems:",
+                    "  • Linux - Ubuntu is my main OS, dual booted with Windows.",
+                    "Tools & Others:",
+                    "  • Git/Github - I'm good at avoiding using git reset --hard HEAD."
+                ],
+                projects: () => [
+                    "Recent Projects",
+                    "==============",
+                    "",
+                    "1. ARMOUR Unfinished Video Game Project",,
+                    "   C# in Godot 4.",
+                    "   Ambitious point and click adventure game cancelled in favour of a novel due to a lack of 3D assets.",
+                    "   GitHub: https://github.com/webnever/armour",
+                    "",
+                    "2. DOOMspriteGen - Learning GAN / ML",
+                    "   Python project guided by Claude Sonnet, with the goal of reproducing the DOOM sprite style.",
+                    "   This project is a work in progress, currently in the process of data labelling.",
+                    "   GitHub: https://github.com/webnever/DOOMspriteGen",
+                    "",
+                    "3. MIDI VDJ (Visual DJ) software for live music performance overlaying an .mp4",
+                    "   Python script, specifically developed to run fast with multi-threaded architecture.",
+                    "   GitHub: https://github.com/webnever/VDJ",
+                    "",
+                    "4. another-todo-app",
+                    "   Experiment in using C++ to create a simple todo app.",
+                    "   First time using C++ out of an engine.",
+                    "   GitHub: https://github.com/webnever/another-todo-app"
+                ],
+                education: () => [
+                    "Education",
+                    "=========",
+                    "",
+                    "Bachelor of Information Technology Majoring in Software Development and Machine Learning",
+                    "Queensland University of Technology",
+                    "2025- Present",
+                ],
+                contact: () => [
+                    "Contact Information",
+                    "==================",
+                    "",
+                    "Email: liamzbaeren@gmail.com",
+                    "GitHub: https://github.com/webnever",
+                    "",
+                    "Location: Brisbane, QLD",
+                    "Open to: Remote work, Full-time opportunities, Part-time opportunities, Contract work",
+                ],
+                ls: () => [
+                    "about.txt",
+                    "skills.txt", 
+                    "projects.txt",
+                    "education.txt",
+                    "contact.txt"
+                ],
+                cat: (args) => {
+                    const file = args[0];
+                    const fileMap = {
+                        'about.txt': commands.about,
+                        'skills.txt': commands.skills,
+                        'projects.txt': commands.projects,
+                        'education.txt': commands.education,
+                        'contact.txt': commands.contact
+                    };
+                    
+                    if (!file) {
+                        return ["cat: missing file operand", "Try 'cat [filename]' or 'ls' to see available files"];
+                    }
+                    
+                    if (fileMap[file]) {
+                        return fileMap[file]();
+                    } else {
+                        return [`cat: ${file}: No such file or directory`];
+                    }
+                },
+                clear: () => {
+                    setHistory([]);
+                    return [];
+                }
+            };
+
+            const processCommand = (cmd) => {
+                const trimmed = cmd.trim();
+                const [command, ...args] = trimmed.split(' ');
+                
+                if (command === 'clear') {
+                    commands.clear();
+                    return;
+                }
+                
+                if (commands[command]) {
+                    const output = commands[command](args);
+                    setHistory(prev => [...prev, { input: cmd, output }]);
+                } else if (trimmed === '') {
+                    setHistory(prev => [...prev, { input: cmd, output: [] }]);
+                } else {
+                    setHistory(prev => [...prev, { 
+                        input: cmd, 
+                        output: [`Command not found: ${command}`, "Type 'help' for available commands"] 
+                    }]);
+                }
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                processCommand(currentCommand);
+                setCurrentCommand('');
+            };
+
+            useEffect(() => {
+                const welcomeMessage = [
+                    "Liam Zbaeren's Portfolio",
+                    "===============================================",
+                    "",
+                    "Studying Information Technology at QUT (1st Year).",
+                    "Many years of game development experience.",
+                    "Please see my Github for the ARMOUR project.",
+                    "https://github.com/webnever/armour",
+                    "\n",
+                    "'help' to see available commands.",
+                    ""
+                ];
+                
+                setHistory([{ input: '', output: welcomeMessage }]);
+                
+                // Focus input on load
+                if (inputRef.current) {
+                    inputRef.current.focus();
+                }
+            }, []);
+
+            useEffect(() => {
+                // Auto-scroll to bottom
+                if (terminalRef.current) {
+                    terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+                }
+            }, [history]);
+
+            // Handle clicks on terminal to focus input
+            const handleTerminalClick = () => {
+                if (inputRef.current) {
+                    inputRef.current.focus();
+                }
+            };
+
+            return React.createElement('div', { 
+                className: "min-h-screen bg-black text-green-400 font-mono p-4 cursor-text",
+                onClick: handleTerminalClick
+            }, 
+                React.createElement('div', { 
+                    key: 'content',
+                    ref: terminalRef,
+                    className: "h-full overflow-y-auto scrollbar-thin"
+                }, 
+                    [
+                        // Command History
+                        ...history.map((entry, index) => 
+                            React.createElement('div', { key: index, className: "mb-2" }, [
+                                entry.input && React.createElement('div', { 
+                                    key: 'input',
+                                    className: "flex items-center mb-1" 
+                                }, [
+                                    React.createElement('span', { key: 'prompt', className: "text-blue-400 mr-2 font-mono text-base" }, "user@webnever:~$"),
+                                    React.createElement('span', { 
+                                        key: 'command', 
+                                        className: "font-mono text-green-400 text-base" // Match input style
+                                    }, entry.input)
+                                ]),
+                                ...entry.output.map((line, lineIndex) => 
+                                    React.createElement('div', { 
+                                        key: `output-${lineIndex}`,
+                                        className: "text-green-400 whitespace-pre-wrap" 
+                                    }, line)
+                                )
+                            ])
+                        ),
+
+                        // Current Input
+                        React.createElement('div', { key: 'current-input', className: "flex items-center" }, [
+                            React.createElement('span', { key: 'prompt', className: "text-blue-400 mr-2 font-mono text-base" }, "user@webnever:~$"),
+                            React.createElement('input', {
+                                key: 'input',
+                                ref: inputRef,
+                                type: 'text',
+                                value: currentCommand,
+                                onChange: (e) => setCurrentCommand(e.target.value),
+                                onKeyDown: (e) => {
+                                    if (e.key === 'Enter') {
+                                        handleSubmit(e);
+                                    }
+                                },
+                                className: "flex-1 bg-transparent outline-none font-mono text-green-400 border-none shadow-none text-base",
+                                disabled: isTyping,
+                                style: { 
+                                    caretColor: '#34d399',
+                                    fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                                    border: 'none',
+                                    boxShadow: 'none',
+                                    fontSize: '1rem'
+                                },
+                                autoFocus: true
+                            }),
+                            !document.activeElement || document.activeElement !== inputRef.current
+                                ? React.createElement('span', { key: 'cursor', className: "animate-pulse text-green-400" }, "█")
+                                : null
+                        ])
+                    ]
+                )
+            );
+        };
+
+        ReactDOM.render(React.createElement(TerminalPortfolio), document.getElementById('root'));
+    </script>
+</body>
+</html>

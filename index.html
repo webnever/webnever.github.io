@@ -116,50 +116,8 @@
             }
         }
 
-        .logo-wrapper {
-            position: fixed;
-            top: 0;
-            right: 50px;
-            z-index: 2;
-            pointer-events: none;
-            opacity: 1;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .logo-wrapper.hidden {
-            opacity: 0;
-        }
-
-        .logo-wrapper img {
-            width: 500px;
-            height: 500px;
-            object-fit: contain;
-        }
-
-        .image-wrapper {
-            position: fixed;
-            width: 500px;
-            height: 500px;
-            bottom: 100px;
-            right: 50px;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .image-wrapper img.visible {
-            opacity: 1;
-        }
+        /* Removed .logo-wrapper styles */
+        /* Removed .image-wrapper styles */
 
         .social-buttons {
             opacity: 0;
@@ -480,16 +438,6 @@
         <div class="mobile-text">Website available on PC only</div>
     </div>
 
-    <div class="logo-wrapper" id="logoWrapper">
-        <img src="awlogoDithered.png">
-    </div>
-    <div id="imageWrapper1" class="image-wrapper">
-        <img id="displayImage1">
-    </div>
-    <div id="imageWrapper2" class="image-wrapper">
-        <img id="displayImage2">
-    </div>
-
     <div id="terminal-container">
         <div id="terminal"></div>
         <div class="cursor"></div>
@@ -503,6 +451,10 @@
         function isMobile() {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
         }
+
+        // FIX: Declaring the scroll tracking variables globally or at least outside of printLines
+        let userIsScrolling = false;
+        let isAtBottom = true;
 
         const STORY_VARIATIONS = {
             default: {
@@ -533,9 +485,6 @@
                     "(c) 20dX NoWare(tm). All Rights Reserved.",
                     "",
                     "",
-                    "ÆTHER WEBNEVER CHRONICLES",
-                    "",
-                    "",
                     "black sun shining",
                     "serpent bleeding",
                     "dawn graving",
@@ -554,13 +503,11 @@
                     "haunted world",
                     "",
                     "",
-                    "ÆTHER WEBNEVER © NOWARE OS",
-                    "ARMOUR in development",
-                    "release Dec 9th, 2025",
+                    "ÆTHER WEBNEVER © NOWARE OS",   
                 ],
                 isInfinite: false,
                 textColor: "#00ff00",
-                showTarot: true,
+                showTarot: false,
                 timing: {
                     fadeInDelay: 75,
                     lineDelay: 75,
@@ -828,9 +775,9 @@
                 textColor: "#ff0000",
                 showTarot: false,
                 timing: {
-                    fadeInDelay: 25,    // Much faster fade in
-                    lineDelay: 25,      // Much faster between lines
-                    fadeInDuration: 25   // Much faster fade animation
+                    fadeInDelay: 25,
+                    lineDelay: 25,
+                    fadeInDuration: 25
                 },
                 font: 'Terminal',
             }
@@ -848,92 +795,13 @@
         // Function to select story variation
         function selectStoryVariation() {
             const random = Math.random();
+            // This is the correct logic for 1% chance:
             const variation = random < 0.01 ? STORY_VARIATIONS.wasteland : STORY_VARIATIONS.default;
 
             // Set the text color
             document.documentElement.style.setProperty('--text-color', variation.textColor);
 
-            // Show/hide image wrappers based on variation
-            const wrapper1 = document.getElementById('imageWrapper1');
-            const wrapper2 = document.getElementById('imageWrapper2');
-            const logoWrapper = document.getElementById('logoWrapper');
-
-            if (variation.showTarot) {
-                wrapper1.style.display = 'block';
-                wrapper2.style.display = 'block';
-                logoWrapper.classList.remove('hidden');
-            } else {
-                wrapper1.style.display = 'none';
-                wrapper2.style.display = 'none';
-                logoWrapper.classList.add('hidden');
-            }
-
             return variation;
-        }
-
-        const images = [
-            "galleryConceptArtDithered/6dragon.png",
-            "galleryConceptArtDithered/6dragon2.png",
-            "galleryConceptArtDithered/6dragonballerina.png",
-            "galleryConceptArtDithered/activist.png",
-            "galleryConceptArtDithered/bluebeamchrist.png",
-            "galleryConceptArtDithered/ddnurse.png",
-            "galleryConceptArtDithered/etac.png",
-            "galleryConceptArtDithered/etac2.png",
-            "galleryConceptArtDithered/jackal.png",
-            "galleryConceptArtDithered/luh.png",
-            "galleryConceptArtDithered/val.png",
-            "galleryConceptArtDithered/hypermetal.png",
-        ];
-
-        let availableImages = [...images];
-        let lastTime = 0;
-        let currentWrapper = 1;
-        const wrapper1 = document.getElementById('imageWrapper1');
-        const wrapper2 = document.getElementById('imageWrapper2');
-        const image1 = document.getElementById('displayImage1');
-        const image2 = document.getElementById('displayImage2');
-
-        let userIsScrolling = false;
-        let isAtBottom = true;
-
-        // Track time intervals for image changes
-        let lastImageChange = 0;
-        const IMAGE_CHANGE_INTERVAL = 8000; // Change image every 8 seconds
-
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        function changeImage() {
-            if (availableImages.length === 0) {
-                availableImages = [...images];
-                shuffleArray(availableImages);
-            }
-
-            const nextImageSrc = availableImages.pop();
-            const nextWrapper = currentWrapper === 1 ? wrapper2 : wrapper1;
-            const nextImageElement = currentWrapper === 1 ? image2 : image1;
-            const currentImageElement = currentWrapper === 1 ? image1 : image2;
-
-            // Set the new image source
-            nextImageElement.src = nextImageSrc;
-
-            // Switch visibility with a slight delay to ensure smooth transition
-            setTimeout(() => {
-                // Show next image
-                nextImageElement.classList.add('visible');
-                // Hide current image
-                currentImageElement.classList.remove('visible');
-                // Switch current wrapper
-                currentWrapper = currentWrapper === 1 ? 2 : 1;
-            }, 50);
-
-            lastImageChange = Date.now();
         }
 
         window.addEventListener('load', async function () {
@@ -950,16 +818,6 @@
                     document.querySelector('.loader').style.display = 'none';
                 }, 500);
             }, 1500);
-            
-            // Initialize images first
-            shuffleArray(availableImages);
-            const firstImage = availableImages.pop();
-            const secondImage = availableImages.pop();
-            image1.src = firstImage;
-            image2.src = secondImage;
-            image1.classList.add('visible');
-            lastImageChange = Date.now();
-            checkImageUpdate();
 
             // Select the story variation
             const selectedVariation = selectStoryVariation();
@@ -968,14 +826,6 @@
             printLines(selectedVariation);
         });
 
-
-        function checkImageUpdate() {
-            const now = Date.now();
-            if (now - lastImageChange >= IMAGE_CHANGE_INTERVAL) {
-                changeImage();
-            }
-            requestAnimationFrame(checkImageUpdate);
-        }
 
         function updateFromURLParams() {
             const params = new URLSearchParams(window.location.search);
@@ -989,10 +839,6 @@
                 'lineSpacing': '--line-spacing',
                 'cursorWidth': '--cursor-width',
                 'cursorHeight': '--cursor-height',
-                'imageTopMin': '--image-top-min',
-                'imageTopMax': '--image-top-max',
-                'imageLeftMin': '--image-left-min',
-                'imageLeftMax': '--image-left-max'
             };
 
             for (const [param, cssVar] of Object.entries(cssVars)) {
@@ -1034,25 +880,25 @@
                 link.href = '/m2';
                 link.textContent = '>m2';
                 line.appendChild(link);
-            } else if (text === 'BTC Fund: 392Bg23AEnpKPXdbSkKP89uvzWrGvzY2mJ') {
+            } else if (text === 'BTC Fund: bc1qp7h9pk30pemgx5grm0cusu7wc98r4uzqesc5pq') {
                 // Create a container for inline BTC address with background image
                 const btcContainer = document.createElement('span');
                 btcContainer.className = 'btc-line-container';
-                
+
                 // Create the text element (inline)
                 const btcText = document.createElement('span');
                 btcText.textContent = text;
-                
+
                 // Create the background image element
                 const btcImage = document.createElement('img');
                 btcImage.className = 'btc-background-image';
                 btcImage.src = 'BTC.png';
                 btcImage.alt = 'Bitcoin';
-                
+
                 // Add elements to container
                 btcContainer.appendChild(btcText);
                 btcContainer.appendChild(btcImage);
-                
+
                 // Add container to line (after timestamp)
                 line.appendChild(btcContainer);
             } else {
@@ -1069,6 +915,7 @@
             const cursor = document.querySelector('.cursor');
             const timing = selectedVariation.timing;
 
+            // FIX: The scroll listener now modifies the global/closure variables
             container.addEventListener('scroll', () => {
                 const maxScroll = container.scrollHeight - container.clientHeight;
                 isAtBottom = Math.abs(container.scrollTop - maxScroll) < 10;
@@ -1089,7 +936,8 @@
                 terminal.appendChild(line);
                 moveCursor();
 
-                if (!userIsScrolling) {
+                // Only auto-scroll if the user hasn't scrolled up (i.e., isAtBottom is true)
+                if (isAtBottom && !userIsScrolling) {
                     container.scrollTop = container.scrollHeight;
                 }
 
@@ -1124,34 +972,6 @@
             }
         }
 
-        // Initialize and handle popup for gallery images if we add them later
-        function initGalleryPopups() {
-            const galleryImages = document.querySelectorAll('.gallery img');
-            const popupOverlay = document.createElement('div');
-            popupOverlay.className = 'popup-overlay';
-            document.body.appendChild(popupOverlay);
-            
-            const popupContent = document.createElement('div');
-            popupContent.className = 'popup-content';
-            popupOverlay.appendChild(popupContent);
-            
-            const popupImage = document.createElement('img');
-            popupContent.appendChild(popupImage);
-            
-            galleryImages.forEach(img => {
-                img.addEventListener('click', () => {
-                    popupImage.src = img.src;
-                    popupOverlay.classList.add('active');
-                });
-            });
-            
-            popupOverlay.addEventListener('click', (e) => {
-                if (e.target === popupOverlay) {
-                    popupOverlay.classList.remove('active');
-                }
-            });
-        }
-        
         // Run any necessary initialization
         updateFromURLParams();
     </script>

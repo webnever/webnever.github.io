@@ -13,13 +13,32 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: #ffffff;
         }
         
         .gallery-container {
             width: 800px;
             display: flex;
             flex-direction: column;
+            gap: 60px;
+        }
+        
+        .era-section {
+            display: flex;
+            flex-direction: column;
             gap: 20px;
+        }
+        
+        .era-title {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 3px;
+            padding: 20px 0;
+            border-top: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
+            margin-bottom: 10px;
         }
         
         .gallery-item {
@@ -43,90 +62,181 @@
             .gallery-container {
                 width: 90%;
             }
+            
+            .era-title {
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="gallery-container">
-        <!-- Gallery items will be inserted here by JavaScript -->
+        <!-- ERA 1 -->
+        <div class="era-section" id="era1">
+            <div class="era-title">ÆTHER WEBNEVER</div>
+            <!-- Add images for era 1 here -->
+        </div>
+
+        <!-- ERA 2 -->
+        <div class="era-section" id="era2">
+            <div class="era-title">DOG BLOOD FULL MOON</div>
+            <!-- Add images for era 2 here -->
+        </div>
+
+        <!-- ERA 3 -->
+        <div class="era-section" id="era3">
+            <div class="era-title">XORA</div>
+            <!-- Add images for era 3 here -->
+        </div>
+
+        <!-- ERA 4 -->
+        <div class="era-section" id="era4">
+            <div class="era-title">WEBNEVER</div>
+            <!-- Add images for era 4 here -->
+        </div>
+
+        <!-- ERA 5 -->
+        <div class="era-section" id="era5">
+            <div class="era-title">ARMOUR</div>
+            <!-- Add images for era 5 here -->
+        </div>
     </div>
 
     <script>
-        const media = [
+        // Your complete media array - organize these into the eras above
+        const allMedia = [
+           
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        ];
+
+        // Define your eras - replace these with your actual era definitions
+        const eras = {
+            era1: [
             { type: 'image', path: 'gallery/webnever3d.png' },
+            ],
+            era2: [
+            { type: 'image', path: 'gallery/never.jpg' },
             { type: 'image', path: 'gallery/dns%20crypt.png' },
             { type: 'image', path: 'gallery/dosgoth.png' },
             { type: 'image', path: 'gallery/death.png' },
             { type: 'image', path: 'gallery/windows%20deathp.png' },
             { type: 'image', path: 'gallery/awc%20contrast.png' },
             { type: 'image', path: 'gallery/lucifer.png' },
+            { type: 'image', path: 'gallery/chest.JPG' },
+            { type: 'image', path: 'gallery/blades.PNG' },
+            { type: 'image', path: 'gallery/false%20thought%20dragon.png' },
+            { type: 'image', path: 'gallery/matrix.JPG' },
+            { type: 'image', path: 'gallery/skeletons.PNG' },
+            { type: 'image', path: 'gallery/skeletons2.PNG' },
+            { type: 'image', path: 'gallery/re2doorgif20fps_spritesheet.png' },
+            { type: 'image', path: 'gallery/arte%20moderna.png' },
+            { type: 'image', path: 'gallery/clipart%20baphomet.JPG' },
+            { type: 'image', path: 'gallery/allegory.png' },
+            { type: 'image', path: 'gallery/jesusprimitave.png' },  
+            { type: 'image', path: 'gallery/mdma.JPG' },
+            { type: 'image', path: 'gallery/orphanim.gif' },
+            { type: 'image', path: 'gallery/lotus2.png' },
+            { type: 'image', path: 'gallery/pentagram.png' }
+            
+            ],
+            era3: [
+            { type: 'image', path: 'gallery/charge.JPG' },
+            { type: 'image', path: 'gallery/magic%20eye.png' },
             { type: 'image', path: 'gallery/windowsill.JPG' },
             { type: 'image', path: 'gallery/mirror.JPG' },
             { type: 'image', path: 'gallery/unknown.png' },
             { type: 'image', path: 'gallery/ring.JPG' },
             { type: 'image', path: 'gallery/heart.png' },
             { type: 'image', path: 'gallery/lsd.JPG' },
-            { type: 'image', path: 'gallery/wnvrgloves.jpg' },
             { type: 'image', path: 'gallery/chains.png' },
-            { type: 'image', path: 'gallery/btsh.png' },
             { type: 'image', path: 'gallery/weeed.png' },
             { type: 'image', path: 'gallery/lotus.gif' },
             { type: 'image', path: 'gallery/free%20dragon.JPG' },
             { type: 'image', path: 'gallery/nexus.png' },
             { type: 'image', path: 'gallery/awn.png' },
-            { type: 'image', path: 'gallery/chest.JPG' },
-            { type: 'image', path: 'gallery/connection.png' },
-            { type: 'image', path: 'gallery/magic%20eye.png' },
-            { type: 'image', path: 'gallery/never.jpg' },
             { type: 'image', path: 'gallery/stars.JPG' },
             { type: 'image', path: 'gallery/xoraphylcrescent.png' },
             { type: 'image', path: 'gallery/dna.png' },
             { type: 'image', path: 'gallery/mix3.png' },
-            { type: 'image', path: 'gallery/frctalGuitar.gif' },
-            { type: 'image', path: 'gallery/blades.PNG' },
-            { type: 'image', path: 'gallery/false%20thought%20dragon.png' },
-            { type: 'image', path: 'gallery/matrix.JPG' },
             { type: 'image', path: 'gallery/meshhhh.png' },
             { type: 'image', path: 'gallery/netweb.png' },
             { type: 'image', path: 'gallery/time.png' },
-            { type: 'image', path: 'gallery/lotus-transformed.png' },
             { type: 'image', path: 'gallery/techtriprip.png' },
             { type: 'image', path: 'gallery/web%20flower.png' },
-            { type: 'image', path: 'gallery/sadblue.png' },
+            { type: 'image', path: 'gallery/lotus-transformed.png' },
             { type: 'image', path: 'gallery/feminine%20LSD.png' },
-            { type: 'image', path: 'gallery/skeletons.PNG' },
-            { type: 'image', path: 'gallery/skeletons2.PNG' },
-            { type: 'image', path: 'gallery/re2doorgif20fps_spritesheet.png' },
-            { type: 'image', path: 'gallery/arte%20moderna.png' },
             { type: 'image', path: 'gallery/apple%20pay.JPG' },
             { type: 'image', path: 'gallery/marblemoney.png' },
             { type: 'image', path: 'gallery/finaloutput3.gif' },
             { type: 'image', path: 'gallery/iphone%20prairie.png' },
             { type: 'image', path: 'gallery/nike%20angel.png' },
             { type: 'image', path: 'gallery/kali.png' },
-            { type: 'image', path: 'gallery/clipart%20baphomet.JPG' },
-            { type: 'image', path: 'gallery/allegory.png' },
             { type: 'image', path: 'gallery/paladin.png' },
-            { type: 'image', path: 'gallery/jesusprimitave.png' },
             { type: 'image', path: 'gallery/got%20blood.png' },
             { type: 'image', path: 'gallery/trashmech.png' },
             { type: 'image', path: 'gallery/sundance.png' },
-            { type: 'image', path: 'gallery/charge.JPG' },
+            { type: 'image', path: 'gallery/bondage2.png' },
+            { type: 'image', path: 'gallery/salvation2.png' },
+            ],
+            era4: [
+            { type: 'image', path: 'gallery/wnvrgloves.jpg' },
+            { type: 'image', path: 'gallery/connection.png' },
+            { type: 'image', path: 'gallery/frctalGuitar.gif' },
+            { type: 'image', path: 'gallery/blackflag.png' },
+            
+            ],
+            era5: [
+            { type: 'image', path: 'gallery/btsh.png' },
+            { type: 'image', path: 'gallery/sadblue.png' },
             { type: 'image', path: 'gallery/jackal.png' },
             { type: 'image', path: 'gallery/ships%20without%20meaning.png' },
             { type: 'image', path: 'gallery/ships.png' },
-            { type: 'image', path: 'gallery/mdma.JPG' },
-            { type: 'image', path: 'gallery/bondage2.png' },
             { type: 'image', path: 'gallery/fish.png' },
-            { type: 'image', path: 'gallery/blackflag.png' },
-            { type: 'image', path: 'gallery/salvation2.png' },
-            { type: 'image', path: 'gallery/lotus2.png' },
-            { type: 'image', path: 'gallery/orphanim.gif' },
-            { type: 'image', path: 'gallery/pentagram.png' }
-        ];
+            ]
+        };
 
-        const galleryContainer = document.querySelector('.gallery-container');
-        
+        // Intersection Observer for lazy loading
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -144,7 +254,8 @@
             threshold: 0.1
         });
 
-        media.forEach(mediaItem => {
+        // Function to create media elements
+        function createMediaElement(mediaItem) {
             const item = document.createElement('div');
             item.className = 'gallery-item';
             
@@ -161,8 +272,17 @@
             mediaElement.loading = 'lazy';
             
             item.appendChild(mediaElement);
-            galleryContainer.appendChild(item);
-            observer.observe(item);
+            return item;
+        }
+
+        // Populate each era
+        Object.keys(eras).forEach(eraId => {
+            const eraSection = document.getElementById(eraId);
+            eras[eraId].forEach(mediaItem => {
+                const item = createMediaElement(mediaItem);
+                eraSection.appendChild(item);
+                observer.observe(item);
+            });
         });
     </script>
 </body>

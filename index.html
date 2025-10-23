@@ -445,6 +445,7 @@
 
     <div class="social-buttons" id="socialButtons">
         <a href="/m2" class="social-link">>m2</a>
+        <a href="/music" class="social-link">>music</a>
     </div>
 
     <script>
@@ -880,6 +881,11 @@
                 link.href = '/m2';
                 link.textContent = '>m2';
                 line.appendChild(link);
+            } else if (text === '>music') {
+                const link = document.createElement('a');
+                link.href = '/music';
+                link.textContent = '>music';
+                line.appendChild(link);
             } else if (text === 'BTC Fund: bc1qp7h9pk30pemgx5grm0cusu7wc98r4uzqesc5pq') {
                 // Create a container for inline BTC address with background image
                 const btcContainer = document.createElement('span');
@@ -966,8 +972,9 @@
 
                 // Print empty line and all social links with same timing
                 await printLine('');
-                await printLine('>art');
                 await printLine('>m2');
+                await printLine('>art');
+                await printLine('>music');
                 await printLine('BTC Fund: bc1qp7h9pk30pemgx5grm0cusu7wc98r4uzqesc5pq');
             }
         }

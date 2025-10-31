@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GIF Thumbnail with YouTube Link</title>
+    <style>
+        /* Optional basic styling for better presentation */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background-color: black;
+        }
+        .container {
+            width: fit-content; /* Make container only as wide as its content */
+            margin: 0 auto; /* Center the container */
+        }
+        .thumbnail {
+            display: block; /* Ensures the image takes up its own space */
+            max-width: 100%;
+            height: auto;
+        }
+        .youtube-link {
+            display: block; /* Ensures the link is on a new line */
+            margin-top: 10px; /* Space between the image and the link */
+            font-size: 1.1em;
+            color: #ffffff; /* YouTube red color */
+            text-decoration: none; /* Remove underline */
+            font-weight: bold;
+        }
+        .youtube-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img class="thumbnail"
+             src="music/codex.gif""
+             width="800"
+             height="880">
+
+        <a class="youtube-link"
+           href="https://www.youtube.com/watch?v=ow_mjiNZFAs&t=1627s&pp=ygUNZXllIHNraWVzIHNlYQ%3D%3D"
+           target="_blank">
+           72
+        </a>
+    </div>
+
+</body>
+</html>

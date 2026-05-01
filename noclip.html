@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>noclip memoria</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #1a1a1a;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+
+        audio {
+            width: 300px;
+            filter: invert(100%); /* Makes the controls light on a dark background */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Replace 'your-image.jpg' with your actual file path -->
+        <img src="noclip/noclip.jpg" alt="we pay respects">
+
+        <!-- Replace 'your-audio.mp3' with your actual file path -->
+        <audio autoplay loop controls>
+            <source src="noclip/offthemap.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+</body>
+</html>

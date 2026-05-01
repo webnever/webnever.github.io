@@ -47,66 +47,62 @@
   const container = document.getElementById('gallery-container');
   let activeImages = [];
   
-  // Total number of images you have (1 to 117)
   const totalImages = 117;
-  
-  // The extensions we will try, in order
   const extensionsToTry = ['.jpg', '.png', '.jpeg'];
 
+  // --- NEW: List of your HTML pages ---
+  const pages = [
+    'noclip.html'
+    // Add all your server-hosted .html files here
+  ];
+
+  // --- NEW: Probability of redirect (0.5 = 50% chance) ---
+  const redirectChance = 0.5;
+
   function initGallery() {
-    // Loop through numbers 1 to 117
     for (let i = 1; i <= totalImages; i++) {
       attemptToLoadImage(i, 0);
     }
-
-    // Start the continuous animation loop
     requestAnimationFrame(animateGallery);
   }
 
-  // Recursive function to try loading different file extensions
   function attemptToLoadImage(imageId, extIndex) {
-    // If we've run out of extensions to try, stop. The image doesn't exist.
-    if (extIndex >= extensionsToTry.length) {
-      console.warn(`Could not find an image for number ${imageId}`);
-      return;
-    }
+    if (extIndex >= extensionsToTry.length) return;
 
     const imgElement = document.createElement('img');
-    
-    // UPDATED: Added the correct directory path here
     imgElement.src = `./imageScroller/${imageId}${extensionsToTry[extIndex]}`;
-    
     imgElement.classList.add('scrolling-img');
 
-    // SUCCESS: The image exists and loaded properly
     imgElement.onload = () => {
       setupImageAnimation(imgElement);
     };
 
-    // FAIL: Try the next extension in the list
     imgElement.onerror = () => {
       attemptToLoadImage(imageId, extIndex + 1);
     };
   }
 
-  // Function to set up the random sizes, positions, and speeds once loaded
   function setupImageAnimation(imgElement) {
-    // Randomize Size (height between 150px and 450px)
     const randomHeight = Math.floor(Math.random() * 300) + 150;
     imgElement.style.height = `${randomHeight}px`;
 
-    // Calculate width based on the newly set height
-    const width = imgElement.getBoundingClientRect().width;
+    // Wait for the browser to calculate width after setting height
+    const width = imgElement.getBoundingClientRect().width || (randomHeight * 1.5); 
     
-    // Randomize Y position (Cascade assortment bounds)
     const maxY = window.innerHeight - randomHeight;
     const randomY = Math.floor(Math.random() * maxY);
-
-    // Stagger the initial X position way off-screen to the left
     const initialX = Math.floor(Math.random() * -6000) - width; 
-
-    // Randomize Speed within bounds (1 to 2.5 pixels per frame)
     const randomSpeed = (Math.random() * 1.5) + 1;
+
+    // --- NEW: Click Event Logic ---
+    imgElement.addEventListener('click', () => {
+      if (Math.random() < redirectChance) {
+        const randomPage = pages[Math.floor(Math.random() * pages.length)];
+        window.open(randomPage, '_blank');
+      } else {
+        console.log("Clicked! But the 'chance' roll failed. No redirect this time.");
+      }
+    });
 
     container.appendChild(imgElement);
 
@@ -123,24 +119,18 @@
     activeImages.forEach(imgObj => {
       imgObj.x += imgObj.speed;
 
-      // When the image fully exits the right side of the screen
       if (imgObj.x > window.innerWidth) {
-        // Reset it back to the left side, slightly staggered
         imgObj.x = -imgObj.width - (Math.random() * 500); 
-        
-        // Re-randomize its height on the Y axis and its speed for variety
         imgObj.y = Math.floor(Math.random() * (window.innerHeight - imgObj.element.clientHeight));
         imgObj.speed = (Math.random() * 1.5) + 1;
       }
 
-      // Apply the new position
       imgObj.element.style.transform = `translate(${imgObj.x}px, ${imgObj.y}px)`;
     });
 
     requestAnimationFrame(animateGallery);
   }
 
-  // Kick everything off
   initGallery();
 </script>
 

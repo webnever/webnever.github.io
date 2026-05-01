@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>excerpts</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #111;
+            color: #ccc;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        header {
+            border-bottom: 1px solid #333;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            color: #569cd6; /* VS Code Blue */
+            margin: 0;
+            text-transform: lowercase;
+        }
+
+        .track-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .track-card {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 3px solid #3c3c3c;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .track-card:hover {
+            border-left-color: #569cd6;
+            background: #252526;
+        }
+
+        .track-name {
+            font-family: 'Consolas', monospace;
+            font-size: 0.95rem;
+            color: #9cdcfe; /* VS Code Variable Green/Blue */
+        }
+
+        audio {
+            width: 100%;
+            height: 30px;
+            filter: invert(100%) hue-rotate(180deg) brightness(1.2) contrast(0.9);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>v recordings/</h1>
+    </header>
+    <div id="playlist" class="track-list"></div>
+</div>
+
+<script>
+    // Just add your filenames to this list
+    const files = [
+        "__.m4a",
+        "01_14.50.m4a",
+        "49.m4a",
+        "Add Chaos.m4a",
+        "Another AC song__.m4a",
+        "BEND 2 Frets.m4a",
+        "BEND 2.m4a",
+        "BEND.m4a",
+        "boobamhausidn.m4a",
+        "Cameron.m4a",
+        "FREDERICTON.m4a",
+        "FT bass thing.m4a",
+        "hatch.m4a",
+        "LSD.m4a",
+        "Middle.m4a",
+        "SATELLITE.m4a",
+        "SEA.m4a",
+        "Tuning.m4a",
+        "Waterfal.m4a",
+        "Wisdom of Dennis.m4a"
+    ];
+
+    const playlistContainer = document.getElementById('playlist');
+
+    files.forEach(fileName => {
+        const card = document.createElement('div');
+        card.className = 'track-card';
+
+        // Strip the .m4a extension for the display label
+        const displayName = fileName.replace('.m4a', '');
+
+        card.innerHTML = `
+            <div class="track-name">${displayName}</div>
+            <audio controls preload="none">
+                <source src="./recordings/${fileName}" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+        `;
+
+        playlistContainer.appendChild(card);
+    });
+</script>
+
+</body>
+</html>

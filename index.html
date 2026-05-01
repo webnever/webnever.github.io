@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #111; 
+    color: white;
+    font-family: sans-serif;
+  }
+
+  #gallery-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .scrolling-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+    border: 3px solid #222;
+    border-radius: 4px;
+    
+    /* Default is Black and White. Change to sepia(80%) if preferred */
+    filter: grayscale(100%); 
+    transition: filter 0.4s ease, transform 0.1s linear;
+  }
+
+  .scrolling-img:hover {
+    filter: grayscale(0%) sepia(0%);
+    z-index: 50;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div id="gallery-container"></div>
+
+<script>
+  const container = document.getElementById('gallery-container');
+  let activeImages = [];
+  
+  // Total number of images you have (1 to 117)
+  const totalImages = 117;
+  
+  // The extensions we will try, in order
+  const extensionsToTry = ['.jpg', '.png', '.jpeg'];
+
+  function initGallery() {
+    // Loop through numbers 1 to 117
+    for (let i = 1; i <= totalImages; i++) {
+      attemptToLoadImage(i, 0);
+    }
+
+    // Start the continuous animation loop
+    requestAnimationFrame(animateGallery);
+  }
+
+  // Recursive function to try loading different file extensions
+  function attemptToLoadImage(imageId, extIndex) {
+    // If we've run out of extensions to try, stop. The image doesn't exist.
+    if (extIndex >= extensionsToTry.length) {
+      console.warn(`Could not find an image for number ${imageId}`);
+      return;
+    }
+
+    const imgElement = document.createElement('img');
+    
+    // UPDATED: Added the correct directory path here
+    imgElement.src = `./ImageScroller/${imageId}${extensionsToTry[extIndex]}`;
+    
+    imgElement.classList.add('scrolling-img');
+
+    // SUCCESS: The image exists and loaded properly
+    imgElement.onload = () => {
+      setupImageAnimation(imgElement);
+    };
+
+    // FAIL: Try the next extension in the list
+    imgElement.onerror = () => {
+      attemptToLoadImage(imageId, extIndex + 1);
+    };
+  }
+
+  // Function to set up the random sizes, positions, and speeds once loaded
+  function setupImageAnimation(imgElement) {
+    // Randomize Size (height between 150px and 450px)
+    const randomHeight = Math.floor(Math.random() * 300) + 150;
+    imgElement.style.height = `${randomHeight}px`;
+
+    // Calculate width based on the newly set height
+    const width = imgElement.getBoundingClientRect().width;
+    
+    // Randomize Y position (Cascade assortment bounds)
+    const maxY = window.innerHeight - randomHeight;
+    const randomY = Math.floor(Math.random() * maxY);
+
+    // Stagger the initial X position way off-screen to the left
+    const initialX = Math.floor(Math.random() * -6000) - width; 
+
+    // Randomize Speed within bounds (1 to 2.5 pixels per frame)
+    const randomSpeed = (Math.random() * 1.5) + 1;
+
+    container.appendChild(imgElement);
+
+    activeImages.push({
+      element: imgElement,
+      x: initialX,
+      y: randomY,
+      speed: randomSpeed,
+      width: width
+    });
+  }
+
+  function animateGallery() {
+    activeImages.forEach(imgObj => {
+      imgObj.x += imgObj.speed;
+
+      // When the image fully exits the right side of the screen
+      if (imgObj.x > window.innerWidth) {
+        // Reset it back to the left side, slightly staggered
+        imgObj.x = -imgObj.width - (Math.random() * 500); 
+        
+        // Re-randomize its height on the Y axis and its speed for variety
+        imgObj.y = Math.floor(Math.random() * (window.innerHeight - imgObj.element.clientHeight));
+        imgObj.speed = (Math.random() * 1.5) + 1;
+      }
+
+      // Apply the new position
+      imgObj.element.style.transform = `translate(${imgObj.x}px, ${imgObj.y}px)`;
+    });
+
+    requestAnimationFrame(animateGallery);
+  }
+
+  // Kick everything off
+  initGallery();
+</script>
+
+</body>
+</html>

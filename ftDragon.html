@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>False Thought</title>
+    <style>
+        /* --- CSS SECTION --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        #fullscreen-image {
+            width: 100vw;
+            height: 100vh;
+            /* Replace the URL below with your specific image */
+            background-image: url('ft/ftDragon.png');
+            background-size: cover;
+            background-position: center;
+            transition: none; /* Keeps the flash sharp and instant */
+        }
+
+        /* The class toggled by JavaScript */
+        .inverted {
+            filter: invert(100%);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="fullscreen-image"></div>
+
+    <script>
+        /* --- JAVASCRIPT SECTION --- */
+        const target = document.getElementById('fullscreen-image');
+
+        function runStrobe() {
+            // Toggle the inversion
+            target.classList.toggle('inverted');
+
+            // Ranges converted from seconds to milliseconds
+            const min = 115.3; 
+            const max = 734.5;
+
+            // Calculate the random interval
+            const randomDelay = Math.random() * (max - min) + min;
+
+            // Schedule the next toggle
+            setTimeout(runStrobe, randomDelay);
+        }
+
+        // Initialize the loop
+        runStrobe();
+    </script>
+</body>
+</html>

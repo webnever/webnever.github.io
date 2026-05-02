@@ -24,12 +24,12 @@
         }
         .media-card:hover { border-color: #58a6ff; }
 
-        /* Unified sizing for both images and videos */
         .media-content {
             width: 100%;
             height: 180px;
             object-fit: cover;
             background: #000;
+            display: block;
         }
 
         .label { 
@@ -41,74 +41,201 @@
             white-space: nowrap;
             background: #1c2128;
         }
-
-        /* GIF indicator badge */
-        .badge {
-            position: absolute;
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            padding: 2px 6px;
-            font-size: 10px;
-            border-radius: 4px;
-            margin: 5px;
-        }
     </style>
 </head>
 <body>
 
     <h2>./ESSCOLLEX</h2>
-    <div class="gallery" id="gallery">loading library...</div>
+    <div class="gallery" id="gallery"></div>
 
     <script>
-        async function loadMedia() {
+        // Your provided list
+        const mediaFiles = [
+  'ESSCOLLEX/1328373989173993472-Em9VD6wVcAsAIA5.MP4',
+  'ESSCOLLEX/1833308264504647745-GXE4F6eakAAuNvj.MP4',
+  'ESSCOLLEX/1883990667023745248-d16tpbYTXNteBe61.MP4',
+  'ESSCOLLEX/1884739906620318206-Gifw6AbbUAAyM8R.MP4',
+  'ESSCOLLEX/1925524144504094837-xREnPYWpX00KL97-.MP4',
+  'ESSCOLLEX/1926097593601245455-GrrfgIwWsAAutuB.MP4',
+  'ESSCOLLEX/1926167496010190944-dHPZv0hdR_s8YnKj.MP4',
+  'ESSCOLLEX/1926538785216496111-GrxwylyXUAQpn8m.MP4',
+  'ESSCOLLEX/1930781720602898878-GsuDs0CaQAAzhrr.MP4',
+  'ESSCOLLEX/1930839985965666533-c2Q-OPkHto5wpyj1.MP4',
+  'ESSCOLLEX/1930861990572085523-GsvMs0KakAA0Ktw.MP4',
+  'ESSCOLLEX/1931119811431424458-2-phUbHwTObpnzGb.MP4',
+  'ESSCOLLEX/1931611148350316633-Gs52E0naUAEHqjD.MP4',
+  'ESSCOLLEX/1943515456817762493-GvjA4MqXsAI2sNu.MP4',
+  'ESSCOLLEX/1956101148391432269-GyV3n5Fa4AYfLJj.MP4',
+  'ESSCOLLEX/1963444168803668112-_kusCgLYKQqhI44c.MP4',
+  'ESSCOLLEX/1963878157838418268-gTGw6ZNdumYv0KeO.MP4',
+  'ESSCOLLEX/1974451569824501969-xAQs2V9XLdQ5kgk0.MP4',
+  'ESSCOLLEX/1978597199807136082-G3VjnGZaYAA9fxf.MP4',
+  'ESSCOLLEX/1988423940449202371-5oYRuiR1u-J78pAU.MP4',
+  'ESSCOLLEX/2011716954802045030-UqoM-1z5n2Vzggd6.MP4',
+  'ESSCOLLEX/8B3122CA-5013-4239-ABA4-A21181011443.MP4',
+  'ESSCOLLEX/C8A689D3-92D2-4D9C-87A8-D52B0796496B.JPG',
+  'ESSCOLLEX/codex_compressed.MP4',
+  'ESSCOLLEX/Deathmetalrosepetals2.MP4',
+  'ESSCOLLEX/earthAlien.GIF',
+  'ESSCOLLEX/image.PNG',
+  'ESSCOLLEX/IMG_0029.PNG',
+  'ESSCOLLEX/IMG_0043.PNG',
+  'ESSCOLLEX/IMG_0048.jpg',
+  'ESSCOLLEX/IMG_0067.PNG',
+  'ESSCOLLEX/IMG_0073.PNG',
+  'ESSCOLLEX/IMG_0078.jpg',
+  'ESSCOLLEX/IMG_0079.jpg',
+  'ESSCOLLEX/IMG_0101.jpg',
+  'ESSCOLLEX/IMG_0120.jpg',
+  'ESSCOLLEX/IMG_0134.jpg',
+  'ESSCOLLEX/IMG_0135.jpg',
+  'ESSCOLLEX/IMG_0136 (1).jpg',
+  'ESSCOLLEX/IMG_0195.GIF',
+  'ESSCOLLEX/IMG_0201.JPG',
+  'ESSCOLLEX/IMG_0202.JPG',
+  'ESSCOLLEX/IMG_0203.JPG',
+  'ESSCOLLEX/IMG_0206.JPG',
+  'ESSCOLLEX/IMG_0207.PNG',
+  'ESSCOLLEX/IMG_0209.JPG',
+  'ESSCOLLEX/IMG_0215.JPG',
+  'ESSCOLLEX/IMG_0219.JPG',
+  'ESSCOLLEX/IMG_0220.JPG',
+  'ESSCOLLEX/IMG_0221.JPG',
+  'ESSCOLLEX/IMG_0222.jpg',
+  'ESSCOLLEX/IMG_0236.PNG',
+  'ESSCOLLEX/IMG_0237.JPG',
+  'ESSCOLLEX/IMG_0239.JPG',
+  'ESSCOLLEX/IMG_0241.JPG',
+  'ESSCOLLEX/IMG_0242.JPG',
+  'ESSCOLLEX/IMG_0243.JPG',
+  'ESSCOLLEX/IMG_0245.PNG',
+  'ESSCOLLEX/IMG_0246.JPG',
+  'ESSCOLLEX/IMG_0247.PNG',
+  'ESSCOLLEX/IMG_0248.PNG',
+  'ESSCOLLEX/IMG_0249.JPG',
+  'ESSCOLLEX/IMG_0250.PNG',
+  'ESSCOLLEX/IMG_0251.JPG',
+  'ESSCOLLEX/IMG_0252.JPG',
+  'ESSCOLLEX/IMG_0253.JPG',
+  'ESSCOLLEX/IMG_0265.JPG',
+  'ESSCOLLEX/IMG_0266.JPG',
+  'ESSCOLLEX/IMG_0268.PNG',
+  'ESSCOLLEX/IMG_0275.JPG',
+  'ESSCOLLEX/IMG_0276.PNG',
+  'ESSCOLLEX/IMG_0277.JPG',
+  'ESSCOLLEX/IMG_0278.JPG',
+  'ESSCOLLEX/IMG_0279.JPG',
+  'ESSCOLLEX/IMG_0280.JPG',
+  'ESSCOLLEX/IMG_0281.JPG',
+  'ESSCOLLEX/IMG_0282.JPG',
+  'ESSCOLLEX/IMG_0285.JPG',
+  'ESSCOLLEX/IMG_0286.PNG',
+  'ESSCOLLEX/IMG_0287.JPG',
+  'ESSCOLLEX/IMG_0289.JPG',
+  'ESSCOLLEX/IMG_0290.JPG',
+  'ESSCOLLEX/IMG_0291.JPG',
+  'ESSCOLLEX/IMG_0297.JPG',
+  'ESSCOLLEX/IMG_0302.JPG',
+  'ESSCOLLEX/IMG_0303.JPG',
+  'ESSCOLLEX/IMG_0304.JPG',
+  'ESSCOLLEX/IMG_0305.PNG',
+  'ESSCOLLEX/IMG_0306.JPG',
+  'ESSCOLLEX/IMG_0307.JPG',
+  'ESSCOLLEX/IMG_0309.JPG',
+  'ESSCOLLEX/IMG_0310 2.JPG',
+  'ESSCOLLEX/IMG_0310.JPG',
+  'ESSCOLLEX/IMG_0311.JPG',
+  'ESSCOLLEX/IMG_0312.JPG',
+  'ESSCOLLEX/IMG_0313.JPG',
+  'ESSCOLLEX/IMG_0316 2.JPG',
+  'ESSCOLLEX/IMG_0316.JPG',
+  'ESSCOLLEX/IMG_0317.JPG',
+  'ESSCOLLEX/IMG_0318.PNG',
+  'ESSCOLLEX/IMG_0319.JPG',
+  'ESSCOLLEX/IMG_0320.JPG',
+  'ESSCOLLEX/IMG_0323.JPG',
+  'ESSCOLLEX/IMG_0324.PNG',
+  'ESSCOLLEX/IMG_0325.PNG',
+  'ESSCOLLEX/IMG_0326.JPG',
+  'ESSCOLLEX/IMG_0327.JPG',
+  'ESSCOLLEX/IMG_0328.JPG',
+  'ESSCOLLEX/IMG_0329.JPG',
+  'ESSCOLLEX/IMG_0330.JPG',
+  'ESSCOLLEX/IMG_0332.PNG',
+  'ESSCOLLEX/IMG_0333.JPG',
+  'ESSCOLLEX/IMG_0334.JPG',
+  'ESSCOLLEX/IMG_0336.JPG',
+  'ESSCOLLEX/IMG_0337.JPG',
+  'ESSCOLLEX/IMG_0339.JPG',
+  'ESSCOLLEX/IMG_0340.JPG',
+  'ESSCOLLEX/IMG_0341.PNG',
+  'ESSCOLLEX/IMG_0342.JPG',
+  'ESSCOLLEX/IMG_0343.JPG',
+  'ESSCOLLEX/IMG_0344.JPG',
+  'ESSCOLLEX/IMG_0345.PNG',
+  'ESSCOLLEX/IMG_0346.JPG',
+  'ESSCOLLEX/IMG_0347.JPG',
+  'ESSCOLLEX/IMG_0348.JPG',
+  'ESSCOLLEX/IMG_0349.JPG',
+  'ESSCOLLEX/IMG_0353.JPG',
+  'ESSCOLLEX/IMG_0354.JPG',
+  'ESSCOLLEX/IMG_0355.PNG',
+  'ESSCOLLEX/IMG_0356.PNG',
+  'ESSCOLLEX/IMG_0358.JPG',
+  'ESSCOLLEX/IMG_0359.JPG',
+  'ESSCOLLEX/IMG_0360.JPG',
+  'ESSCOLLEX/IMG_0361.JPG',
+  'ESSCOLLEX/IMG_0362.JPG',
+  'ESSCOLLEX/IMG_0363 2.JPG',
+  'ESSCOLLEX/IMG_0363.JPG',
+  'ESSCOLLEX/IMG_0364.JPG',
+  'ESSCOLLEX/IMG_0365.JPG',
+  'ESSCOLLEX/IMG_0366.JPG',
+  'ESSCOLLEX/IMG_0368.JPG',
+  'ESSCOLLEX/IMG_0369.JPG',
+  'ESSCOLLEX/IMG_0370.JPG',
+  'ESSCOLLEX/IMG_0371.JPG',
+  'ESSCOLLEX/IMG_0372.JPG',
+  'ESSCOLLEX/IMG_0373.JPG',
+  'ESSCOLLEX/IMG_0382.jpg',
+  'ESSCOLLEX/IMG_0406.JPG',
+  'ESSCOLLEX/IMG_0415.jpg',
+  'ESSCOLLEX/IMG_9691_Original.jpg',
+  'ESSCOLLEX/nirvanaarkk9_unreal_engine_octane_render_back_shot_of_dreaded_h_ad3d1586-ab12-4489-afd6-d0574c196c22.PNG'
+];
+
+        function loadMedia() {
             const container = document.getElementById('gallery');
-            const folder = 'ESSCOLLEX';
-            const path = `~/${folder}/`;
 
-            try {
-                const response = await fetch(path);
-                const html = await response.text();
-                
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                
-                const links = Array.from(doc.querySelectorAll('a'))
-                    .map(a => a.getAttribute('href'))
-                    .filter(href => {
-                        // Added mp4 to the regex
-                        return href.match(/\.(jpe?g|png|gif|webp|avif|mp4)$/i) && !href.includes('..');
-                    });
-
-                if (links.length === 0) {
-                    container.innerHTML = "No media found in " + path;
-                    return;
-                }
-
-                container.innerHTML = links.map(src => {
-                    const cleanSrc = src.includes(folder) ? src : `${path}${src}`;
-                    const isVideo = src.toLowerCase().endsWith('.mp4');
-                    const fileName = decodeURIComponent(src.split('/').pop());
-
-                    return `
-                        <div class="media-card">
-                            <a href="${cleanSrc}" target="_blank" style="position:relative; display:block;">
-                                ${isVideo ? `
-                                    <video class="media-content" muted loop onmouseover="this.play()" onmouseout="this.pause()">
-                                        <source src="${cleanSrc}" type="video/mp4">
-                                    </video>
-                                ` : `
-                                    <img src="${cleanSrc}" class="media-content" loading="lazy">
-                                `}
-                            </a>
-                            <div class="label" title="${fileName}">${fileName}</div>
-                        </div>
-                    `;
-                }).join('');
-
-            } catch (e) {
-                container.innerHTML = "Access Denied.";
+            if (mediaFiles.length === 0) {
+                container.innerHTML = "No media found in library.";
+                return;
             }
+
+            container.innerHTML = mediaFiles.map(src => {
+                // Ensure spaces in filenames are URL-encoded
+                const encodedSrc = src.replace(/ /g, '%20');
+                const isVideo = src.toLowerCase().endsWith('.mp4');
+                const fileName = src.split('/').pop();
+
+                return `
+                    <div class="media-card">
+                        <a href="${encodedSrc}" target="_blank" style="position:relative; display:block;">
+                            ${isVideo ? `
+                                <video class="media-content" muted loop onmouseover="this.play()" onmouseout="this.pause()">
+                                    <source src="${encodedSrc}" type="video/mp4">
+                                </video>
+                            ` : `
+                                <img src="${encodedSrc}" class="media-content" loading="lazy" alt="${fileName}">
+                            `}
+                        </a>
+                        <div class="label" title="${fileName}">${fileName}</div>
+                    </div>
+                `;
+            }).join('');
         }
+
+        // Initialize gallery
         loadMedia();
     </script>
 </body>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ESSCOLLEX Gallery</title>
+    <style>
+        body { background: #0e1117; color: white; font-family: 'Segoe UI', system-ui, sans-serif; padding: 20px; }
+        h2 { border-bottom: 1px solid #30363d; padding-bottom: 10px; color: #58a6ff; }
+        .gallery { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+            gap: 15px; 
+        }
+        .img-card { 
+            background: #161b22; 
+            border: 1px solid #30363d;
+            padding: 8px; 
+            border-radius: 6px; 
+            transition: transform 0.2s;
+        }
+        .img-card:hover { transform: scale(1.03); border-color: #58a6ff; }
+        img { 
+            width: 100%; 
+            height: 140px; 
+            object-fit: cover; 
+            border-radius: 4px; 
+            background: #0d1117; /* Placeholder color */
+        }
+        span { 
+            font-size: 11px; 
+            color: #8b949e; 
+            display: block; 
+            margin-top: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>./ESSCOLLEX</h2>
+    <div class="gallery" id="gallery">Scanning files...</div>
+
+    <script>
+        async function loadImages() {
+            const container = document.getElementById('gallery');
+            const folderName = 'ESSCOLLEX';
+            const path = `./${folderName}/`;
+
+            try {
+                const response = await fetch(path);
+                const html = await response.text();
+                
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                const links = Array.from(doc.querySelectorAll('a'))
+                    .map(a => a.getAttribute('href'))
+                    .filter(href => {
+                        // Filter for images and ignore parent directory links
+                        return href.match(/\.(jpe?g|png|gif|webp|avif)$/i) && !href.includes('..');
+                    });
+
+                if (links.length === 0) {
+                    container.innerHTML = "No images found. If on GitHub, remember you need a manifest file.";
+                    return;
+                }
+
+                container.innerHTML = links.map(src => {
+                    // FIX: Some servers return the full relative path, others just the filename.
+                    // This ensures we don't get "./ESSCOLLEX/ESSCOLLEX/image.jpg"
+                    const cleanSrc = src.includes(folderName) ? src : `${path}${src}`;
+                    
+                    return `
+                        <div class="img-card">
+                            <a href="${cleanSrc}" target="_blank">
+                                <img src="${cleanSrc}" loading="lazy" onerror="this.src='https://placehold.co/150x140?text=Error'">
+                            </a>
+                            <span title="${decodeURIComponent(src)}">${decodeURIComponent(src.split('/').pop())}</span>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (e) {
+                container.innerHTML = "Error: Directory listing is blocked or unavailable.";
+                console.error(e);
+            }
+        }
+        loadImages();
+    </script>
+</body>
+</html>

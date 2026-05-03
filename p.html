@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    /* 1. Load the custom font */
+    @font-face {
+      font-family: 'pVisionFont';
+      /* Ensure this path matches your folder structure exactly */
+      src: url('./ttf/Microgramma.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    /* 2. Reset margins and set the white background */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #ffffff;
+      font-family: 'pVisionFont', Helvetica, Arial, sans-serif;
+    }
+
+    /* 3. Create the flex container */
+    .main-container {
+      display: flex;
+      width: 100%;
+      height: 100vh; /* Full viewport height */
+      overflow: hidden; /* Prevents unwanted scrollbars */
+    }
+
+    /* 4. The Image Block */
+    .image-side {
+      height: 100%;
+      width: 75%; /* Adjust percentage as needed */
+    }
+
+    .image-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures image fills the height without stretching */
+      display: block;
+    }
+
+    /* 5. The Text Block */
+    .text-side {
+      width: 25%; /* Remaining space */
+      height: 100%;
+      padding: 40px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Centers text vertically */
+      color: #000000; /* Black text */
+    }
+
+    .text-side p {
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <!-- Left Side: Image -->
+    <div class="image-side">
+      <img src="pVision/visionOfP.png" alt="Vision Image">
+    </div>
+
+    <!-- Right Side: Content -->
+    <div class="text-side">
+      <p>
+REALITY IS A BURSTING KALEIDOSCOPIC ENERGY
+I MANDALA. A SINGULARITY EXPLODES INTO MORPHING
+drifting cosmic fireworks with detail approaching the
+edge of infinity. A lightshow from the edge of the
+universe down to each unique electron, and in due time
+the ETA will prove itself to be home to another infinitity of cosmic fireworks bursting within it. As humans we act
+as a minuscule portion of this lightshow, yet at the
+purest most fundamental level, we are gifted to bear
+concious witness to it. 5 to interact with this external world and an internal world to interpret it. We'll
+watch and observe and learn and pass the time. To
+appreciate beauty and natural law. Bathing in soft
+intangible feelings. To feel pretty and vain as a part and
+a witness to a bursting firework.
+Superficial beauty is real beauty. Superficial beauty
+shows you something and tells you nothing and allows
+you to react and feel something on your own terms.
+Superficial beauty provokes pleasure in feeling.
+<b>LOTUS®</b> forgets the functioning world and lives
+parallel with the superficial beauty of dreaming.
+<b>LOTUS</b> deconstructs and reconstructs. presents is
+built to inspire your imagination with nothing more than
+superficial beauty.
+There is no meaning. Indulge in the art of being alive
+in an infinitely detailed world. It feels good to study. It
+feels good to breathe.
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

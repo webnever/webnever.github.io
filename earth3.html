@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-HYPERMETAL</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            font-family: serif; /* Classic look for a poem */
+            overflow: hidden; 
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .media-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .image-row {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .featured-image {
+            height: auto;
+            display: block;
+        }
+
+        /* Perfectly centered */
+        .img-large {
+            width: 600px;
+            z-index: 2;
+        }
+
+        /* Tethered to the LEFT of the center image */
+        .img-small {
+            width: 300px;
+            position: absolute;
+            right: calc(100% + 40px); 
+        }
+
+        /* Tethered to the RIGHT of the center image */
+        .poem-container {
+            position: absolute;
+            left: calc(100% + 40px);
+            width: 300px;
+            color: #000;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        /* Anchored to the bottom right */
+        .audio-wrapper {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        audio {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="media-container">
+        <div class="image-row">
+            <!-- Left Element -->
+            <img src="earth3/XMI.png" alt="XMI" class="featured-image img-small">
+
+            <!-- Center Element -->
+            <img src="earth3/BLUEMETAL_3-2026.png" alt="Earth" class="featured-image img-large">
+
+            <!-- Right Element (Poem) -->
+            <div class="poem-container">
+                <p>
+                    Places I've been<br>
+                    Overwriting Go<br>
+                    no knowledge to my understanding<br>
+                    2026 AD baptists<br>
+                    Metal Choir of HYPERMETAL<br><Br>
+                    Samples <i>"Tattoo"</i>
+                </p>
+            </div>
+        </div>
+
+        <!-- Tethered to bottom right -->
+        <div class="audio-wrapper">
+            <audio controls>
+                <source src="earth3/tattooAudio.mp3" type="audio/mpeg">
+                UNFREE DEATH
+            </audio>
+        </div>
+    </div>
+
+</body>
+</html>

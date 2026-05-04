@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Favicon Link -->
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <title>Welcome</title>
 <style>
   body {
@@ -104,16 +106,11 @@
     const initialX = Math.floor(Math.random() * -6000) - width; 
     const randomSpeed = (Math.random() * 1.5) + 1;
 
-    // --- NEW: Click Event Logic ---
+    // Remove the probability check entirely
     imgElement.addEventListener('click', () => {
-      if (Math.random() < redirectChance) {
         const randomPage = pages[Math.floor(Math.random() * pages.length)];
         window.open(randomPage, '_blank');
-      } else {
-        console.log("Clicked! But the 'chance' roll failed. No redirect this time.");
-      }
     });
-
     container.appendChild(imgElement);
 
     activeImages.push({

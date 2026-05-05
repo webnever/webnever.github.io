@@ -5,74 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Last Login Access</title>
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #000000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #e0e0e0;
-        }
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* Updated to use your local tileable image */
+        background-color: #1a1a1a; 
+        background-image: url('lastlogin/bg.png');
+        background-repeat: repeat;
+        /* Adjust background-size if the tiles feel too large or small */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #e0e0e0;
+    }
 
-        .container {
-            text-align: center;
-            padding: 30px;
-            border: 1px solid #000000;
-            border-radius: 12px;
-            background-color: #000000;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            width: 320px;
-            z-index: 1;
-        }
+    .container {
+        text-align: center;
+        padding: 30px;
+        border: 1px solid #1a1a1a;
+        background-color: #000000;
+        box-shadow: 0 10px 50px rgba(0,0,0,0.9);
+        width: 320px;
+        z-index: 1;
+    }
 
-        #username-display {
-            display: block;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #ffffff;
-        }
+    #username-display {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #ffffff;
+    }
 
-        .login-text {
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            border-bottom: 1px solid #000000;
-            padding-bottom: 15px;
-        }
+    .login-text {
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        padding-bottom: 15px;
+    }
 
-        .label {
-            font-weight: 300;
-            color: #777;
-        }
+    .label {
+        font-weight: 300;
+        color: #777;
+    }
 
-        #date-output {
-            font-weight: 600;
-            color: #aa0000;
-        }
+    #date-output {
+        font-weight: 600;
+        color: #aa0000;
+    }
 
-        .grave-image {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-            display: block;
-            filter: grayscale(40%);
-        }
+    .grave-image {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: grayscale(60%) contrast(110%);
+    }
 
-        /* Footer Style */
-        .footer-branding {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            color: #ff0000;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-    </style>
+    .footer-branding {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        color: #ff0000;
+        text-transform: uppercase;
+        white-space: nowrap;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 4px 12px;
+    }
+</style>
 </head>
 <body>
 
@@ -93,37 +95,48 @@
     </div>
 
     <script>
-        const usernames = [
-            "Yawn24", "MLM-mom", "inukshook", "66Weapon", "mcLobstah", 
-            "Sanjoseguy", "Honeybun", "Tarnished2", "enoponxi", 
-            "Frogman76", "WD-40soup", "Asbestoid", "berndasbrot", "Cptn.Rizz",
-            "desertfuck", "rip_transfer", "Xylans", "samegame", "NaziLeak",
-            "lockercauldron", "SheelMyld", "Jarlic", "user LSD", "wireshark", "username",
-            "os", "guilt", "SissyPenisFucker", "Moritoe", "toriniku", "BlixieXY", "vampireRUN",
-            "StonedApe", "AntiVaxxToaster", "minimax", "Mowdowpow", "Avalon", "user fakemink",
-            "5-MeO-GINGER", "AnnaChrystal", "BlueSaturn", "Dollmaker", "GangsterMan15", "user God",
-            "HangoverCity", "HazeyEyes", "IWannaCumInsideYourWetPussy", "ysergia", "nirvanaark9",
-            "N3k0", "xX_BamITzSneezyMelinda_Xx", "ProphetOfDisaster", "REDACTED:", "SmokeMeowt", "UnOriginalAccountName",
-            "William_Howlett", "Yoanb87", "user ayahuasca", "clownd", "die4mybih", "elderbat", "forbidd3n",
-            "kittygirl03", "x_1-q"
-        ];
+    const usernames = [
+        "Yawn24", "MLM-mom", "inukshook", "66Weapon", "mcLobstah", 
+        "Sanjoseguy", "Honeybun", "Tarnished2", "enoponxi", 
+        "Frogman76", "WD-40soup", "Asbestoid", "berndasbrot", "Cptn.Rizz",
+        "desertfuck", "rip_transfer", "Xylans", "samegame", "NaziLeak",
+        "lockercauldron", "SheelMyld", "Jarlic", "user LSD", "wireshark", "username",
+        "os", "guilt", "SissyPenisFucker", "Moritoe", "toriniku", "BlixieXY", "vampireRUN",
+        "StonedApe", "AntiVaxxToaster", "minimax", "Mowdowpow", "Avalon", "user fakemink",
+        "5-MeO-GINGER", "AnnaChrystal", "BlueSaturn", "Dollmaker", "GangsterMan15", "user God",
+        "HangoverCity", "HazeyEyes", "IWannaCumInsideYourWetPussy", "ysergia", "nirvanaark9",
+        "N3k0", "xX_BamITzSneezyMelinda_Xx", "ProphetOfDisaster", "REDACTED:", "SmokeMeowt", "UnOriginalAccountName",
+        "William_Howlett", "Yoanb87", "user ayahuasca", "clownd", "die4mybih", "elderbat", "forbidd3n",
+        "kittygirl03", "x_1-q"
+    ];
 
-        function getRandomDate(start, end) {
-            const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-            return date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        }
+    function getRandomDateWeighted(start, end) {
+        const startTime = start.getTime();
+        const endTime = end.getTime();
+        
+        // Math.sqrt(Math.random()) creates a linear distribution 
+        // favoring higher numbers (closer to 1.0)
+        const weightedRandom = Math.sqrt(Math.random());
+        
+        const randomTime = startTime + weightedRandom * (endTime - startTime);
+        
+        const date = new Date(randomTime);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
 
-        const randomUser = usernames[Math.floor(Math.random() * usernames.length)];
-        document.getElementById('username-display').innerText = randomUser;
+    // Pick random user
+    const randomUser = usernames[Math.floor(Math.random() * usernames.length)];
+    document.getElementById('username-display').innerText = randomUser;
 
-        const startDate = new Date(2008, 0, 1);
-        const endDate = new Date(2024, 11, 31);
-        document.getElementById('date-output').innerText = getRandomDate(startDate, endDate);
-    </script>
+    // Set Date Range and Output
+    const startDate = new Date(2008, 0, 1);
+    const endDate = new Date(2024, 11, 31);
+    document.getElementById('date-output').innerText = getRandomDateWeighted(startDate, endDate);
+</script>
 
 </body>
 </html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Loop</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #1a1a1a; /* Dark background */
+        }
+
+        #bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index: 1;
+        }
+
+        /* Small debug text to confirm the script is running */
+        #debug {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: rgba(255,255,255,0.3);
+            font-family: sans-serif;
+            font-size: 12px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-container"></div>
+    <div id="debug">Initializing...</div>
+
+    <script>
+        // Exact names from your screenshot
+        const images = [
+            "1.jpg", "2.jpg", "3.jpg", "4.PNG", "5.JPG", 
+            "6.PNG", "7.JPG", "8.JPG", "9.JPG", "10.PNG", 
+            "11.JPG", "12.JPG", "13.JPG", "14.PNG", "15.PNG", 
+            "16.JPG", "17.JPG", "18.JPG", "19.JPG", "20.JPG", "21.JPG"
+        ];
+
+        // Folder name based on your description
+        const folder = "projex/"; 
+
+        let currentIndex = 0;
+        const container = document.getElementById('bg-container');
+        const debugLabel = document.getElementById('debug');
+
+        function updateImage() {
+            const imageName = images[currentIndex];
+            const fullPath = folder + imageName;
+            
+            // Set background
+            container.style.backgroundImage = `url('${fullPath}')`;
+            
+            // Update debug text
+            debugLabel.innerText = "Target: " + fullPath;
+
+            // Move to next
+            currentIndex = (currentIndex + 1) % images.length;
+        }
+
+        // Preload first few images to reduce initial lag
+        images.slice(0, 5).forEach(img => {
+            const i = new Image();
+            i.src = folder + img;
+        });
+
+        // Run immediately
+        updateImage();
+
+        // Cycle every 1 second (1000ms)
+        setInterval(updateImage, 1000);
+    </script>
+</body>
+</html>

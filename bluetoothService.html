@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLUETOOTH SERVICE [HOSTILE]</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        /* The Video */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* The Transparent Overlay */
+        #audio-trigger {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            cursor: pointer;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Video must start muted to autoplay -->
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="bluetoothServiceHostile/bluetoothServiceHostile.MP4" type="video/mp4">
+    </video>
+
+    <!-- Invisible layer that covers everything -->
+    <div id="audio-trigger"></div>
+
+    <script>
+        const video = document.getElementById('bg-video');
+        const trigger = document.getElementById('audio-trigger');
+
+        trigger.addEventListener('click', function() {
+            // Unmute the video
+            video.muted = false;
+            
+            // If the browser paused it due to a policy conflict, force play
+            video.play();
+
+            // Remove the overlay so it doesn't interfere with other page elements
+            trigger.style.display = 'none';
+            
+            console.log("Audio activated and overlay removed.");
+        });
+    </script>
+
+</body>
+</html>

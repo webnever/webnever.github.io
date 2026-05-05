@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Remove margins and prevent scrollbars */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .stretch-image {
+            width: 100vw;  /* Viewport Width */
+            height: 100vh; /* Viewport Height */
+            
+            /* Forces the image to fill the dimensions exactly */
+            object-fit: fill; 
+            
+            /* Ensures no extra space at the bottom */
+            display: block; 
+        }
+    </style>
+</head>
+<body>
+
+    <img src="lockedC/lockedC.png" class="stretch-image" alt="Stretched image">
+
+</body>
+</html>

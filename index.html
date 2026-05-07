@@ -28,8 +28,6 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.8);
     border: 3px solid #222;
     border-radius: 4px;
-    
-    /* Default is Black and White. Change to sepia(80%) if preferred */
     filter: grayscale(100%); 
     transition: filter 0.4s ease, transform 0.1s linear;
   }
@@ -39,11 +37,25 @@
     z-index: 50;
     cursor: pointer;
   }
+
+  /* --- Contact Info Style --- */
+  .contact-footer {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    color: #888; /* Grey color */
+    font-size: 0.85rem;
+    z-index: 100; /* Ensure it stays above the images */
+    pointer-events: none; /* Allows clicks to pass through to images if necessary */
+  }
 </style>
 </head>
 <body>
 
 <div id="gallery-container"></div>
+
+<!-- Contact Info Element -->
+<div class="contact-footer">contact: eyeskiessea@gmail.com</div>
 
 <script>
   const container = document.getElementById('gallery-container');
@@ -52,32 +64,13 @@
   const totalImages = 117;
   const extensionsToTry = ['.jpg', '.png', '.jpeg'];
 
-  // --- NEW: List of your HTML pages ---
   const pages = [
-    'noclip.html',
-    'excerpts.html',
-    'ftDragon.html',
-    'sTier.html',
-    'esscollex.html',
-    'aetherwebnever.html',
-    'm2.html',
-    'tarot.html',
-    'deathmetalrosepetals.html',
-    'p.html',
-    'earth3.html',
-    'weBNever.html',
-    'king.html',
-    'lastlogin.html',
-    'projex.html',
-    'bluetoothServiceHostile.html',
-    'lockedC.html',
-    'armourBook.html',
-    'armour.html',
-    // Add all your server-hosted .html files here
+    'noclip.html', 'excerpts.html', 'ftDragon.html', 'sTier.html',
+    'esscollex.html', 'aetherwebnever.html', 'm2.html', 'tarot.html',
+    'deathmetalrosepetals.html', 'p.html', 'earth3.html', 'weBNever.html',
+    'king.html', 'lastlogin.html', 'projex.html', 'bluetoothServiceHostile.html',
+    'lockedC.html', 'armourBook.html', 'armour.html'
   ];
-
-  // --- NEW: Probability of redirect (0.5 = 50% chance) ---
-  const redirectChance = 0.5;
 
   function initGallery() {
     for (let i = 1; i <= totalImages; i++) {
@@ -106,7 +99,6 @@
     const randomHeight = Math.floor(Math.random() * 300) + 150;
     imgElement.style.height = `${randomHeight}px`;
 
-    // Wait for the browser to calculate width after setting height
     const width = imgElement.getBoundingClientRect().width || (randomHeight * 1.5); 
     
     const maxY = window.innerHeight - randomHeight;
@@ -114,7 +106,6 @@
     const initialX = Math.floor(Math.random() * -6000) - width; 
     const randomSpeed = (Math.random() * 1.5) + 1;
 
-    // Remove the probability check entirely
     imgElement.addEventListener('click', () => {
         const randomPage = pages[Math.floor(Math.random() * pages.length)];
         window.open(randomPage, '_blank');

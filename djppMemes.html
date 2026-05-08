@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Wall | DJ Pension Plans</title>
+    <style>
+        /* CSS: Seamless Image Wall */
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        #imageGrid {
+            display: grid;
+            /* Creates a grid where each block is at least 200px, filling the width */
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            /* Remove all spacing */
+            grid-gap: 0;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+        }
+
+        .grid-item {
+            margin: 0;
+            padding: 0;
+            aspect-ratio: 1 / 1; /* Keeps them perfectly square */
+            overflow: hidden;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Fills the square completely */
+            display: block;    /* Removes the baseline gap */
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="imageGrid"></div>
+
+    <script>
+        const imageList = [
+            "000000003331.png", 
+            "000000003331smellgug.png", 
+            "2.png", 
+            "3.png", 
+            "31SniperGameDev.png", 
+            "4.png", 
+            "4bmOclock.png", 
+            "5.png", 
+            "6.png", 
+            "@NihonSukiGo.jpg", 
+            "ALLALONETHEEASTERNSHORE.png", 
+            "hellokitty.png",
+            "appIdeasNogginFullAbStepcBase44.png", 
+            "Automated Deep Learning-Based Diagnosis and.png", 
+            "boutthere.png", 
+            "copyleft.png", 
+            "CRAPFIX.png", 
+            "epsteinPurpleFlamingCursor.gif", 
+            "floodzone.png", 
+            "GOODGNESS.png", 
+            "GOODMOBA.png", 
+            "GoodShitSlyceHoessss.png", 
+            "image.png", 
+            "imMNervousGHey.png", 
+            "INCONSEQUENTIAL.png", 
+            "linuxdotjpegmavia.png", 
+            "MSSSDIS_RAM.png", 
+            "OFF_WORLD_LATTICE.png", 
+            "POPUPBLOCKED.png", 
+            "printer.png", 
+            "REDBYLL.jpg", 
+            "RED_BULL.png", 
+            "save003sam03.png", 
+            "SCIENTOLOGY.png", 
+            "screenshit.png", 
+            "SINANA.png", 
+            "sqrt(200areaof_the_Curve2026.png", 
+            "TAPYONJUXTAPOSED.png", 
+            "tiktok.png", 
+            "VAPORRUB.png"
+        ];
+
+        const folderPath = "./djpensionplans/";
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createGrid() {
+            const grid = document.getElementById('imageGrid');
+            const shuffled = shuffleArray([...imageList]);
+
+            shuffled.forEach(fileName => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'grid-item';
+
+                const img = document.createElement('img');
+                img.src = `${folderPath}${fileName}`;
+                img.loading = "lazy";
+
+                wrapper.appendChild(img);
+                grid.appendChild(wrapper);
+            });
+        }
+
+        window.onload = createGrid;
+    </script>
+</body>
+</html>

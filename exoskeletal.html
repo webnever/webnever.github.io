@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXOSKELETAL</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .gif-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        img {
+            max-width: 45vw;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        /* First image animation */
+        .alt-1 {
+            animation: flash-a 0.5s infinite steps(1);
+        }
+
+        /* Second image animation (Inverted start) */
+        .alt-2 {
+            animation: flash-b 0.5s infinite steps(1);
+        }
+
+        @keyframes flash-a {
+            0% { filter: invert(0%) grayscale(0%); }
+            50% { filter: invert(100%) grayscale(100%); }
+        }
+
+        @keyframes flash-b {
+            0% { filter: invert(100%) grayscale(100%); }
+            50% { filter: invert(0%) grayscale(0%); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gif-container">
+        <img src="exoskeletal/skeletons1.png" alt="First GIF" class="alt-1">
+        <img src="exoskeletal/skeletons2.png" alt="Second GIF" class="alt-2">
+    </div>
+
+</body>
+</html>

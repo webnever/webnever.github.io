@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshots</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --hover-color: #333333;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        /* Grid Layout */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Image Cards */
+        .gallery-item {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+            background-color: var(--hover-color);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid #333;
+        }
+
+        .file-name {
+            padding: 12px;
+            font-size: 0.85rem;
+            text-align: center;
+            word-wrap: break-word;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Simple Lightbox/Modal */
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        #lightbox-caption {
+            position: absolute;
+            bottom: 20px;
+            color: white;
+            font-family: monospace;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        #close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Screenshots</h1>
+    <div class="gallery-grid" id="gallery"></div>
+
+    <!-- Lightbox container for viewing full images -->
+    <div id="lightbox">
+        <span id="close-btn">&times;</span>
+        <img id="lightbox-img" src="" alt="Full Screen Image">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <script>
+        // Full list of extracted filenames
+        const files = [
+            "1qstWBossBattle.png", "356581515_1365302490683631_8639917176487037476_n.jpg", "40Dollars.png", "49.png", "666.png", 
+            "a.png", "ACtualIncest.png", "actualPorn.png", "Akira.png", "ANOTHERACCURATEGRAPH.png", "anotherone.webp", 
+            "appreciate.png", "ArmourOST.png", "AwareNessCover.jpg", "A_OGCover.jpg", "A_OGCover2.jpg", "batteryHealth.png", 
+            "beastTimeBeSmartHesQuiet.png", "boomMic.png", "boon.png", "boring.png", "brainanueryms.png", "brpieewk.png", 
+            "caset.png", "chargeGlowintheDarkFuckingBuddha.png", "ckittycat.png", "click.png", "clique.png", "CobraKAi.png", 
+            "copy.png", "CrackCocaine.png", "crysis2.png", "cursedJinnyText.png", "cursedLabubuThumbnailNahIforgot.png", 
+            "Dead.png", "DeathGodSStranding.png", "DEATHRAYpACTBACNNER.png", "delete (2).png", "delete.png", "DeleteThePorn.png", 
+            "delicious.png", "diablo.png", "DRAGON.png", "dumb.png", "e3.png", "everyoneAteHim.png", "everything.png", 
+            "f3.png", "f9.png", "faceOfRegret.png", "Favorite.png", "FAvourite (2).png", "FAvourite.png", "Files.png", 
+            "four.webp", "funnydeathstranding.png", "funnyDraagon.png", "funnyOrDead.png", "gardenOfDeleteRorR.png", 
+            "giggityShiftF2.png", "glowinthedark.png", "GodWth.png", "goodlooking.png", "GravesiteLastLoginWindows.png", 
+            "hehasit.png", "heiroPaid.png", "hell.png", "helll.png", "howToTrade.png", "Idontgetit22.png", "ImadethisAgain.png", 
+            "Imadethissascha.png", "interviewAC.png", "itscooking.png", "iwasjoking.png", "jasonCURSED.jpg", "jinnyShift.png", 
+            "kbps.png", "keepF2.png", "lanceyfOxu.png", "LastLogin.png", "LizardPeople.png", "LRTOLEVITATEBLANKBANSHEE.png", 
+            "madAgain.png", "maddaGaey.png", "madderGay.png", "me.png", "MeAgain.png", "meme.png", "memememe.png", 
+            "mememememe.png", "memememememee.png", "MEsys.png", "myaccount1.png", "myAccount2.png", "n otfunny.png", 
+            "nahfuck tthat.png", "new.png", "nicolip.png", "notBoering.png", "notdone.webp", "notfunny.png", "notFunny2Cool.webp", 
+            "noware.png", "NowLoading86%.png", "NXNW DJ SET.png", "object4.webp", "opnGardenOfDelete.png", "osHihihihi2211!.png", 
+            "osrsdragonClawsRWT.png", "packitup.png", "password.com.png", "password.png", "paste.png", "ps4'.png", "purple.png", 
+            "qum.png", "rape.png", "recepit.png", "RIPf@Peace DougKlennick.png", "robot.png", "samhydesBrother.png", 
+            "saschaGrey2.png", "set3So me.png", "sudoaptinstallpytorch.png", "TagTheBanner.png", "TankGrrl.png", 
+            "thtsMyPasscode.png", "tumblrKnight.jpg", "uouhetgWhatUget.png", "Vriginity.png", "wavestep.avif", "webneverfunny.png", 
+            "wellthatwasFuckingEasy.png", "whathtesacred26gigabytes.png", "whatthehellman.png", "wheredhego.png", "wireshark.png", 
+            "wtf.png", "xachherethanksman.png", "yag.png", "yeaIKnow.png", "yeayeayeayaeya.png"
+        ];
+
+        const basePath = "./screenshotArchive/";
+        const galleryContainer = document.getElementById("gallery");
+        
+        // Lightbox Elements
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImg = document.getElementById("lightbox-img");
+        const lightboxCaption = document.getElementById("lightbox-caption");
+        const closeBtn = document.getElementById("close-btn");
+
+        // Build the grid
+        files.forEach(fileName => {
+            const itemDiv = document.createElement("div");
+            itemDiv.className = "gallery-item";
+            
+            const imagePath = basePath + encodeURIComponent(fileName).replace(/%20/g, ' '); // Keep spaces for local path formatting
+
+            // Create Image
+            const img = document.createElement("img");
+            img.src = imagePath;
+            img.alt = fileName;
+            img.loading = "lazy"; // Optimize loading
+            
+            // Handle broken images gracefully
+            img.onerror = function() {
+                this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="%23333"><rect width="100%" height="100%" fill="%23222"/><text x="50%" y="50%" fill="%23666" font-family="sans-serif" font-size="14" text-anchor="middle" alignment-baseline="middle">Image Not Found</text></svg>';
+            };
+
+            // Create Label
+            const label = document.createElement("div");
+            label.className = "file-name";
+            label.textContent = fileName;
+
+            // Assemble and Append
+            itemDiv.appendChild(img);
+            itemDiv.appendChild(label);
+            galleryContainer.appendChild(itemDiv);
+
+            // Lightbox Event Listener
+            itemDiv.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightboxCaption.textContent = fileName;
+                lightbox.style.display = 'flex';
+            });
+        });
+
+        // Close Lightbox
+        const closeLightbox = () => lightbox.style.display = 'none';
+        closeBtn.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target !== lightboxImg) closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeLightbox();
+        });
+    </script>
+</body>
+</html>

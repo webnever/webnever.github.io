@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Favicon Link -->
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<title>Welcome</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #111; 
+    color: white;
+    font-family: sans-serif;
+  }
+
+  #gallery-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .scrolling-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+    border: 3px solid #222;
+    border-radius: 4px;
+    filter: grayscale(100%); 
+    transition: filter 0.4s ease, transform 0.1s linear;
+  }
+
+  .scrolling-img:hover {
+    filter: grayscale(0%) sepia(0%);
+    z-index: 50;
+    cursor: pointer;
+  }
+
+  /* --- Contact Info Style --- */
+  .contact-footer {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    color: #888; /* Grey color */
+    font-size: 0.85rem;
+    z-index: 100; /* Ensure it stays above the images */
+    pointer-events: none; /* Allows clicks to pass through to images if necessary */
+  }
+</style>
+</head>
+<body>
+
+<div id="gallery-container"></div>
+
+<!-- Contact Info Element -->
+<div class="contact-footer">contact: eyeskiessea@gmail.com</div>
+
+<script>
+  const container = document.getElementById('gallery-container');
+  let activeImages = [];
+  
+  const totalImages = 117;
+  const extensionsToTry = ['.jpg', '.png', '.jpeg'];
+
+  const pages = [
+    'noclip.html', 'excerpts.html', 'ftDragon.html', 'sTier.html',
+    'esscollex.html', 'aetherwebnever.html', 'm2.html', 'tarot.html',
+    'deathmetalrosepetals.html', 'p.html', 'earth3.html', 'weBNever.html',
+    'king.html', 'lastlogin.html', 'projex.html', 'bluetoothServiceHostile.html',
+    'lockedC.html', 'armourBook.html', 'armour.html'
+  ];
+
+  function initGallery() {
+    for (let i = 1; i <= totalImages; i++) {
+      attemptToLoadImage(i, 0);
+    }
+    requestAnimationFrame(animateGallery);
+  }
+
+  function attemptToLoadImage(imageId, extIndex) {
+    if (extIndex >= extensionsToTry.length) return;
+
+    const imgElement = document.createElement('img');
+    imgElement.src = `./imageScroller/${imageId}${extensionsToTry[extIndex]}`;
+    imgElement.classList.add('scrolling-img');
+
+    imgElement.onload = () => {
+      setupImageAnimation(imgElement);
+    };
+
+    imgElement.onerror = () => {
+      attemptToLoadImage(imageId, extIndex + 1);
+    };
+  }
+
+  function setupImageAnimation(imgElement) {
+    const randomHeight = Math.floor(Math.random() * 300) + 150;
+    imgElement.style.height = `${randomHeight}px`;
+
+    const width = imgElement.getBoundingClientRect().width || (randomHeight * 1.5); 
+    
+    const maxY = window.innerHeight - randomHeight;
+    const randomY = Math.floor(Math.random() * maxY);
+    const initialX = Math.floor(Math.random() * -6000) - width; 
+    const randomSpeed = (Math.random() * 1.5) + 1;
+
+    imgElement.addEventListener('click', () => {
+        const randomPage = pages[Math.floor(Math.random() * pages.length)];
+        window.open(randomPage, '_blank');
+    });
+    container.appendChild(imgElement);
+
+    activeImages.push({
+      element: imgElement,
+      x: initialX,
+      y: randomY,
+      speed: randomSpeed,
+      width: width
+    });
+  }
+
+  function animateGallery() {
+    activeImages.forEach(imgObj => {
+      imgObj.x += imgObj.speed;
+
+      if (imgObj.x > window.innerWidth) {
+        imgObj.x = -imgObj.width - (Math.random() * 500); 
+        imgObj.y = Math.floor(Math.random() * (window.innerHeight - imgObj.element.clientHeight));
+        imgObj.speed = (Math.random() * 1.5) + 1;
+      }
+
+      imgObj.element.style.transform = `translate(${imgObj.x}px, ${imgObj.y}px)`;
+    });
+
+    requestAnimationFrame(animateGallery);
+  }
+
+  initGallery();
+</script>
+
+</body>
+</html>

@@ -3,142 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Favicon Link -->
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<title>Welcome</title>
+<title>Index of /digital_archives/</title>
 <style>
-  body {
-    margin: 0;
-    overflow: hidden;
-    background-color: #111; 
-    color: white;
-    font-family: sans-serif;
-  }
+    /* Stretch background to fit width and height */
+    body {
+        margin: 0;
+        padding: 40px;
+        min-height: 100vh;
+        background-image: url('./digital/image_1.png');
+        background-repeat: no-repeat;
+        background-position: center top;
+        background-attachment: fixed;
+        background-size: 100vw 100vh; /* Stretches the image to fill the viewport */
+        font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif; /* Windows 98 standard font */
+    }
 
-  #gallery-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-  }
+    /* Windows 98/XP inspired UI container (3D Outset) */
+    .win-container {
+        background-color: #c0c0c0; /* Classic Win98 gray */
+        border-top: 2px solid #ffffff;
+        border-left: 2px solid #ffffff;
+        border-right: 2px solid #808080;
+        border-bottom: 2px solid #808080;
+        padding: 20px;
+        width: 70%;
+        max-width: 750px;
+        margin: 0 auto;
+        box-shadow: 2px 2px 0px #000;
+    }
 
-  .scrolling-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.8);
-    border: 3px solid #222;
-    border-radius: 4px;
-    filter: grayscale(100%); 
-    transition: filter 0.4s ease, transform 0.1s linear;
-  }
+    /* Inner recessed area (3D Inset) */
+    .win-content {
+        background-color: #ffffff;
+        border-top: 2px solid #808080;
+        border-left: 2px solid #808080;
+        border-right: 2px solid #ffffff;
+        border-bottom: 2px solid #ffffff;
+        padding: 20px;
+        min-height: 400px;
+    }
 
-  .scrolling-img:hover {
-    filter: grayscale(0%) sepia(0%);
-    z-index: 50;
-    cursor: pointer;
-  }
+    /* Heading configuration */
+    h1 {
+        font-size: 18px;
+        margin-top: 0;
+        border-bottom: 2px groove #ffffff;
+        padding-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: bold;
+    }
 
-  /* --- Contact Info Style --- */
-  .contact-footer {
-    position: fixed;
-    bottom: 15px;
-    right: 15px;
-    color: #888; /* Grey color */
-    font-size: 0.85rem;
-    z-index: 100; /* Ensure it stays above the images */
-    pointer-events: none; /* Allows clicks to pass through to images if necessary */
-  }
+    /* Windows 98 File Icon (Base64) */
+    .icon {
+        width: 32px;
+        height: 32px;
+        image-rendering: pixelated; /* Keeps the retro pixel edges sharp */
+    }
+
+    /* Dotted list styling */
+    ul {
+        list-style-type: disc; /* Classic dotted bullets */
+        padding-left: 30px;
+        margin-top: 15px;
+    }
+
+    li {
+        margin-bottom: 8px;
+        border-bottom: 1px dotted #cccccc; /* Dotted line separator for ultimate 90s feel */
+        padding-bottom: 4px;
+    }
+
+    /* Classic 90s blue hyperlinks */
+    a {
+        color: #0000EE;
+        text-decoration: underline;
+        font-family: 'Courier New', Courier, monospace; 
+        font-size: 15px;
+    }
+
+    a:visited {
+        color: #551A8B; /* Classic purple for visited links */
+    }
+
+    a:hover {
+        background-color: #000080; /* Navy blue highlight mimicking Windows OS selection */
+        color: #ffffff;
+        text-decoration: none;
+    }
 </style>
 </head>
 <body>
 
-<div id="gallery-container"></div>
-
-<!-- Contact Info Element -->
-<div class="contact-footer">contact: eyeskiessea@gmail.com</div>
-
-<script>
-  const container = document.getElementById('gallery-container');
-  let activeImages = [];
-  
-  const totalImages = 117;
-  const extensionsToTry = ['.jpg', '.png', '.jpeg'];
-
-  const pages = [
-    'noclip.html', 'excerpts.html', 'ftDragon.html', 'sTier.html',
-    'esscollex.html', 'aetherwebnever.html', 'm2.html', 'tarot.html',
-    'deathmetalrosepetals.html', 'p.html', 'earth3.html', 'weBNever.html',
-    'king.html', 'lastlogin.html', 'projex.html', 'bluetoothServiceHostile.html',
-    'lockedC.html', 'armourBook.html', 'armour.html'
-  ];
-
-  function initGallery() {
-    for (let i = 1; i <= totalImages; i++) {
-      attemptToLoadImage(i, 0);
-    }
-    requestAnimationFrame(animateGallery);
-  }
-
-  function attemptToLoadImage(imageId, extIndex) {
-    if (extIndex >= extensionsToTry.length) return;
-
-    const imgElement = document.createElement('img');
-    imgElement.src = `./imageScroller/${imageId}${extensionsToTry[extIndex]}`;
-    imgElement.classList.add('scrolling-img');
-
-    imgElement.onload = () => {
-      setupImageAnimation(imgElement);
-    };
-
-    imgElement.onerror = () => {
-      attemptToLoadImage(imageId, extIndex + 1);
-    };
-  }
-
-  function setupImageAnimation(imgElement) {
-    const randomHeight = Math.floor(Math.random() * 300) + 150;
-    imgElement.style.height = `${randomHeight}px`;
-
-    const width = imgElement.getBoundingClientRect().width || (randomHeight * 1.5); 
-    
-    const maxY = window.innerHeight - randomHeight;
-    const randomY = Math.floor(Math.random() * maxY);
-    const initialX = Math.floor(Math.random() * -6000) - width; 
-    const randomSpeed = (Math.random() * 1.5) + 1;
-
-    imgElement.addEventListener('click', () => {
-        const randomPage = pages[Math.floor(Math.random() * pages.length)];
-        window.open(randomPage, '_blank');
-    });
-    container.appendChild(imgElement);
-
-    activeImages.push({
-      element: imgElement,
-      x: initialX,
-      y: randomY,
-      speed: randomSpeed,
-      width: width
-    });
-  }
-
-  function animateGallery() {
-    activeImages.forEach(imgObj => {
-      imgObj.x += imgObj.speed;
-
-      if (imgObj.x > window.innerWidth) {
-        imgObj.x = -imgObj.width - (Math.random() * 500); 
-        imgObj.y = Math.floor(Math.random() * (window.innerHeight - imgObj.element.clientHeight));
-        imgObj.speed = (Math.random() * 1.5) + 1;
-      }
-
-      imgObj.element.style.transform = `translate(${imgObj.x}px, ${imgObj.y}px)`;
-    });
-
-    requestAnimationFrame(animateGallery);
-  }
-
-  initGallery();
-</script>
+<div class="win-container">
+    <div class="win-content">
+        <h1>
+            <img class="icon" src="digital/folder.png" alt="redirect">
+            WEBNEVER DIGITAL/
+        </h1>
+        <ul>
+            <li><a href="aetherwebnever.html">aetherwebnever.html</a></li>
+            <li><a href="armour.html">armour.html</a></li>
+            <li><a href="armourBook.html">armourBook.html</a></li>
+            <li><a href="bluetoothServiceHostile.html">bluetoothServiceHostile.html</a></li>
+            <li><a href="deathmetalrosepetals.html">deathmetalrosepetals.html</a></li>
+            <li><a href="earth3.html">earth3.html</a></li>
+            <li><a href="esscollex.html">esscollex.html</a></li>
+            <li><a href="excerpts.html">excerpts.html</a></li>
+            <li><a href="ftDragon.html">ftDragon.html</a></li>
+            <li><a href="grandeBoys.html">grandeBoys.html</a></li>
+            <li><a href="hyperlink.html">hyperlink.html</a></li>
+            <li><a href="index.html">index.html</a></li>
+            <li><a href="king.html">king.html</a></li>
+            <li><a href="lastlogin.html">lastlogin.html</a></li>
+            <li><a href="LifeIsPain.html">LifeIsPain.html</a></li>
+            <li><a href="lockedC.html">lockedC.html</a></li>
+            <li><a href="m2.html">m2.html</a></li>
+            <li><a href="noclip.html">noclip.html</a></li>
+            <li><a href="p.html">p.html</a></li>
+            <li><a href="password.html">password.html</a></li>
+            <li><a href="projex.html">projex.html</a></li>
+            <li><a href="sTier.html">sTier.html</a></li>
+            <li><a href="tarot.html">tarot.html</a></li>
+            <li><a href="weBNever.html">weBNever.html</a></li>
+        </ul>
+    </div>
+</div>
 
 </body>
 </html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMOUR</title>
+    <style>
+        @font-face {
+            font-family: 'mixit';
+            src: url('./armourImages/mixit-webfont.ttf') format('truetype');
+        }
+
+        body {
+            background-color: black;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'mixit', sans-serif;
+        }
+
+        .gallery-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px; /* Space between vertical items */
+            width: 100%;
+        }
+
+        .gallery-item {
+            width: 800px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .gallery-media {
+            width: 800px;
+            height: auto;
+            display: block;
+            cursor: pointer;
+        }
+
+        h1 {
+            font-family: 'mixit';
+            font-size: 3rem;
+            margin: 40px 0;
+        }
+
+        h3 {
+            font-weight: normal;
+            margin-bottom: 80px;
+        }
+
+        /* Lightbox Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            cursor: zoom-out;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #333;
+        }
+
+        /* Responsiveness for smaller screens */
+        @media (max-width: 850px) {
+            .gallery-item, .gallery-media {
+                width: 95vw;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="gallery-grid">
+        <!-- Gallery items will be inserted here by JavaScript -->
+    </div>
+
+    <div class="lightbox"></div>
+
+    <br><br>
+
+    <h1>AETHER WEBNEVER</h1>
+    <h3>nowareOS' "ARMOUR" | release never</h3>
+
+    <br><br>
+
+    <script>
+        const images = [
+            'armourImages/logos.png',
+            'armourImages/0.png',
+            'armourImages/fortune.png',
+            'armourImages/output.mp4',
+            'armourImages/9.png',
+            'armourImages/12.gif',
+            'armourImages/13.gif',
+            'armourImages/crash2.gif',
+            'armourImages/armourReconnaissance.gif',
+            'armourImages/titlenewshadow.png',
+            'armourImages/awndev.png',
+            'armourImages/310124mainmenutransition2.gif',
+            'armourImages/valhell.png',
+            'armourImages/050224savingloadingslots2.gif',
+            'armourImages/sword.gif',
+            'armourImages/wireshark.png',
+        ];
+
+        const galleryGrid = document.querySelector('.gallery-grid');
+        const lightbox = document.querySelector('.lightbox');
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const media = entry.target.querySelector('.gallery-media');
+                    if (media.dataset.src) {
+                        media.src = media.dataset.src;
+                        if (media.dataset.type === 'video') {
+                            media.controls = true;
+                        } else {
+                            media.onload = () => media.classList.add('loaded');
+                        }
+                        delete media.dataset.src;
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '200px 0px',
+            threshold: 0.1
+        });
+
+        images.forEach(mediaPath => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+
+            const isVideo = mediaPath.match(/\.(mp4|webm|ogg)$/i);
+            const media = document.createElement(isVideo ? 'video' : 'img');
+            media.className = 'gallery-media';
+            media.dataset.src = mediaPath;
+            media.dataset.type = isVideo ? 'video' : 'image';
+            media.alt = mediaPath.split('/').pop().split('.')[0].replace(/%20/g, ' ');
+
+            if (!isVideo) {
+                media.addEventListener('click', () => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = mediaPath;
+                    lightbox.innerHTML = '';
+                    lightbox.appendChild(imgElement);
+                    lightbox.style.display = 'block';
+                });
+            }
+
+            item.appendChild(media);
+            galleryGrid.appendChild(item);
+            observer.observe(item);
+        });
+
+        lightbox.addEventListener('click', () => {
+            lightbox.style.display = 'none';
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') lightbox.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

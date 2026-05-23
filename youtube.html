@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBNEVER YT</title>
+    <style>
+        /* Resets and centers everything on the viewport */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background-color: #121212; /* Optional: Dark background to make the banner pop */
+        }
+
+        /* The main clickable container */
+        .banner-link {
+            display: grid;
+            place-items: center;
+            text-decoration: none;
+            position: relative;
+            max-width: 100%;
+        }
+
+        /* Forces both images to occupy the exact same grid cell so they stack */
+        .banner-link img {
+            grid-area: 1 / 1;
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Base banner specific styling */
+        .base-banner {
+            z-index: 1; /* Sits at the back */
+        }
+
+        /* Overlay card specific styling */
+        .overlay-card {
+            z-index: 2; /* Sits on top */
+            transition: transform 0.2s ease-in-out; /* Smooth hover animation */
+        }
+
+        /* Optional: Adds a slight zoom effect to the overlay when hovered */
+        .banner-link:hover .overlay-card {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Link wrapping the stacked images -->
+    <a href="https://www.youtube.com/@sirius_eye-webnever/videos" target="_blank" rel="noopener noreferrer" class="banner-link">
+        
+        <!-- Base Banner Image -->
+        <img src="./youtube/channels4_banner.jpg" alt="YouTube Channel Banner" class="base-banner">
+        
+        <!-- Centered Overlay Image -->
+        <img src="./youtube/webneverYTCard.png" alt="Channel Card Overlay" class="overlay-card">
+
+    </a>
+
+</body>
+</html>

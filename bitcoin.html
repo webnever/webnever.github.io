@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE₿NEVER</title>
+    <style>
+        /* General Reset & Dark Mode Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace; /* Monospaced for a tech/crypto feel */
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 60px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Image Section */
+        .image-container {
+            margin-bottom: 50px;
+        }
+
+        .image-container img {
+            max-width: 66%;
+            height: auto;
+            border: 1px solid #333; /* Subtle border to define the image edge */
+            filter: grayscale(100%) contrast(110%);
+            transition: filter 0.5s ease;
+        }
+
+        /* Poem Section */
+        .poem-content {
+            margin-top: 20px;
+        }
+
+        .poem-author {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .stanzas {
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .stanzas p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 600px) {
+            body { padding: 30px 15px; }
+            .stanzas { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <!-- Image Section -->
+        <section class="image-container">
+            <img src="bitcoin/2017midyearOG.png" alt="06/2017 OG (Ask Mum)">
+        </section>
+
+        <!-- Text Section -->
+        <article class="poem-content">
+            <p class="poem-author">(b)ᵂᴱᴮᴺᴱⱽᴱᴿ [06/2017]</p>
+            
+            <div class="stanzas">
+                <p>We don't use Bitcoin<br>
+                17 minute transactions and the most incredible,<br>
+                immutable, verification system.</p>
+
+                <p>We reserve it for whales<br>
+                Lowly pawn flood the bottom of the ocean<br>
+                and the surfers above play with dolphins<br>
+                over the trenches of the whale movements.</p>
+
+                <p>Now, SOLANA/XMR, ...</p>
+            </div>
+        </article>
+    </main>
+
+</body>
+</html>

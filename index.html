@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>webnever digital/</title>
+<title>𝚆𝙴𝙱𝙽𝙴𝚅𝙴𝚁 𝙳𝙸𝙶𝙸𝚃𝙰𝙻</title>
 <style>
     /* Stretch background to fit width and height */
     body {
@@ -18,6 +18,29 @@
         font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif; /* Windows 98 standard font */
     }
 
+    /* Layout wrapper to position pillars and window side-by-side */
+    .layout-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px; /* Space between the pillars and the window */
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Pillar styling */
+    .pillar {
+        height: 80vh; /* Scales the pillars to take up most of the vertical space */
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); /* Optional: Adds a slight retro shadow */
+    }
+
+    /* Flip the right pillar horizontally */
+    .pillar-right {
+        transform: scaleX(-1);
+    }
+
     /* Windows 98/XP inspired UI container (3D Outset) */
     .win-container {
         background-color: #c0c0c0; /* Classic Win98 gray */
@@ -26,9 +49,8 @@
         border-right: 2px solid #808080;
         border-bottom: 2px solid #808080;
         padding: 20px;
-        width: 70%;
+        width: 100%;
         max-width: 750px;
-        margin: 0 auto;
         box-shadow: 2px 2px 0px #000;
     }
 
@@ -92,49 +114,66 @@
         color: #ffffff;
         text-decoration: none;
     }
+
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 1000px) {
+        .layout-wrapper {
+            gap: 20px;
+        }
+        .pillar {
+            display: none; /* Hides pillars on smaller screens to keep the window readable */
+        }
+    }
 </style>
 </head>
 <body>
 
-<div class="win-container">
-    <div class="win-content">
-        <h1>
-            <img class="icon" src="digital/folder.png" alt="redirect">
-            webnever digital/
-        </h1>
-        <ul>
-            <li><a href="AETHER_WEBNEVER_VALERIE_v0.2.zip">AETHER_WEBNEVER_VALERIE_v0.2.zip</a></li>
-            <li><a href="aetherwebnever.html">aetherwebnever.html</a></li>
-            <li><a href="armour.html">armour.html</a></li>
-            <li><a href="armourBook.html">armourBook.html</a></li>
-            <li><a href="bluetoothServiceHostile.html">bluetoothServiceHostile.html</a></li>
-            <li><a href="chainmail.html">chainmail.html</a></li>
-            <li><a href="deathmetalrosepetals.html">deathmetalrosepetals.html</a></li>
-            <li><a href="djpensionplans.html">djpensionplans.html</a></li>
-            <li><a href="earth3.html">earth3.html</a></li>
-            <li><a href="esscollex.html">esscollex.html</a></li>
-            <li><a href="excerpts.html">excerpts.html</a></li>
-            <li><a href="exoskeletal.html">exoskeletal.html</a></li>
-            <li><a href="ftDragon.html">ftDragon.html</a></li>
-            <li><a href="grandeBoys.html">grandeBoys.html</a></li>
-            <li><a href="index.html">index.html</a></li>
-            <li><a href="king.html">king.html</a></li>
-            <li><a href="labubu.mp4">labubu.mp4</a></li>
-            <li><a href="lastlogin.html">lastlogin.html</a></li>
-            <li><a href="LifeIsPain.html">LifeIsPain.html</a></li>
-            <li><a href="lockedC.html">lockedC.html</a></li>
-            <li><a href="m2.html">m2.html</a></li>
-            <li><a href="noclip.html">noclip.html</a></li>
-            <li><a href="p.html">p.html</a></li>
-            <li><a href="password.html">password.html</a></li>
-            <li><a href="projex.html">projex.html</a></li>
-            <li><a href="screenshots.html">screenshots.html</a></li>
-            <li><a href="sTier.html">sTier.html</a></li>
-            <li><a href="tarot.html">tarot.html</a></li>
-            <li><a href="valerie/AETHER_WEBNEVER_VALERIE.html">valerie/AETHER_WEBNEVER_VALERIE.html</a></li>
-            <li><a href="weBNever.html">weBNever.html</a></li>
-        </ul>
+<div class="layout-wrapper">
+    <img src="indexPillar.png" alt="Decorative Pillar" class="pillar pillar-left">
+
+    <div class="win-container">
+        <div class="win-content">
+            <h1>
+                <img class="icon" src="digital/folder.png" alt="redirect">
+                / 𝚆𝙴𝙱𝙽𝙴𝚅𝙴𝚁 𝙳𝙸𝙶𝙸𝚃𝙰𝙻
+            </h1>
+            <ul>
+                <li><a href="AETHER_WEBNEVER_VALERIE_v0.3.zip">AETHER_WEBNEVER_VALERIE_v0.3.zip</a></li>
+                <li><a href="aetherwebnever.html">aetherwebnever.html</a></li>
+                <li><a href="armour.html">armour.html</a></li>
+                <li><a href="armourBook.html">armourBook.html</a></li>
+                <li><a href="bitcoin.html">bitcoin.html</a></li>
+                <li><a href="bluetoothServiceHostile.html">bluetoothServiceHostile.html</a></li>
+                <li><a href="chainmail.html">chainmail.html</a></li>
+                <li><a href="deathmetalrosepetals.html">deathmetalrosepetals.html</a></li>
+                <li><a href="djpensionplans.html">djpensionplans.html</a></li>
+                <li><a href="earth3.html">earth3.html</a></li>
+                <li><a href="esscollex.html">esscollex.html</a></li>
+                <li><a href="excerpts.html">excerpts.html</a></li>
+                <li><a href="exoskeletal.html">exoskeletal.html</a></li>
+                <li><a href="ftDragon.html">ftDragon.html</a></li>
+                <li><a href="grandeBoys.html">grandeBoys.html</a></li>
+                <li><a href="index.html">index.html</a></li>
+                <li><a href="king.html">king.html</a></li>
+                <li><a href="labubu.mp4">labubu.mp4</a></li>
+                <li><a href="lastlogin.html">lastlogin.html</a></li>
+                <li><a href="LifeIsPain.html">LifeIsPain.html</a></li>
+                <li><a href="lockedC.html">lockedC.html</a></li>
+                <li><a href="m2.html">m2.html</a></li>
+                <li><a href="noclip.html">noclip.html</a></li>
+                <li><a href="p.html">p.html</a></li>
+                <li><a href="password.html">password.html</a></li>
+                <li><a href="projex.html">projex.html</a></li>
+                <li><a href="screenshots.html">screenshots.html</a></li>
+                <li><a href="sTier.html">sTier.html</a></li>
+                <li><a href="tarot.html">tarot.html</a></li>
+                <li><a href="valerie/AETHER_WEBNEVER_VALERIE.html">valerie/AETHER_WEBNEVER_VALERIE.html</a></li>
+                <li><a href="youtube.html">youtube.html</a></li>
+            </ul>
+        </div>
     </div>
+
+    <img src="indexPillar.png" alt="Decorative Pillar" class="pillar pillar-right">
 </div>
 
 </body>

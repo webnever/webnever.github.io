@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>𝚆𝙴𝙱𝙽𝙴𝚅𝙴𝚁 𝙳𝙸𝙶𝙸𝚃𝙰𝙻</title>
 <style>
+    /* Load the custom retro typeface */
+    @font-face {
+        font-family: 'Tooth31';
+        src: url('./tooth31.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
     /* Stretch background to fit width and height */
     body {
         margin: 0;
@@ -15,7 +23,15 @@
         background-position: center top;
         background-attachment: fixed;
         background-size: 100vw 100vh; /* Stretches the image to fill the viewport */
-        font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif; /* Windows 98 standard font */
+        
+        /* INVERTED: Inverted the global text color to white for contrast against dark UI elements */
+        color: #ffffff;
+
+        /* Applied custom font with classic system fallbacks */
+        font-family: 'Tooth31', 'MS Sans Serif', Tahoma, Geneva, sans-serif; 
+        -webkit-font-smoothing: none;
+        -moz-osx-font-smoothing: none;
+        font-smooth: never; /* Keeps the custom font pixel-perfect and aliased if it's a bitmap style */
     }
 
     /* Layout wrapper to position pillars and window side-by-side */
@@ -33,7 +49,8 @@
         height: 80vh; /* Scales the pillars to take up most of the vertical space */
         width: auto;
         object-fit: contain;
-        filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); /* Optional: Adds a slight retro shadow */
+        /* INVERTED: Flipped the drop shadow color to white to match inverted lighting */
+        filter: drop-shadow(4px 4px 0px rgba(255,255,255,0.3)) invert(1); 
     }
 
     /* Flip the right pillar horizontally */
@@ -41,26 +58,26 @@
         transform: scaleX(-1);
     }
 
-    /* Windows 98/XP inspired UI container (3D Outset) */
+    /* Windows 98/XP inspired UI container (3D Outset - Inverted Colorway) */
     .win-container {
-        background-color: #c0c0c0; /* Classic Win98 gray */
-        border-top: 2px solid #ffffff;
-        border-left: 2px solid #ffffff;
-        border-right: 2px solid #808080;
-        border-bottom: 2px solid #808080;
+        background-color: #3f3f3f; /* INVERTED: Dark charcoal instead of classic light gray */
+        border-top: 2px solid #000000;   /* INVERTED: Flipped light source direction borders */
+        border-left: 2px solid #000000;
+        border-right: 2px solid #ffffff;
+        border-bottom: 2px solid #ffffff;
         padding: 20px;
         width: 100%;
         max-width: 750px;
-        box-shadow: 2px 2px 0px #000;
+        box-shadow: 2px 2px 0px #fff; /* INVERTED: White drop shadow */
     }
 
-    /* Inner recessed area (3D Inset) */
+    /* Inner recessed area (3D Inset - Inverted Colorway) */
     .win-content {
-        background-color: #ffffff;
-        border-top: 2px solid #808080;
-        border-left: 2px solid #808080;
-        border-right: 2px solid #ffffff;
-        border-bottom: 2px solid #ffffff;
+        background-color: #000000; /* INVERTED: Pitch black container background instead of white */
+        border-top: 2px solid #ffffff;  /* INVERTED: Flipped inner borders */
+        border-left: 2px solid #ffffff;
+        border-right: 2px solid #3f3f3f;
+        border-bottom: 2px solid #3f3f3f;
         padding: 20px;
         min-height: 400px;
     }
@@ -69,7 +86,7 @@
     h1 {
         font-size: 18px;
         margin-top: 0;
-        border-bottom: 2px groove #ffffff;
+        border-bottom: 2px groove #000000; /* INVERTED: Dark groove line */
         padding-bottom: 10px;
         display: flex;
         align-items: center;
@@ -82,6 +99,7 @@
         width: 32px;
         height: 32px;
         image-rendering: pixelated; /* Keeps the retro pixel edges sharp */
+        filter: invert(1); /* INVERTED: Inverts image assets to fit the new look */
     }
 
     /* Dotted list styling */
@@ -93,25 +111,26 @@
 
     li {
         margin-bottom: 8px;
-        border-bottom: 1px dotted #cccccc; /* Dotted line separator for ultimate 90s feel */
+        border-bottom: 1px dotted #333333; /* INVERTED: Darker dotted line separator */
         padding-bottom: 4px;
     }
 
-    /* Classic 90s blue hyperlinks */
+    /* Classic 90s blue hyperlinks (Inverted Colors) */
     a {
-        color: #0000EE;
+        color: #ffff11; /* INVERTED: Electric yellow (Inverted dark blue) for ultra readability */
         text-decoration: underline;
-        font-family: 'Courier New', Courier, monospace; 
+        /* Swapped out monospace fallback to match the site's primary aesthetic */
+        font-family: 'Tooth31', 'Courier New', Courier, monospace; 
         font-size: 15px;
     }
 
     a:visited {
-        color: #551A8B; /* Classic purple for visited links */
+        color: #aaae74; /* INVERTED: Muted olive-yellow (Inverted classic purple) */
     }
 
     a:hover {
-        background-color: #000080; /* Navy blue highlight mimicking Windows OS selection */
-        color: #ffffff;
+        background-color: #ffff7f; /* INVERTED: Light selection highlight */
+        color: #000000; /* INVERTED: Black text on hover selection */
         text-decoration: none;
     }
 
@@ -138,37 +157,35 @@
                 / 𝚆𝙴𝙱𝙽𝙴𝚅𝙴𝚁 𝙳𝙸𝙶𝙸𝚃𝙰𝙻 by ヨY℮ SKIES SEA
             </h1>
             <ul>
-                <li><a href="AETHER_WEBNEVER_VALERIE_v0.3.zip">AETHER_WEBNEVER_VALERIE_v0.3.zip</a></li>
-                <li><a href="aetherwebnever.html">aetherwebnever.html ⓘ ヨY℮ SKIES SEA - AETHER WEBNEVER EP</a></li>
-                <li><a href="artGallery.html">artGallery.html ⓘ ヨY℮ SKIES SEA Original Artwork</a></li>
-                <li><a href="aetherwebnever_armour.html">aetherwebnever_armour.html</a></li>
-                <li><a href="bitcoin.html">bitcoin.html</a></li>
-                <li><a href="bluetoothServiceHostile.html">bluetoothServiceHostile.html</a></li>
+                <li><a href="AETHER_WEBNEVER_VALERIE_v0.3.zip">aether_webnever_valerie_v0.3.zip /// lore</a></li>
+                <li><a href="aetherwebnever.html">aetherwebnever /// eye skies sea ep</a></li>
+                <li><a href="artGallery.html">artGallery /// original artwork</a></li>
+                <li><a href="aetherwebnever_armour.html">armour /// unreleased software</a></li>
+                <li><a href="bitcoin.html">bitcoin</a></li>
+                <li><a href="bluetoothServiceHostile.html">bluetooth service hostile</a></li>
                 <li><a href="chainmail.html">chainmail.html</a></li>
-                <li><a href="deathmetalrosepetals.html">deathmetalrosepetals.html</a></li>
-                <li><a href="djpensionplans.html">djpensionplans.html</a></li>
-                <li><a href="earth3.html">earth3.html</a></li>
-                <li><a href="esscollex.html">esscollex.html</a></li>
-                <li><a href="excerpts.html">excerpts.html</a></li>
-                <li><a href="exoskeletal.html">exoskeletal.html</a></li>
+                <li><a href="deathmetalrosepetals.html">deathmetalrosepetals.html /// heartmender2021</a></li>
+                <li><a href="djpensionplans.html">djpensionplans /// mixtapes</a></li>
+                <li><a href="earth3.html">earth3</a></li>
+                <li><a href="esscollex.html">esscollex</a></li>
+                <li><a href="excerpts.html">excerpts /// guitar recordings</a></li>
+                <li><a href="exoskeletal.html">exoskeletal</a></li>
                 <li><a href="grandeBoys.html">grandeBoys.html</a></li>
-                <li><a href="journal.html">journal.html</a></li>
-                <li><a href="king.html">king.html</a></li>
-                <li><a href="labubu.mp4">labubu.mp4</a></li>
-                <li><a href="lastlogin.html">lastlogin.html</a></li>
-                <li><a href="LifeIsPain.html">LifeIsPain.html</a></li>
-                <li><a href="lockedC.html">lockedC.html</a></li>
-                <li><a href="m2.html">m2.html</a></li>
-                <li><a href="noclip.html">noclip.html</a></li>
-                <li><a href="notesOnLiberation.html">notesOnLiberation.html</a></li>
-                <li><a href="p.html">p.html</a></li>
-                <li><a href="password.html">password.html</a></li>
-                <li><a href="projex.html">projex.html</a></li>
-                <li><a href="screenshots.html">screenshots.html</a></li>
-                <li><a href="sTier.html">sTier.html</a></li>
-                <li><a href="tarot.html">tarot.html</a></li>
-                <li><a href="valerie/AETHER_WEBNEVER_VALERIE.html">valerie/AETHER_WEBNEVER_VALERIE.html</a></li>
-                <li><a href="youtube.html">youtube.html</a></li>
+                <li><a href="journal.html">journal</a></li>
+                <li><a href="king.html">king /// got blood? got blood? call 1800-death for a good time</a></li>
+                <li><a href="labubu.mp4">labubu.mp4 /// no tears</a></li>
+                <li><a href="lastlogin.html">last login</a></li>
+                <li><a href="LifeIsPain.html">life is pain</a></li>
+                <li><a href="m2.html">m2</a></li>
+                <li><a href="noclip.html">noclip</a></li>
+                <li><a href="notesOnLiberation.html">notes on liberation</a></li>
+                <li><a href="p.html">p</a></li>
+                <li><a href="projex.html">projex</a></li>
+                <li><a href="screenshots.html">screenshots</a></li>
+                <li><a href="sTier.html">s tier</a></li>
+                <li><a href="tarot.html">tarot</a></li>
+                <li><a href="valerie/AETHER_WEBNEVER_VALERIE.html">valerie/aether_webnever_valerie.html</a></li>
+                <li><a href="youtube.html">youtube channel</a></li>
             </ul>
         </div>
     </div>

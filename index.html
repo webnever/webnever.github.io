@@ -18,7 +18,7 @@
         margin: 0;
         padding: 40px;
         min-height: 100vh;
-        background-image: url('./digital/image_1.png');
+        background-image: url('./digital/image_2.png');
         background-repeat: no-repeat;
         background-position: center top;
         background-attachment: fixed;
@@ -49,8 +49,6 @@
         height: 80vh; /* Scales the pillars to take up most of the vertical space */
         width: auto;
         object-fit: contain;
-        /* INVERTED: Flipped the drop shadow color to white to match inverted lighting */
-        filter: drop-shadow(4px 4px 0px rgba(255,255,255,0.3)) invert(1); 
     }
 
     /* Flip the right pillar horizontally */
@@ -68,7 +66,6 @@
         padding: 20px;
         width: 100%;
         max-width: 750px;
-        box-shadow: 2px 2px 0px #fff; /* INVERTED: White drop shadow */
     }
 
     /* Inner recessed area (3D Inset - Inverted Colorway) */
@@ -99,7 +96,6 @@
         width: 32px;
         height: 32px;
         image-rendering: pixelated; /* Keeps the retro pixel edges sharp */
-        filter: invert(1); /* INVERTED: Inverts image assets to fit the new look */
     }
 
     /* Dotted list styling */
@@ -115,22 +111,36 @@
         padding-bottom: 4px;
     }
 
-    /* Classic 90s blue hyperlinks (Inverted Colors) */
+    /* Classic 90s blue hyperlinks with text-shadow protection for readability on black */
     a {
-        color: #ffff11; /* INVERTED: Electric yellow (Inverted dark blue) for ultra readability */
+        color: #ffffff; 
         text-decoration: underline;
-        /* Swapped out monospace fallback to match the site's primary aesthetic */
         font-family: 'Tooth31', 'Courier New', Courier, monospace; 
         font-size: 15px;
+        padding: 0 4px;
+        border-radius: 2px;
+        
+        /* NEW: Turns the link into a row container that pushes content to opposite edges */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* NEW: Explicitly flags the text after /// to right-align if necessary */
+    a span.desc {
+        text-align: right;
+        opacity: 0.8; /* Slight dimming for retro metadata hierarchy */
     }
 
     a:visited {
-        color: #aaae74; /* INVERTED: Muted olive-yellow (Inverted classic purple) */
+        color: #ffffff; 
     }
 
     a:hover {
-        background-color: #ffff7f; /* INVERTED: Light selection highlight */
-        color: #000000; /* INVERTED: Black text on hover selection */
+        background-color: #777777; 
+        color: #ffffff;
         text-decoration: none;
     }
 
@@ -157,40 +167,42 @@
                 / 𝚆𝙴𝙱𝙽𝙴𝚅𝙴𝚁 𝙳𝙸𝙶𝙸𝚃𝙰𝙻 by ヨY℮ SKIES SEA
             </h1>
             <ul>
-                <li><a href="AETHER_WEBNEVER_VALERIE_v0.3.zip">aether_webnever_valerie_v0.3.zip /// lore</a></li>
-                <li><a href="aetherwebnever.html">aetherwebnever /// eye skies sea ep</a></li>
-                <li><a href="artGallery.html">artGallery /// original artwork</a></li>
-                <li><a href="aetherwebnever_armour.html">armour /// unreleased software</a></li>
-                <li><a href="bitcoin.html">bitcoin</a></li>
-                <li><a href="bluetoothServiceHostile.html">bluetooth service hostile</a></li>
-                <li><a href="chainmail.html">chainmail.html</a></li>
-                <li><a href="deathmetalrosepetals.html">deathmetalrosepetals.html /// heartmender2021</a></li>
-                <li><a href="djpensionplans.html">djpensionplans /// mixtapes</a></li>
-                <li><a href="earth3.html">earth3</a></li>
-                <li><a href="esscollex.html">esscollex</a></li>
-                <li><a href="excerpts.html">excerpts /// guitar recordings</a></li>
-                <li><a href="exoskeletal.html">exoskeletal</a></li>
-                <li><a href="grandeBoys.html">grandeBoys.html</a></li>
-                <li><a href="journal.html">journal</a></li>
-                <li><a href="king.html">king /// got blood? got blood? call 1800-death for a good time</a></li>
-                <li><a href="labubu.mp4">labubu.mp4 /// no tears</a></li>
-                <li><a href="lastlogin.html">last login</a></li>
-                <li><a href="LifeIsPain.html">life is pain</a></li>
-                <li><a href="m2.html">m2</a></li>
-                <li><a href="noclip.html">noclip</a></li>
-                <li><a href="notesOnLiberation.html">notes on liberation</a></li>
-                <li><a href="p.html">p</a></li>
-                <li><a href="projex.html">projex</a></li>
-                <li><a href="screenshots.html">screenshots</a></li>
-                <li><a href="sTier.html">s tier</a></li>
-                <li><a href="tarot.html">tarot</a></li>
-                <li><a href="valerie/AETHER_WEBNEVER_VALERIE.html">valerie/aether_webnever_valerie.html</a></li>
-                <li><a href="youtube.html">youtube channel</a></li>
+                
+                <li><a href="aetherwebnever_album.html"><span>aether webnever album</span><span class="desc">/// eye skies sea album</span></a></li>
+                <li><a href="aetherwebnever_armour.html"><span>aether webnever armour</span><span class="desc">/// unreleased software</span></a></li>
+                <li><a href="aetherwebnever_novel.html"><span>aether webnever novel</span><span class="desc">/// semi artificial writings</span></a></li>
+                <li><a href="AETHER_WEBNEVER_VALERIE_0.4.zip"><span>aether_webnever_valerie_0.4.zip</span><span class="desc">/// software download</span></a></li>
+                <li><a href="valerie/AETHER_WEBNEVER_VALERIE.html"><span>aether webnever valerie</span><span class="desc">/// in browser software</span></a></li>
+                <li><a href="artGallery.html"><span>art gallery</span><span class="desc">/// original artwork</span></a></li>
+                <li><a href="bitcoin.html"><span>bitcoin</span></a></li>
+                <li><a href="bluetoothServiceHostile.html"><span>bluetooth service hostile</span></a></li>
+                <li><a href="chainmail.html"><span>chainmail</span></a></li>
+                <li><a href="deathmetalrosepetals.html"><span>deathmetalrosepetals.html</span><span class="desc">/// heartmender2021</span></a></li>
+                <li><a href="djpensionplans.html"><span>djpensionplans</span><span class="desc">/// mixtapes</span></a></li>
+                <li><a href="earth3.html"><span>earth3</span></a></li>
+                <li><a href="esscollex.html"><span>esscollex</span></a></li>
+                <li><a href="excerpts.html"><span>excerpts</span><span class="desc">/// guitar recordings</span></a></li>
+                <li><a href="exoskeletal.html"><span>exoskeletal</span></a></li>
+                <li><a href="grandeBoys.html"><span>grandeBoys.html</span></a></li>
+                <li><a href="journal.html"><span>journal</span></a></li>
+                <li><a href="king.html"><span>king</span><span class="desc">/// got blood? got blood? call 1800-death for a good time</span></a></li>
+                <li><a href="labubu.mp4"><span>labubu.mp4</span><span class="desc">/// no tears</span></a></li>
+                <li><a href="lastlogin.html"><span>last login</span></a></li>
+                <li><a href="LifeIsPain.html"><span>life is pain</span></a></li>
+                <li><a href="m2.html"><span>m2</span></a></li>
+                <li><a href="noclip.html"><span>noclip</span></a></li>
+                <li><a href="notesOnLiberation.html"><span>notes on liberation</span></a></li>
+                <li><a href="p.html"><span>p</span></a></li>
+                <li><a href="projex.html"><span>projex</span></a></li>
+                <li><a href="screenshots.html"><span>screenshots</span></a></li>
+                <li><a href="sTier.html"><span>s tier</span></a></li>
+                <li><a href="tarot.html"><span>tarot</span></a></li>
+                <li><a href="youtube.html"><span>youtube channel</span></a></li>
             </ul>
         </div>
     </div>
 
-    <img src="indexPillar.png" alt="Decorative Pillar" class="pillar pillar-right">
+    <img src="indexPillar.png" class="pillar pillar-right">
 </div>
 
 </body>

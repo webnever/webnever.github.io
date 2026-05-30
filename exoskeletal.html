@@ -29,6 +29,14 @@
             object-fit: contain;
         }
 
+        /* Fullscreen Meme Styles */
+        .fullscreen-meme {
+            max-width: 100vw;
+            max-height: 100vh;
+            object-fit: contain;
+            animation: none; /* Keeps it clear, or add flash-a/b if you want it to flash too */
+        }
+
         /* Overlay to catch initial click for audio */
         #audio-overlay {
             position: fixed;
@@ -64,20 +72,30 @@
 </head>
 <body>
 
-    <!-- Transparent interaction layer -->
     <div id="audio-overlay"></div>
 
-    <div class="gif-container">
-        <img src="exoskeletal/skeletons1.png" alt="First GIF" class="alt-1">
-        <img src="exoskeletal/skeletons2.png" alt="Second GIF" class="alt-2">
+    <div id="content-wrapper">
+        <div class="gif-container" id="default-gifs">
+            <img src="exoskeletal/skeletons1.png" alt="First GIF" class="alt-1">
+            <img src="exoskeletal/skeletons2.png" alt="Second GIF" class="alt-2">
+        </div>
     </div>
 
-    <!-- Hidden Audio Element -->
     <audio id="bg-audio" loop>
         <source src="exoskeletal/deathClockMachine2.mp3" type="audio/mpeg">
     </audio>
 
     <script>
+        // 1. Roll the dice (1 in 9 chance)
+        const roll = Math.floor(Math.random() * 6) + 1; // Generates 1 through 6
+        
+        if (roll === 1) {
+            const wrapper = document.getElementById('content-wrapper');
+            // Swap out the dual-gifs for the single fullscreen meme
+            wrapper.innerHTML = `<img src="exoskeletal/6BillionDollarOctopusMemeDeal2.png" alt="Meme" class="fullscreen-meme">`;
+        }
+
+        // 2. Audio and Overlay handling (unaffected by the image swap)
         const overlay = document.getElementById('audio-overlay');
         const audio = document.getElementById('bg-audio');
 
